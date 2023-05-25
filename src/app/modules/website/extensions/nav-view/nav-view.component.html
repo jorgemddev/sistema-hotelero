@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg">
+    <a class="navbar-brand" href="#">
+        <img src="assets/images/logo-company-default.png" width="30" height="30" alt="">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link">HOME <span class="sr-only">(current)</span></a>
+            </li>
+
+            <div *ngFor="let item of items">
+                <li class="nav-item dropdown" *ngIf="item.submenu else nosubmenu">
+                    <a *ngIf="item.submenu" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
+                        {{item.tag | uppercase}}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" *ngFor="let sbitem of item.submenu">{{sbitem.tag | uppercase}}</a>
+                    </div>
+
+                </li>
+                <ng-template #nosubmenu>
+                    <li class="nav-item"><a class="nav-link">{{item.tag | uppercase}}</a></li>
+                </ng-template>
+            </div>
+        </ul>
+    </div>
+</nav>

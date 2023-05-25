@@ -1,0 +1,13 @@
+.card{
+    cursor: pointer;
+}
+.icone{
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.card:hover{
+    background-color: aliceblue;
+}

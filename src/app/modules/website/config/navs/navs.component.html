@@ -1,0 +1,233 @@
+<div class="container-fluid px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <form novalidate [formGroup]="primaryForm" (ngSubmit)="save()">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card mb-4">
+                    <div class="card-header">Menu Navegación </div>
+                    <div class="card-body">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-12">
+                                <div class="mb-1">
+                                    <label for="type" class="small mb-1">Menu padre</label>
+                                    <select id="type" class="form-control" formControlName="type">
+                                        <option value="1">PRINCIPAL (Superior)</option>
+                                        <option value="2">SEGUNDARIO (Píe de pagina) </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputUsername">Titulo (Max 10 caracteres)</label>
+                                <input class="form-control" id="title" type="text" placeholder="Visible en la barra de navegación" formControlName="tag">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="path">Destino (enlace)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select id="type" class="form-control" formControlName="target" (change)="primaryForm.get('path').setValue('')">
+                                            <option value="1">INTERNO</option>
+                                            <option value="2">EXTERNO</option>
+                                        </select>
+                                    </div>
+                                    <input type="url" class="form-control" formControlName="path" [attr.disabled]="true">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="openModal(navx)"><i class="fa-solid fa-list"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-1">
+                                    <label for="navs_id" class="small mb-1">Menu padre</label>
+                                    <select id="navs_id" class="form-control" formControlName="navs_id">
+                                        <option value="0">SIN ELEMENTO PADRE</option>
+                                        <option *ngFor="let item of navs" value="{{item.id}}">{{item.tag | uppercase}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-1">
+                                    <label for="state_id" class="small mb-1">Orden</label>
+                                    <input type="number" class="form-control" formControlName="orderby">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                        <button class="btn btn-secondary ml-3" (click)="goToCreate()" *ngIf="primaryForm.get('id')?.value" type="button">Nuevo</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <div class="col-md-12 col-xl-12 mb-5">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            Todos los items de menu
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table user-list">
+                                    <thead>
+                                        <tr>
+                                            <th><span>ID</span></th>
+                                            <th><span>TIPO</span></th>
+                                            <th><span>NOMBRE</span></th>
+                                            <th><span>URL</span></th>
+                                            <th><span>ELEMENTO PADRE</span></th>
+                                            <th><span>FECHA CREACIÓN</span></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of navs">
+                                            <td>
+                                                <span>{{item.id}}</span>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="item.type==1">PRINCIPAL</span>
+                                                <span *ngIf="item.type==2">SEGUNDARIO</span>
+                                            </td>
+                                            <td>
+                                                {{item.tag | uppercase}}
+                                            </td>
+                                            <td>
+                                                {{item.path}}
+                                            </td>
+                                            <td>
+                                                {{item.father | uppercase}}
+                                            </td>
+                                            <td>
+                                                {{item.created_at}}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn   text-warning" (click)="goToUpdate(item.id)">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="btn  text-danger" (click)="openDelete(item.id,remove)">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate [formGroup]="secondForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Eliminar registro</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar esta menu?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #navx let-c="close " let-d="dismiss ">
+    <div class="modal-header ">
+        <h5 class="modal-title">Gestor de enlaces</h5>
+        <button type="button " class="close " aria-label="Close " (click)="d( 'Cross click') ">
+            <span aria-hidden="true ">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <div class="mb-1">
+            <section *ngIf="primaryForm.get('target').value==1 else external">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="secions-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="home" aria-selected="true">Secciones</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="categorys-tab" data-bs-toggle="tab" data-bs-target="#categorys" type="button" role="tab" aria-controls="profile" aria-selected="false">Categorias</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="news-tab" data-bs-toggle="tab" data-bs-target="#news" type="button" role="tab" aria-controls="contact" aria-selected="false">Noticias</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="ancla-tab" data-bs-toggle="tab" data-bs-target="#ancla" type="button" role="tab" aria-controls="contact" aria-selected="false">Enlace
+                            Ancla</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent" style="max-height: 350px; overflow:auto">
+                    <div class="tab-pane fade show active" id="sections" role="tabpanel" aria-labelledby="secions-tab" tabindex="0">
+                        <ul class="list-group" *ngIf="paths_sections; else nofoundpath">
+                            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of paths_sections">
+                                {{item.title}}
+                                <button class="btn btn-primary btn-sm" (click)="selectedPath(item,3)">Usar</button>
+                            </li>
+                        </ul>
+                        <ng-template #nofoundpath>No existe contenido disponible</ng-template>
+                    </div>
+                    <div class="tab-pane fade" id="categorys" role="tabpanel" aria-labelledby="categorys-tab" tabindex="0">
+                        <ul class="list-group" *ngIf="paths_category; else nofoundcategory">
+                            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of paths_category">
+                                {{item.tag}}
+                                <button class="btn btn-primary btn-sm btn-round" (click)="selectedPath(item,2)">Usar</button>
+                            </li>
+                        </ul>
+                        <ng-template #nofoundcategory>No existe contenido disponible</ng-template>
+                    </div>
+                    <div class="tab-pane fade" id="news" role="tabpanel" aria-labelledby="news-tab" tabindex="0">
+                        <ul class="list-group" *ngIf="paths_news; else nofoundnews">
+                            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of paths_news">
+                                {{item.title}}
+                                <button class="btn btn-primary btn-sm btn-round" (click)="selectedPath(item,1)">Usar</button>
+                            </li>
+                        </ul>
+                        <ng-template #nofoundnews>No existe contenido disponible</ng-template>
+                    </div>
+                    <div class="tab-pane fade" id="ancla" role="tabpanel" aria-labelledby="ancla-tab" tabindex="0">
+                        <div class="p-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <select id="type" class="form-control" [(ngModel)]="ancla">
+                                    <option value="-1">HOME</option>
+                                    <option value="-2">CONTACTO</option>
+                                    <option [ngValue]="item.id" *ngFor="let item of paths_sections">{{item.title | uppercase}}
+                                    </option>
+                                </select>
+                                </div>
+                                <span class="input-group-text">#</span>
+                                <input type="url" class="form-control" placeholder="link" [(ngModel)]="link" (keyup)="validateLinkAncla($event)">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2"  (click)="selectedPath(null,4)" *ngIf="addAncla">Agregar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </section>
+
+            <ng-template #external>
+                <label for="link">Ingrese la url externa</label>
+                <input id="link" type="url" class="form-control" [(ngModel)]="link">
+                <br>
+                <button class="btn btn-primary btn-sm btn-round mb-5" (click)="selectedPath(link)">Usar</button>
+            </ng-template>
+        </div>
+    </div>
+</ng-template>

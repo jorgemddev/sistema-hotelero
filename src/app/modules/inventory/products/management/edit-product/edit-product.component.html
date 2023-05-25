@@ -1,0 +1,167 @@
+<form [formGroup]="primaryForm" (ngSubmit)="save()">
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <label class="small mb-1" for="name ">Descripción (50 max.)</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="barcode">Codigo de barras</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" formControlName="barcode">
+                        <div class="input-group-append ">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-barcode"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="small mb-1" for="amount">Cantidad</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" formControlName="amount">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="mb-1">
+                        <label for="type" class="small mb-1">Tipo de ingreso</label>
+                        <select id="type" class="form-control" formControlName="type">
+                            <option value="1">USO INTERNO </option>
+                            <option value="2">PARA LA VENTA </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6" *ngIf="primaryForm.get( 'amount').value==1">
+                    <label class="small mb-1" for="serie">Serie</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" formControlName="serie">
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get( 'amount').value>1">
+                    <label class="small mb-1" for="min">Alerta de Existencia</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Minima</span>
+                        <input type="number" class="form-control" formControlName="stkmin">
+                        <span class="input-group-text">Maxima</span>
+                        <input type="number" class="form-control" formControlName="stkmax">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="small mb-1" for="sku">Sku</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" formControlName="sku">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-success" id="btnGroupAddon"
+                                (click)="openModal(gsku,'sm')">
+                                <i class="fa-solid fa-hashtag"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="small mb-1" for="brand_id">Marca</label>
+                        <div class="input-group">
+                            <select id="brand_id" class="form-control" formControlName="brand_id"
+                                (change)="selectBrand()">
+                                <option value="0">SIN MARCA</option>
+                                <option *ngFor="let item of brands" value="{{item.id}}">{{item.tag | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small mb-1" for="model_id">Modelo</label>
+                        <div class="input-group">
+                            <select id="model_id" class="form-control" formControlName="model_id">
+                                <option value="0">SIN MODELO</option>
+                                <option *ngFor="let item of models" value="{{item.id}}">{{item.tag | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="family_id">Familia</label>
+                        <div class="input-group">
+                            <select id="family_id" class="form-control" formControlName="family_id">
+                                <option value="0">SIN FAMILIA</option>
+                                <optgroup *ngFor="let item of familys" label="{{item.tag}}">
+                                    <option value="{{item.id}}">{{item.tag}}</option>
+                                    <option *ngFor="let sitem of item.subfamilia" value="{{sitem.id}}">{{sitem.tag |
+                                        uppercase}}
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="providers_id">Proveedor</label>
+                        <div class="input-group">
+                            <select id="providers_id" class="form-control" formControlName="providers_id">
+                                <option value="0">SIN PROVEEDOR</option>
+                                <option *ngFor="let item of providers" value="{{item.id}}">{{item.name | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-3 mb-3" *ngIf="primaryForm.get( 'type').value==2">
+                <div class="col-md-4">
+                    <label class="small mb-1" for="neto">Precio compra</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="number" class="form-control" formControlName="neto" (keyup)="calculePrice()" (change)="calculePrice()">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="small mb-1" for="gain">GANANCIA</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" formControlName="gain" (keyup)="calculePrice()" (change)="calculePrice()">
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="small mb-1" for="tax">IMPUESTO</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" formControlName="tax" (keyup)="calculePrice()" (change)="calculePrice()">
+                        <div class="input-group-append">
+                            <span class="input-group-text">IVA</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="alert alert-info" style="font-size: 24px; font-weight:bold;">Precio venta {{primaryForm.get('sale').value| currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe }}</div>
+                        <input type="hidden" class="form-control" formControlName="sale">
+                </div>
+            </div>
+            <button class="btn btn-primary float-end" *ngIf="primaryForm.get('amount').value>0" type="submit"><i class="fa-solid fa-floppy-disk"></i> GUARDAR</button>
+        </div>
+    </div>
+</form>
+<ng-template #gsku let-c="close" let-d="dismiss" class="mt-5">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Generador de SKU</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <app-generator-sku (success)="primaryForm.get('sku').setValue($event)" (closeMdl)="d('Cross click')">
+        </app-generator-sku>
+    </div>
+</ng-template>

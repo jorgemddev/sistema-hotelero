@@ -1,0 +1,15 @@
+<div class="NgxEditor__Seperator"></div>
+<div class="NgxEditor__MenuItem NgxEditor__MenuItem--Text" (click)="openModal(repo)"
+    [ngClass]="{'NgxEditor__MenuItem--Active': isActive, 'NgxEditor--Disabled': isDisabled}">
+    <i class="fa-solid fa-star text-success ms-3 fa-1x" style="margin-top: 5px;" title="Especiales"></i>
+</div>
+<ng-template #repo let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-short-codes (onSelected)="onSelected($event)"></app-short-codes>
+    </div>
+</ng-template>

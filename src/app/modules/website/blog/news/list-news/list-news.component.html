@@ -1,0 +1,131 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xl-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Listado de articulos
+                    <div class="btn-group float-right" role="group">
+                        <button class="btn btn-secondary" *ngIf="view==2" (click)="view=1">
+                            <i class="fa-solid fa-list"></i>
+                        </button>
+                        <button class="btn btn-secondary" *ngIf="view==1" (click)="view=2">
+                            <i class="fa-solid fa-table-cells-large"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary" routerLink="/sitio-web/noticias/agregar">
+                            <i class="fa-solid fa-circle-plus"></i> Nuevo</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                    (pageChange)="search()"></ngb-pagination>
+                    <div class="table-responsive" *ngIf="view==1;else viewBox">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th><span>TITULO</span></th>
+                                    <th><span>DESCRIPCIÓN</span></th>
+                                    <th><span>CATEGORIA</span></th>
+                                    <th><span>ESTADO</span></th>
+                                    <th><span>FECHA CREACIÓN</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <img [src]="item.thumbnail"><br>
+                                        <span style="font-weight: bold;" *ngIf="item.start>0">
+                                            <i class="fa-regular fa-star text-success"></i>PORTADA</span>
+                                    </td>
+                                    <td>
+                                        {{item.title}}
+                                    </td>
+                                    <td>
+                                        {{item.detail}}agination
+                                    </td>
+                                    <td>
+                                        {{item.category}}
+                                    </td>
+                                    <td>
+                                        {{item.state}}
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn   text-warning" (click)="update(item.id)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn  text-danger"
+                                            (click)="openDelete(item.id,remove)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn  text-success" (click)="frontPage(item.id)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-star fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--data box-->
+                    <ng-template #viewBox>
+                        <div class="row col text-center justify-content-center px-xl-6 aos-init aos-animate"
+                            data-aos="fade-up">
+                            <div class="col col-sm-6 col-xs-12 col-md-4 col-lg-3 my-3" *ngFor="let item of items">
+                                <div class="card card-btn order-hover-primary hover-scale shadow me-1 ms-1 mt-1 mb-1"
+                                    (click)="update(item.id)">
+                                    <div class="card-body">
+                                        <h3 class="card-title text-primary">{{item.title}}</h3>
+                                        <h6 class="mt-2 mb-2 text-muted">Creado {{item.created_at}}</h6>
+                                        <h6>{{item.updated_in || "---"}}</h6>
+                                        <span *ngIf="item.state_id==2" class="badge badge-warning">PAUSADO</span>
+                                        <span *ngIf="item.state_id==1" class="badge badge-success">ACTIVO</span>
+                                        <button type="button" title="Eliminar sección"
+                                            class="btn  text-danger float-end" (click)="openDelete(item.id,remove)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <!--/data box-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate [formGroup]="thirdForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Eliminar noticia</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar esta noticia?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>

@@ -1,0 +1,66 @@
+<div class="container-fluid px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <form novalidate [formGroup]="primaryFm" (ngSubmit)="update()">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4 mb-xl-0">
+                            <div class="card-header">Marca</div>
+                            <div class="card-body text-center">
+                                <img (click)="openRepository(repository)" [fallimg]="'logo'" *ngIf="primaryFm.get('logo')?.value; else imgDefault" style="cursor: pointer;" class="img-fluid  mb-2" [src]="primaryFm.get('logo')?.value" alt="">
+                                <ng-template #imgDefault><img (click)="openRepository(repository)" style="cursor: pointer;" class="img-account-profile rounded-circle mb-2" src="assets/images/logo-company-default.png" alt=""></ng-template>
+                                <div class="small font-italic text-muted mb-4">JPG o PNG tamaño maximo 5 MB</div>
+                                <button class="btn btn-primary" type="button" (click)="saveImageProfile()" *ngIf="image!=primaryFm.get('logo')?.value">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-header">Información empresa</div>
+                            <div class="card-body">
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-12">
+                                        <label for="domain" class="form-label small">Dominio</label>
+                                        <input type="text" class="form-control" style="text-transform: uppercase;" id="domain" placeholder=" (ej:misitio.cl)" formControlName="domain">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="business" class="form-label small">Razón social</label>
+                                        <input type="text" class="form-control" style="text-transform: uppercase;" id="business" placeholder="Razón social" formControlName="business">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="slogan" class="form-label small">Slogan</label>
+                                        <input type="text" class="form-control" id="slogan" placeholder="Descripción breve del sitio web" formControlName="slogan">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label class="small mb-1" for="rut">RUT</label>
+                                        <input class="form-control" id="rut" type="text" placeholder="" formControlName="rut">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="small mb-1" for="location">Dirección</label>
+                                        <input class="form-control" id="location" type="text" placeholder="Dirección oficinas" formControlName="location">
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn  btn-primary" value="Guardar Cambios" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<ng-template #repository let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-repository-image (onSelected)="primaryFm.get('logo')?.setValue($event.link)">
+        </app-repository-image>
+    </div>
+</ng-template>

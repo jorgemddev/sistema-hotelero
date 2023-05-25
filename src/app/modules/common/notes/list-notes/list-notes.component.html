@@ -1,0 +1,131 @@
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-12 col-md-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Notas existentes
+                    <div class="btn-group float-right" role="group">
+                        <button class="btn btn-secondary" *ngIf="view==2" (click)="view=1">
+                            <i class="fa-solid fa-list"></i>
+                        </button>
+                        <button class="btn btn-secondary" *ngIf="view==1" (click)="view=2">
+                            <i class="fa-solid fa-table-cells-large"></i>
+                        </button>
+                        <button class="btn btn-primary" (click)="openModal(add)"><i class="fa-solid fa-circle-plus"></i>
+                            Nuevo</button>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                        (pageChange)="search()"></ngb-pagination>
+                    <div class="table-responsive" *ngIf="view==1;else viewBox">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>TAG</span></th>
+                                    <th><span>CONTENIDO</span></th>
+                                    <th><span>FECHA CREACIÓN</span></th>
+                                    <th><span>FECHA ACTUALIZACIÓN</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <span>{{item.tag | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span [innerHtml]="item.content"></span>
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td>
+                                        {{item.update_in}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn   text-warning"
+                                                (click)="openEdit(item.id,edit)">
+                                                    <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn  text-danger"
+                                                (click)="openDelete(item.id,remove)">
+
+                                                    <i class="fa-solid fa-trash"></i>
+                        
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!items">
+                                    <td colspan="7" class="fw-lighter text-muted">No se encontraron registros</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #viewBox>
+                        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate"
+                            data-aos="fade-up">
+                            <div class="col my-3" *ngFor="let item of items">
+                                <div class="card border-hover-primary hover-scale card-btn">
+                                    <div class="card-body">
+                                        <div class="text-primary mb-5">
+                                            <i class="fa-regular fa-note-sticky fa-3x"></i>
+                                        </div>
+                                        <h6 class="font-weight-bold mb-3">{{item.tag}}<br>
+                                            <p class="fw-light fs-6 text-truncate" [innerHtml]="item.content"></p>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Eliminar registro</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar este registro?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #add let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-add-notes [clientsId]="clients_id" [providersId]="providers_id" (success)="getNotes()"></app-add-notes>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #edit let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-edit-notes [id]="idSelected" [clientsId]="clients_id" [providersId]="providers_id" (success)="getNotes()">
+        </app-edit-notes>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

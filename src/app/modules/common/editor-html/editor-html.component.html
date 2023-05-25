@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+    <div class="editor">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"  [customMenuRef]="customMenu"> </ngx-editor-menu>
+        <ngx-editor formControlName="content" [editor]="editor"  [ngModel]="html" [disabled]="false" [placeholder]="''">
+        </ngx-editor>
+    </div>
+</form>
+
+<!-- Create template reference -->
+<ng-template #customMenu>
+    <app-upload *ngIf="viewCustom" [editor]="editor"></app-upload>
+    <app-shortcode *ngIf="viewCustom" [editor]="editor"></app-shortcode>
+    <app-emoji *ngIf="viewCustom" [editor]="editor"></app-emoji>
+</ng-template>
+

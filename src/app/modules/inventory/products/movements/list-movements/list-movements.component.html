@@ -1,0 +1,231 @@
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Movimientos
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                </div>
+                                <input #srch type="text" class="form-control" placeholder="Buscar producto"
+                                    (keyup)="search(srch)">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="btn-group float-right" role="group">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa-solid fa-filter"></i></span>
+                                    <select #filter class="form-control" (change)="filterMovements(filter)">
+                                        <option value="0">TODAS</option>
+                                        <option value="1">ENTRADAS</option>
+                                        <option value="2">SALIDAS</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-body">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                        (pageChange)="getMovements()"></ngb-pagination>
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span></span></th>
+                                    <th><span>COD. BARRAS</span></th>
+                                    <th><span>SKU</span></th>
+                                    <th><span>DESCRIPCIÓN</span></th>
+                                    <th><span>STOK INICIAL</span></th>
+                                    <th><span>STOK FINAL</span></th>
+                                    <th><span>FECHA</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="items else nofound">
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <span *ngIf="item.type==1" class="badge badge-success"><i
+                                                class="fa-solid fa-arrow-up"></i> ENTRADA</span>
+                                        <span *ngIf="item.type==2" class="badge badge-danger"><i
+                                                class="fa-solid fa-arrow-down"></i> SALIDA</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.barcode || "--"}} </span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.sku || "--"}} </span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.name | uppercase}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span *ngIf="item.instk<item.outstk"
+                                            class="text-bg-danger text-bold text-circle"><span
+                                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
+                                                *ngIf="item.instk<10">&nbsp;</span></span>
+                                        <span *ngIf="item.instk>item.outstk"
+                                            class="text-bg-success text-bold text-circle"><span
+                                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
+                                                *ngIf="item.instk<10">&nbsp;</span></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span *ngIf="item.instk>item.outstk"
+                                            class="text-bg-danger text-bold text-circle"><span
+                                                *ngIf="item.outstk<10">&nbsp;</span>{{item.outstk}}<span
+                                                *ngIf="item.outstk<10">&nbsp;</span></span>
+                                        <span *ngIf="item.instk<item.outstk"
+                                            class="text-bg-success text-bold text-circle"><span
+                                                *ngIf="item.outstk<10">&nbsp;</span>{{item.outstk}}<span
+                                                *ngIf="item.outstk<10">&nbsp;</span></span>
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn  text-info"
+                                            (click)="openModal(view,item,'md')">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-eye fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <ng-template #nofound>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-muted" colspan="7">No se encontraron registros</th>
+                                    </tr>
+                                </tbody>
+                            </ng-template>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #view let-c="close " let-d="dismiss ">
+    <div class="modal-header ">
+        <h4 class="modal-title" id="modal-basic-title">Registro de movimiento</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="col-md-12">
+                <span *ngIf="form.get('type').value==1" class="badge badge-success">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    ENTRADA</span>
+                <span *ngIf="form.get('type').value==2" class="badge badge-danger"><i
+                        class="fa-solid fa-arrow-down"></i> SALIDA</span>
+            </div>
+            <label for="name">Producto:</label>
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Nombre producto" formControlName="name">
+            </div>
+            <label *ngIf="form.get('barcode').value" for="name">Cod. barras:</label>
+            <div *ngIf="form.get('barcode').value" class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa-solid fa-barcode"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Codigo de barras" formControlName="barcode">
+            </div>
+            <label *ngIf="form.get('sku').value" for="name">SKU:</label>
+            <div *ngIf="form.get('sku').value" class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa-solid fa-barcode"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="SKU" formControlName="sku">
+            </div>
+            <label *ngIf="form.get('user').value" for="name">USUARIO:</label>
+            <div *ngIf="form.get('user').value" class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Usuario" formControlName="user">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="d('Cross click')">
+            <i class="fa-solid fa-circle-xmark"></i> Cerrar</button>
+    </div>
+</ng-template>
+
+
+<ng-template #view let-c="close " let-d="dismiss ">
+    <div class="modal-header ">
+        <h4 class="modal-title" id="modal-basic-title">Registro de movimiento</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-1">
+                        <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{item.name}}</a></h5>
+                        <span *ngIf="item.type==1" class="badge badge-success"><i class="fa-solid fa-arrow-up"></i>
+                            ENTRADA</span>
+                        <span *ngIf="item.type==2" class="badge badge-danger"><i class="fa-solid fa-arrow-down"></i>
+                            SALIDA</span>
+                        <hr>
+                        <p *ngIf="item.barcode" class="text-muted mt-2"><b>Codigo barras</b> {{item.barcode}}</p>
+                        <p *ngIf="item.sku" class="text-muted mt-2"><b>SKU</b> {{item.sku}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>Stock Inicial:</b>
+                        <span *ngIf="item.instk<item.outstk" class="text-bg-danger text-bold text-circle"><span
+                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
+                                *ngIf="item.instk<10">&nbsp;</span></span>
+                        <span *ngIf="item.instk>item.outstk" class="text-bg-success text-bold text-circle"><span
+                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
+                                *ngIf="item.instk<10">&nbsp;</span></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <b>Stock Final:</b>
+                        <span *ngIf="item.instk>item.outstk" class="text-bg-danger text-bold text-circle">
+                            <span *ngIf="item.outstk<10">&nbsp;</span>{{item.outstk}}<span
+                                *ngIf="item.outstk<10">&nbsp;</span></span>
+                        <span *ngIf="item.instk<item.outstk" class="text-bg-success text-bold text-circle"><span
+                                *ngIf="item.outstk<10">&nbsp;</span>{{item.outstk}}<span
+                                *ngIf="item.outstk<10">&nbsp;</span></span>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <i class="fa-solid fa-user"></i> {{item.user}}
+                    </div>
+                    <div class="col-6">
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-danger btn-sm w-50" (click)="d('Cross click')"><i
+                        class="bx bx-message-square-dots me-1"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

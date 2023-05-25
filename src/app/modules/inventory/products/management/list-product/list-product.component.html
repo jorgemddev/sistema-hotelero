@@ -1,0 +1,179 @@
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Listado de productos
+                    <div class="btn-group float-right" role="group">
+                        <button class="btn btn-info" (click)="openModal(searchp,'xl')"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                        <button class="btn btn-secondary" *ngIf="view==2" (click)="view=1">
+                            <i class="fa-solid fa-list"></i>
+                        </button>
+                        <button class="btn btn-secondary" *ngIf="view==1" (click)="view=2">
+                            <i class="fa-solid fa-table-cells-large"></i>
+                        </button>
+                        <button class="btn btn-primary" (click)="openModal(addProduct)"><i
+                                class="fa-solid fa-circle-plus"></i> Nuevo</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                        (pageChange)="search()"></ngb-pagination>
+                    <div class="table-responsive" *ngIf="view==1;else viewBox">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>ID</span></th>
+                                    <th><span>COD. BARRAS</span></th>
+                                    <th><span>DESCRIPCIÓN</span></th>
+                                    <th><span>CATEGORIA</span></th>
+                                    <th><span>PROVEEDOR</span></th>
+                                    <th><span>MARCA</span></th>
+                                    <th><span>MODELO</span></th>
+                                    <th><span>STOCK</span></th>
+                                    <th><span>FECHA CREACIÓN</span></th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <span>{{item.id}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.barcode}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.name | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.family | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.provider | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.brand | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.model | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        {{item.amount}}
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn   text-warning"
+                                            (click)="goToUpdate(item.id,editProduct)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn  text-danger"
+                                            (click)="openDelete(item.id,remove)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #viewBox>
+                        <div class="row row-cols-lg-4 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate"
+                            data-aos="fade-up">
+                            <div class="col my-3" *ngFor="let item of items">
+                                <div class="card border-hover-primary hover-scale">
+                                    <div class="card-body">
+                                        <div class="text-primary mb-5" style="cursor: pointer;" (click)="goToUpdate(item.id,editProduct)">
+                                            <i class="fa-solid fa-box-open fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-3">{{item.name | uppercase}}<br>
+                                            <small><b>STOCK</b> {{item.amount}}</small>
+                                        </h5>
+                                        <span class="mb-3"><b>CATEGORIA</b> {{item.family |
+                                            uppercase}}</span><br>
+                                        <span class="mb-3"><b>MARCA</b> {{item.brand | uppercase}}</span>
+                                        <span class="mb-3"><b> MODELO</b> {{item.model | uppercase}}</span>
+
+                                        <button type="button" title="Eliminar sección"
+                                            class="btn  text-danger float-end" (click)="openDelete(item.id,remove)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate [formGroup]="secondForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Eliminar registro</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar este producto?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>
+
+
+
+<ng-template #addProduct let-c="close " let-d="dismiss ">
+    <div class="modal-header ">
+        <h4 class="modal-title" id="modal-basic-title">Agregar producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-add-product (success)="getProducts()"></app-add-product>
+    </div>
+</ng-template>
+
+<ng-template #editProduct let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Editar producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-edit-product *ngIf="idSelected>0" [id]="idSelected" (success)="getProducts()"></app-edit-product>
+    </div>
+</ng-template>
+<ng-template #searchp let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Buscar  producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-search-products (delete)="openDelete($event.id,remove)" (edit)="goToUpdate($event.id,editProduct)"></app-search-products>
+    </div>
+</ng-template>

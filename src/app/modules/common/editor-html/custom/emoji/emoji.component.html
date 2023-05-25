@@ -1,0 +1,60 @@
+<div class="NgxEditor__Seperator"></div>
+<div class="NgxEditor__MenuItem NgxEditor__MenuItem--Text" (click)="openModal(emoji)"
+    [ngClass]="{'NgxEditor__MenuItem--Active': isActive, 'NgxEditor--Disabled': isDisabled}">
+    <i class="fa-solid fa-face-smile-wink text-warning ms-3 fa-1x" style="margin-top: 5px;" title="Emoji"></i>
+</div>
+<ng-template #emoji let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 card-margin">
+                    <div class="card search-form">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row no-gutters">
+                                        <input #vs type="search" placeholder="Escriba el nombre del producto"
+                                            class="form-control" id="search" name="search" (keyup)="onSearch(vs.value)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="items">
+                <div class="col-12">
+                    <div class="card card-margin">
+                        <div class="card-body">
+                            <div class="row search-body">
+                                <div class="search-result">
+                                    <div class="result-body">
+                                        <ul class="social-icons">
+                                            <li *ngFor="let item of items.items"><a  (click)="selected(item)"><i [innerHTML]="item.icharacter"></i></a></li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+</ng-template>

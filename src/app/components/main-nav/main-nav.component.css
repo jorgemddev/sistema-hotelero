@@ -1,0 +1,12 @@
+.bg-navbar {
+    background-color: #6b6c72 !important;
+    background: rgb(65, 51, 57) !important;
+    background: linear-gradient(90deg, rgba(65, 51, 57, 1) 0%, rgba(56, 81, 156, 1) 100%) !important;
+    box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
+    -webkit-box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
+    -moz-box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
+}
+
+a i {
+    cursor: pointer !important;
+}

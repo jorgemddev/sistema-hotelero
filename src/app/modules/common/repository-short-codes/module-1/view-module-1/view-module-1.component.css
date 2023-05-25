@@ -1,0 +1,91 @@
+p {
+    margin: 0px;
+}
+
+.container {
+    margin: 50px auto;
+}
+
+.card {
+    width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 25px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+
+.card .fab.fa-envira,
+.fas.fa-cut,
+.fas.fa-people-carry {
+    font-size: 40px;
+    background-color: #0000000d;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #4e9525;
+}
+
+.card .h4 {
+    font-weight: 700;
+}
+
+.container .content {
+    max-width: 300px;
+}
+
+.container .content .h-6 {
+    color: #4e9525;
+    font-weight: 600;
+}
+
+.container .content .btn.btn-primary {
+    padding: 15px;
+    background-color: #4e9525;
+    color: white;
+    border-radius: 0px;
+    border: none;
+    box-shadow: none;
+}
+
+.circle-icon {
+    height: 50%;
+    min-height: 100px;
+    min-width: 100px;
+    width: 50%;
+    background-color: #0000000d;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-icon i {
+    color: #4e9525;
+}
+
+@media (max-width:990px) {
+    .container .content {
+        max-width: 100%;
+    }
+}
+
+@media (max-width:500px) {
+    body {
+        padding: 25px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .content {
+        padding: 25px;
+    }
+}

@@ -1,0 +1,95 @@
+<div class="container-fluid px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <form novalidate [formGroup]="primaryFm" (ngSubmit)="update()">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card mb-4 mt-2">
+                    <div class="card-header">Información de Contacto</div>
+                    <div class="card-body">
+
+
+                        <div class="row gx-3 mb-3">
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label small">Email de contacto</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-dark" id="basic-addon1">@</span>
+                                    </div>
+                                    <input type="email" class="form-control" placeholder="email" aria-label="email" aria-describedby="input-email" formControlName="email">
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label small">Telefono</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-dark" id="phone"><i
+                                                class="fa-solid fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Telefono de contacto" aria-label="phone" aria-describedby="input-phone" formControlName="phone">
+                                </div>
+                            </div>
+                            <hr>
+                            <h6 class="text-muted ml-3">Redes sociales</h6>
+                            <div class="col-md-12">
+                                <label for="twitter" class="form-label small">Twitter</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-primary" id="twitter"><i
+                                                class="fa-brands fa-twitter"></i></span>
+                                    </div>
+                                    <input type="url" class="form-control" placeholder="Url Twitter" aria-label="twitter" aria-describedby="input-twitter" formControlName="twitter">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="facebook" class="form-label small">Facebook</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-primary" id="facebook"><i
+                                                class="fa-brands fa-facebook-f"></i></span>
+                                    </div>
+                                    <input type="url" class="form-control" placeholder="URL Facebook" aria-label="facebook" aria-describedby="input-facebook" formControlName="facebook">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="youtube" class="form-label small">Youtube</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-danger" id="basic-addon1"><i
+                                                class="fa-brands fa-youtube"></i></span>
+                                    </div>
+                                    <input type="url" class="form-control" placeholder="URL Youtube" aria-label="youtube" aria-describedby="input-youtube" formControlName="youtube">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="whatsapp" class="form-label small">WhatsApp</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-success" id="basic-addon1"><i
+                                                class="fa-brands fa-whatsapp"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Numero whatsapp (+56xxxxxxx)" aria-label="whatsapp" aria-describedby="inout-whatsapp" formControlName="whatsapp">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn  btn-primary" value="Guardar cambios" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-template #repository let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-repository-image (onSelected)="primaryFm.get('logo')?.setValue($event)">
+        </app-repository-image>
+    </div>
+</ng-template>

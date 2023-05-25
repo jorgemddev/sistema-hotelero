@@ -1,0 +1,310 @@
+<form [formGroup]="primaryForm" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <h5>Facturación</h5>
+                <div class="col-md-5">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="business">Razon social</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-regular fa-building"></i></span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="business" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="rut">RUT</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" formControlName="rut" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_location">Dirección</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="invoice_location" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_city">Ciudad</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-city"></i></span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="invoice_city" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_contact">Contacto</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-id-badge"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Contacto"
+                                formControlName="invoice_contact" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_email">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                            </div>
+                            <input type="email" class="form-control" formControlName="invoice_email" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_phone">Fono</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                            </div>
+                            <input type="tel" class="form-control" formControlName="invoice_phone" />
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Antecedentes del pedido</h5>
+                <div class="col-md-6">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="providers_id">Proveedor</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+                            </div>
+                            <select id="providers_id" class="form-control" formControlName="providers_id">
+                                <option value="0">SELECCIONE</option>
+                                <option *ngFor="let item of providers" value="{{item.id}}">{{item.name | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="ref">Numero referencia</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-file-invoice"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Cotización" formControlName="ref" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="payments_id">Metodo de pago</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-regular fa-credit-card"></i></span>
+                            </div>
+                            <select id="payments_id" class="form-control" formControlName="payments_id">
+                                <option *ngFor="let item of payments" value="{{item.id}}">{{item.tag | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="delivery_date">Fecha de entrega</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                            </div>
+                            <input type="date" class="form-control" formControlName="delivery_date" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="delivery_type">Metodo de despacho</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-truck"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Empresa, etc"
+                                formControlName="delivery_type" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="delivery_location">Lugar de despacho</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Dirección"
+                                formControlName="delivery_location" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="small mb-1" for="content">Observación</label>
+                    <div class="input-group">
+                        <div style="border: #b4b4b4 solid 1px;  width:100%;">
+                            <app-editor-html [form]="primaryForm" [myToolbar]="toolbar"></app-editor-html>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="formSecond">
+                <div class="row gx-3 mb-3">
+                    <h5>Productos / servicios</h5>
+                    <div class="col-md-1">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Buscar</label>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" (click)="openModal(searchp,'lg')"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Codigo</label>
+                            <input #code formControlName="addCode" type="text" class="form-control"
+                                placeholder="sku,cod" />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Descripción</label>
+                            <input formControlName="addName" type="text" class="form-control"
+                                placeholder="Detalle producto / servicio" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="amount">Cant</label>
+                            <input formControlName="addAmount" type="number" value="1" class="form-control"
+                                placeholder="0" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="price">Precio</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input formControlName="addNeto" type="number" class="form-control" placeholder="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Agregar</label>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-success" id="model_id"
+                                    (click)="addProductOrder(code)">
+                                    <i class="fa-solid fa-check"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table user-list">
+                    <thead>
+                        <tr>
+                            <th><span>SKU/COD</span></th>
+                            <th><span>DESCRIPCIÓN</span></th>
+                            <th><span>CANT.</span></th>
+                            <th><span>PRECIO UNIT</span></th>
+                            <th><span>PRECIO</span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of products; let i = index">
+                            <td>
+                                <span>{{item.sku | uppercase}}</span>
+                            </td>
+                            <td>
+                                <span>{{item.name | uppercase}}</span>
+                            </td>
+                            <td>
+                                <span>{{item.amount}}</span>
+                            </td>
+                            <td>
+                                <span>{{item.price | currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span>
+                            </td>
+                            <td>
+                                <span>{{(item.price*item.amount) | currency:'CAD':'symbol-narrow':'3.0-0' |
+                                    moneyClPipe}}</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn  text-danger" (click)="products.splice(i,1)">
+                                    <span class="fa-stack">
+                                        <i class="fa fa-square fa-stack-2x"></i>
+                                        <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="products.length==0">
+                            <td colspan="6" class="alert alert-warning">No se han agregados productos o servicios</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row gx-3 mb-3">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">IMPUESTO</span>
+                            </div>
+                            <input type="number" class="form-control" formControlName="tax" (keyup)="calculePrice()"
+                                (change)="calculePrice()">
+                            <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="products.length>0" class="float-end alert alert-warning mb-3 border-1">
+                    <span>SUBTOTAL: <b>{{subtotal | currency:'CAD':'symbol-narrow':'3.0-0' |
+                            moneyClPipe}}</b></span><br>
+                    <span>IMPUESTO: <b>{{tx | currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</b></span><br>
+                    <span>&nbsp; &nbsp; &nbsp; &nbsp; TOTAL: <b>{{total | currency:'CAD':'symbol-narrow':'3.0-0' |
+                            moneyClPipe}}</b></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary w-25 float-end" *ngIf="products.length>0" type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
+<ng-template #searchp let-c="close" let-d="dismiss">
+    <div class="modal-header shadow-lg">
+        <h4 class="modal-title" id="modal-basic-title">Buscar producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-search-products [viewDelete]="false" [viewEdit]="false" [viewSelected]="true"
+            (selected)="selectedSearch($event)" (success)="d('Cross click')"></app-search-products>
+    </div>
+</ng-template>

@@ -1,0 +1,140 @@
+<div class="container-fluid px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Imagen de perfil</div>
+                <div class="card-body text-center">
+                    <img (click)="openRepository('prfile',repository)" *ngIf="userForm.get('image')?.value; else imgDefault" style="cursor: pointer; width: 250px; height: 250px;" class="img-account-profile rounded-circle mb-2" [src]="userForm.get('image')?.value" alt="">
+                    <ng-template #imgDefault><img (click)="openRepository('prfile',repository)" style="cursor: pointer;" class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt=""></ng-template>
+                    <div class="small font-italic text-muted mb-4">JPG o PNG tamaño maximo 5 MB</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">Información usuario </div>
+                <div class="card-body">
+                    <form novalidate [formGroup]="userForm" (ngSubmit)="update()">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label mr-1">Nick</label>
+                                <label class="small mb-1" for="inputUsername"> (Permite acceder a la cuenta)</label>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text text-warning" id="basic-addon1"><i
+                                                class="fa-solid fa-spell-check"></i></span>
+                                    </div>
+                                    <input id="username" type="text" (keyup)="checkNick($event)" class="form-control bg-secondary text-white" placeholder="Nick acceso " aria-label="username" aria-describedby="username" formControlName="username">
+
+                                    <div class="input-group-append">
+                                        <span class="input-group-text {{textColor}}" id="username">{{usernameDisp}}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="btn-pass" class="form-label mr-1">Puede cambiar contraseña</label><br>
+                                <input type="button" id="btn-pass" (click)="openPass(changepass)" name="make_payment" class="btn  btn-danger " value="Cambiar contraseña" />
+                            </div>
+                        </div>
+
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+
+                                <label for="name" class="form-label small">Primer nombre</label>
+                                <input type="text" class="form-control" style="text-transform: uppercase;" id="name" placeholder="Nombre" formControlName="name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastname" class="form-label small">Apellidos</label>
+                                <input type="text" class="form-control" style="text-transform: uppercase;" id="lastname" placeholder="Apellidos" formControlName="lastname">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="position">Cargo</label>
+                                <input class="form-control" id="position" type="text" placeholder="Cargo o profesion" formControlName="position">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-1">
+                                    <label for="privileges_id" class="form-label">Perfil</label>
+                                    <select id="privileges_id" class="form-control" formControlName="privileges_id">
+                                        <option value="0">SELECCIONE</option>
+                                        <option *ngFor="let item of privileges" value="{{item.id}}">{{item.tag}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="email">Dirección de correo</label>
+                                <input id="email" type="email" class="form-control" style="text-transform: lowercase;" id="name" placeholder="Correo electronico" formControlName="email">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputBirthday">Telefono</label>
+                                <input type="tel" class="form-control" max="10" id="lastname" placeholder="Telefono / celular" formControlName="phone">
+                            </div>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <input type="submit" class="btn  btn-primary" value="GUARDAR" />
+                            <button type="button" class="btn  btn-warning" routerLink="/configuracion/colaboradores/listar"><i
+                                    class="fa-solid fa-angle-left"></i> VOLVER</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #repository let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-repository-image (onSelected)="userForm.get('image')?.setValue($event.link)">
+        </app-repository-image>
+    </div>
+</ng-template>
+<ng-template #changepass let-c="close" let-d="dismiss">
+    <form (submit)="updatePass()" novalidate [formGroup]="passForm">
+        <div class="modal-header bg-danger text-white">
+            <h4 class="modal-title" id="modal-basic-title">MODIFICAR CONTRASEÑA</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>¿Desea cambiar contraseña al usuario?</p>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-2">
+                            <input type="hidden" formControlName="id" />
+                            <label for="pass" class="form-label">Nueva contraseña</label>
+                            <input type="password" class="form-control" style="text-transform: uppercase;" id="pass" placeholder="" formControlName="pass">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-1">
+                            <label for="rpass" class="form-label">Repita contraseña</label>
+                            <input type="password" class="form-control" max="4" id="rpass" placeholder="" formControlName="rpass">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">Cancelar</button>
+            <input type="submit" name="make_payment" class="btn  btn-primary mt-2 mb-2 w-50" style="float: right;" value="Cambiar" />
+
+        </div>
+    </form>
+</ng-template>

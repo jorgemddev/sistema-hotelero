@@ -1,0 +1,71 @@
+<div class="container register mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-4 register-left">
+      <img
+        src="https://bedadev.cl/logo_beda.png"
+        class="img-fluid"
+        alt="Logo bededadev.cl"
+      />
+      <p>
+        <i
+          ><b>Soluciones creativas e informáticas BEDA SpA,</b> proyectos
+          digitales a medida.</i
+        >
+      </p>
+      <a
+        href="https://bedadev.cl"
+        target="_blank"
+        style="color: rgb(243, 232, 217); font-weight: bold"
+        >Visítanos</a
+      >
+    </div>
+    <div class="col-md-8 register-right">
+      <div class="tab-content" id="myTabContent">
+        <div class="row register-form">
+          <form novalidate [formGroup]="loginForm" (ngSubmit)="resetPass()">
+            <h2 class="text-center">{{ domain }}</h2>
+            <h4 class="text-muted text-center">MODIFICAR CONTRASEÑA</h4>
+            <div class="input-group mb-3" >
+              <span class="input-group-text"><i class="fa fa-user"></i></span>
+              <input
+                type="text"
+                formControlName="cod"
+                class="form-control"
+                placeholder="Usuario"
+              />
+            </div>
+            <div class="input-group mb-4" >
+              <span class="input-group-text"><i class="fa fa-lock"></i></span>
+              <input
+                type="password"
+                formControlName="pass"
+                class="form-control"
+                placeholder="Contraseña"
+              />
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 col-lg-6">
+                <button
+                  type="submit"
+                  class="btn btn-primary px-4"
+                  [disabled]="disabledSubmit"
+                >
+                  CAMBIAR
+                </button>
+              </div>
+              <div class="col-md-12 col-lg-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-link px-0"
+                >
+                  Iniciar Sesión
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

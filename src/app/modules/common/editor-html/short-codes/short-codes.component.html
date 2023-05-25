@@ -1,0 +1,55 @@
+<!-- Header -->
+<header class="bg-primary text-center py-2 mb-2">
+  <div class="container">
+    <h1 class="fw-light text-white">COMPLEMENTOS CREADOS</h1>
+  </div>
+</header>
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                    (pageChange)="search()"></ngb-pagination>
+                <!--data box-->
+                    <div class="row col text-center justify-content-center px-xl-6 aos-init aos-animate"
+                        data-aos="fade-up">
+                        <div class="col col-md-4 col-sm-12 my-3" *ngFor="let item of items">
+                            <div class="card border-hover-primary hover-scale shadow me-1 ms-1 mt-1 mb-1" (click)="selected(item)">
+                                <img [fallimg]="'default'" class="card-img-top card-btn"
+                                    src="assets/images/shortcodes/module-{{item.module}}.png" alt="imagen modulo">
+                                <div class="card-body">
+                                    <h3 class="card-title text-primary">{{item.name}}</h3>
+                                    <kbd>[bcode id="{{item.id}}" m={{item.module}}]</kbd><code></code>
+                                    <h4 class="mt-2 mb-2">Creado {{item.created_at}}</h4>
+                                    <h4>{{item.updated_in || "---"}}</h4>
+                                    <span *ngIf="item.state_id==2" class="badge badge-warning">PAUSADO</span>
+                                    <span *ngIf="item.state_id==1" class="badge badge-success">ACTIVO</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <!--/data box-->
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                    (pageChange)="search()"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+  <!-- /.row -->
+</div>
+<!-- /.container -->
+
+<ng-template #repo let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+  </div>
+</ng-template>

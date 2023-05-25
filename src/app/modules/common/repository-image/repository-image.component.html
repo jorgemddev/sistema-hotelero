@@ -1,0 +1,84 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-lg-3 col-xl-5">
+            <div class="ibox float-e-margins shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="ibox-content">
+                    <div class="file-manager">
+                        <h5 class="text-center">Directorio Multimedia:</h5>
+                        <div class="hr-line-dashed"></div>
+                        <app-upload-image (onSuccess)="onSuccess($event)"></app-upload-image>
+                        <div class="hr-line-dashed"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-9 col-xl-7"
+            style="max-height:800px; overflow: auto;">
+
+            <div id="main-content" class="file_manager">
+                <div class="container">
+                    <div class="row clearfix">
+                        <div class="alert alert-info" *ngIf="!items">No existen imagenes en galeria</div>
+                        <div class="col-lg-3 col-md-4 col-sm-12" *ngFor="let item of items">
+                            <div class="card">
+                                <div class="file">
+                                    <a href="javascript:void(0);">
+                                        <div class="hover btn-group">
+                                            <button (click)="openModal(full,item)" type="button"
+                                                class="btn btn-icon btn-secondary">
+                                                <i class="fa-solid fa-maximize"></i>
+                                            </button>
+                                            <button (click)="delete(item)" type="button"
+                                                class="btn btn-icon btn-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+
+                                        </div>
+                                        <div class="icon">
+                                            <img [src]="domain+'img/upload/'+item.path+'/thumbnail/250_'+item.name"
+                                                alt="image" class="img-responsive" (click)="selectedImage(item)">
+                                        </div>
+                                        <div class="file-name">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1"> <i
+                                                            class="fa-solid fa-copy"></i></span>
+                                                </div>
+                                                <input id="copyLink" type="url" class="form-control"
+                                                    value="{{domain+'img/upload/'+item.path+item.name}}">
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa-solid fa-font"></i><b>lt</b>
+                                                    </span>
+                                                </div>
+                                                <input #input id="alt"  type="text" class="form-control"
+                                                value="{{item.alt}}">
+                                                <button type="btn" class="btn btn-inline btn-secondary" (click)="saveAlt(input.value,item.id)" ><i class="fa-solid fa-floppy-disk"></i></button>
+                                            </div>
+                                            <small>Size: {{item.size}} <span class="date text-muted">Subido
+                                                    {{item.date}}</span></small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #full let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <img style="width: 100%; max-height: 350px;" [src]="this.pathFull" />
+    </div>
+</ng-template>

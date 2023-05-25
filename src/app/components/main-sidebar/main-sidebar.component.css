@@ -1,0 +1,47 @@
+.bg-sidebar {
+    background: rgb(202, 191, 191) !important;
+    background: linear-gradient( 60deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%) !important;
+    box-shadow: 5px 5px 10px #353a5e44 !important;
+}
+
+.bg-header {
+    background-color: #474747 !important;
+    padding-bottom: 20px !important;
+}
+
+.nav-item a {
+    text-transform: uppercase;
+    color: rgb(255, 255, 255) !important;
+    padding: 3px 3px 3px 3px;
+    font-size: large;
+}
+
+.nav-item a i {
+    color: #b4c4f3 !important;
+    font-size: large;
+}
+
+.nav-item a:hover {
+    color: #375ac2 !important;
+    background-color: aliceblue;
+}
+
+.nav-item i {
+    color: #919191 !important;
+}
+
+li {
+    box-shadow: 0px 2px 20px #7c7d8844;
+}
+
+#sidebarToggle {
+    background-color: var(--primary);
+}
+
+#sidebarToggle:hover {
+    background-color: var(--secondary);
+}
+
+.sidebar-heading {
+    color: #726e6e;
+}

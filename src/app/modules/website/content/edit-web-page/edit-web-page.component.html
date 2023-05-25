@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <hr class="mt-0 mb-4">
+    <form novalidate [formGroup]="primaryForm" (ngSubmit)="update()">
+        <div class="row">
+            <div class="col-xl-9 col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-12">
+                                <app-editor-html [full]="false" [form]="primaryForm"></app-editor-html>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xl-3 col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">Opciones</div>
+                    <div class="card-body">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="small mb-1">Titulo (Max 50 caracteres)</label>
+                                    <input class="form-control" id="title" type="text" placeholder="Nombre de la pagina"
+                                        formControlName="title">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="small mb-1">META DESCRIPCIÓN (SEO)</label>
+                                    <textarea class="form-control" id="mdescription"
+                                        placeholder="Ingrese una descripción de la pagina o resumen"
+                                        formControlName="mdescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-12">
+                                <div class="mb-1">
+                                    <label for="state_id" class="form-label">Estado</label>
+                                    <select id="state_id" class="form-control" formControlName="state_id">
+                                        <option *ngFor="let item of status" value="{{item.id}}">{{item.tag | uppercase}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <input type="submit" class="btn  btn-primary" value="GUARDAR" />
+                            <button type="button" class="btn  btn-warning" routerLink="/sitio-web/contenido/listar"><i
+                                    class="fa-solid fa-angle-left"></i> VOLVER</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>

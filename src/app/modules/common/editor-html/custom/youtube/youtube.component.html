@@ -1,0 +1,25 @@
+<div class="NgxEditor__Seperator"></div>
+<div class="NgxEditor__MenuItem NgxEditor__MenuItem--Text" (mousedown)="openRepository(view)" [ngClass]="{'NgxEditor__MenuItem--Active': isActive, 'NgxEditor--Disabled': isDisabled}">
+    <i class="fa-brands fa-youtube mt-1"></i>
+</div>
+
+<ng-template #view let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h6>Insertar Video Youtube</h6>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="onSelected()">
+            <label for="basic-url">Desde Youtube</label>
+            <div class="input-group mb-3">
+                <input type="text" formControlName="link" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fa-brands fa-youtube mt-1 text-danger"></i></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-round btn-success mt-2"><i class="fa-solid fa-check-double"></i></button>
+        </form>
+    </div>
+</ng-template>

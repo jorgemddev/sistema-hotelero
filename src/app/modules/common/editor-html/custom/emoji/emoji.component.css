@@ -1,0 +1,30 @@
+.social-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social-icons > li {
+    display: inline-block;
+}
+
+.social-icons > li > a:hover,
+.social-icons > li > a:focus {
+    background: #27CBC0;
+    color: #ffffff;
+}
+
+/* --- [ Social Icons Size ] --- */
+
+.social-icons-lg > li > a {
+    line-height: 48px;
+    font-size: 16px;
+    height: 48px;
+    width: 48px;
+}
+
+.social-icons-md > li > a {
+    line-height: 40px;
+    height: 40px;
+    width: 40px;
+}

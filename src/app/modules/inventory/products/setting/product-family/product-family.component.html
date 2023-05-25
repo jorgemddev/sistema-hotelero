@@ -1,0 +1,165 @@
+<div class="container-fluid px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-md-12 col-xl-12 mb-5">
+            <div class="card h-100">
+                <div class="card-header">
+                    Listado de familia de productos
+                    <div class="btn-group float-right" role="group">
+                        <button type="button" class="btn btn-primary" (click)="openSaveFamily(afamily)">
+                            <i class="fa-solid fa-circle-plus"></i> Nuevo</button>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>ID</span></th>
+                                    <th><span>NOMBRE</span></th>
+                                    <th><span>SUB FAMILIAS</span></th>
+                                    <th><span>FECHA CREACIÓN</span></th>
+                                    <th class="text-center"><span>ULTIMA MODIFICACIÓN</span></th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <span>{{item.id}}</span>
+                                    </td>
+                                    <td>
+                                        {{item.tag | uppercase}}
+                                    </td>
+                                    <td>
+                                        <!--models-->
+
+                                        <div *ngIf="item.subfamilia else nomodels" class="alert alert-primary">
+                                            <span class="badge badge-dark p-2 m-2" (click)="openUpdateFamily(efamily,model)"
+                                                style="cursor: pointer;"
+                                                *ngFor="let model of item.subfamilia">{{model.tag}}</span>
+                                        </div>
+                                        <ng-template #nomodels>
+                                            <span class="alert alert-warning mt-0" style="font-size: 13px;">No
+                                                tiene
+                                                familias asociadas</span>
+
+                                        </ng-template>
+
+                                        <!--/models-->
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{item.update_in??'--'}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn  text-warning"
+                                            (click)="openUpdateFamily(efamily,item)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn  text-danger"
+                                            (click)="openDelete(item.id,remove)">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate [formGroup]="sForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Atención</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body text-center">
+            <i class="fa-solid fa-triangle-exclamation fa-5x text-danger"></i>
+            <h3>¿Esta seguro que desea eliminar?</h3>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>
+
+
+
+<ng-template #afamily let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Nueva Familia</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form (submit)="create()" novalidate [formGroup]="form">
+                    <label for="tag">Nombre de la familia</label>
+
+                    <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
+
+                    <label class="small mb-1" for="family_id">Familia padre</label>
+                    <select  id="brand_id" class="form-control" formControlName="family_id">
+                        <option value="0">SIN FAMILIA PADRE</option>
+                        <option  *ngFor="let item of familys" value="{{item.id}}">{{item.tag | uppercase}}
+                        </option>
+                    </select>
+
+                    <button class="btn btn-success mt-3 float-end" type="submit">CREAR <i
+                            class="fa-solid fa-floppy-disk"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #efamily let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Editar Familia</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form (submit)="update(itemx)" novalidate [formGroup]="form">
+                    <label for="tag">Nombre de la familia</label>
+
+                    <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
+
+                    <label class="small mb-1" for="family_id">Familia padre</label>
+                    <select #itemx id="brand_id" class="form-control" formControlName="family_id">
+                        <option value="0">SIN FAMILIA PADRE</option>
+                        <option *ngFor="let item of familys" value="{{item.id}}">{{item.tag | uppercase}}
+                        </option>
+                    </select>
+
+                    <button class="btn btn-success mt-3 float-end" type="submit">MODIFICAR <i
+                            class="fa-solid fa-floppy-disk"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>

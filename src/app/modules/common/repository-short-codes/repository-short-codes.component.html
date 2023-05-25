@@ -1,0 +1,49 @@
+<!-- Header -->
+<header class="bg-primary text-center py-5 mb-4">
+  <div class="container">
+    <h2 class="fw-light text-white">RECURSOS DISPONIBLES (GRATIS)</h2>
+    <p class="text-white">Seleccione el modelo de recurso a utilizar y modifiquelo a su necesidad</p>
+  </div>
+</header>
+
+<!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <!-- Team Member 1 -->
+    <div *ngFor="let item of items" class="col mb-4" (click)="openModal(repo,'xl',1)">  
+      <div class="card border-0 shadow">
+        <img [fallimg]="'default'" class="card-img-top"
+                                        src="assets/images/shortcodes/module-{{item.module}}.png" alt="imagen modulo">
+        <div class="card-body text-center bg-grey shadow-sm">
+          <h2 class="card-title mb-0">3 columnas y mensaje</h2>
+          <div class="card-text text-black-50">Ideal para representar sus identidad con un diseño elegante pero moderno
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /.container -->
+
+<ng-template #repo let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div [ngSwitch]="module">
+      <div *ngSwitchCase="'1'"><app-view-module-1 (onSave)="selected($event)"></app-view-module-1></div>
+      <div *ngSwitchCase="'2'"><h1>2</h1></div>
+      <div *ngSwitchCase="'3'"><h1>3</h1></div>
+      <div *ngSwitchCase="'4'"><h1>4</h1></div>
+      <div *ngSwitchCase="'5'"><h1>5</h1></div>
+      <div *ngSwitchCase="'6'"><h1>6</h1></div>
+      <div *ngSwitchCase="'7'"><h1>7</h1></div>
+      <div *ngSwitchCase="'8'"><h1>8</h1></div>
+      <div *ngSwitchCase="'9'"><h1>9</h1></div>
+      <div *ngSwitchCase="'10'"><h1>10</h1></div>
+  </div>
+  </div>
+</ng-template>

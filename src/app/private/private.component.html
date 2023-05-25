@@ -1,0 +1,37 @@
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <!-- sidebar -->
+        <app-main-sidebar></app-main-sidebar>
+        <!-- /sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- main -->
+            <div id="content">
+
+                <!-- main nav -->
+                <app-main-nav></app-main-nav>
+                <!-- /man nav -->
+
+                <!-- content -->
+                <div class="container-fluid">
+                    <div class="ml-4 mr-3">
+                        <app-ng-dynamic-breadcrumb></app-ng-dynamic-breadcrumb>
+                    </div>
+                    <router-outlet></router-outlet>
+                </div>
+                <!-- /content -->
+
+            </div>
+            <!-- main -->
+
+            <!-- footer -->
+            <app-main-footer></app-main-footer>
+            <!-- /footer -->
+
+        </div>
+
+    </div>
+</body>

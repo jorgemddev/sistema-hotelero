@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 animated fadeInRight shadow p-3 mb-5 bg-white rounded"
+            style="max-height:800px; overflow: auto;">
+            <div id="main-content">
+                <div class="container">
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Seleccionar color:</span>
+                                </div>
+                                <button class="btn" [ngStyle]="{color:color}" [colorPicker] (colorPickerChange)="selectedColor($event)"><i class="fa-solid fa-palette"></i></button>
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Tamaño:</span>
+                                </div>
+                                <select class="form-control" (change)="selectedSize($event)">
+                                    <option value="fa-1x">1x</option>
+                                    <option value="fa-2x">2x</option>
+                                    <option value="fa-3x">3x</option>
+                                    <option value="fa-4x">4x</option>
+                                    <option value="fa-5x">5x</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="alert alert-info" *ngIf="!items">No existen iconos en Galeria</div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 mt-3 mb-1" *ngFor="let item of items">
+                            <div class="card mb-1" (click)="selected(item)">
+                                <div class="icone text-center mb-1 mt-1">
+                                    <i [ngClass]="[item.icon,size]" [ngStyle]="{color:color}"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <ngb-pagination [maxSize]="7" [collectionSize]="collectionSize" [(page)]="page"
+                            [pageSize]="perpage" (pageChange)="getIcons()"></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

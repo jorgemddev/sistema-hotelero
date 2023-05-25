@@ -1,0 +1,131 @@
+<div class="container">
+    <form novalidate [formGroup]="form" (submit)="save()">
+        <div class="d-lg-flex">
+            <div class="d-md-flex align-items-center mb-lg-0 mb-md-5">
+                <div class="col1 me-md-4 mb-md-0 mb-5">
+                    <div class="card pb-4">
+                        <span class="circle-icon" (click)="openModal(icons,'ico1')">
+                            <i [ngClass]='form.get("ico1").value' [style]='form.get("style1").value'></i>
+                        </span>
+
+                        <p *ngIf="!t2" class="h4 pt-4" (click)="showInput('t2')">
+                            {{form.get('t2').value}}
+                        </p>
+                        <input *ngIf="t2" type="text" class="form-control" formControlName="t2"
+                            (focusout)="showInput('t2')">
+                        <p class="p1 text-muted">
+                            <ngx-editor class="editor-class" [editor]="editor3" formControlName="p2">
+                                <ngx-editor-floating-menu [editor]="editor3">
+                                    <ngx-editor-menu [editor]="editor3" [toolbar]="toolbar"></ngx-editor-menu>
+                                </ngx-editor-floating-menu>
+                            </ngx-editor>
+                        </p>
+                    </div>
+                </div>
+                <div class="col2 me-md-4 mb-md-0 mb-5">
+                    <div class="card pb-4">
+                        <span class="circle-icon" (click)="openModal(icons,'ico2')">
+                            <i [ngClass]='form.get("ico2").value' [style]='form.get("style2").value'></i>
+                        </span>
+
+                        <p *ngIf="!t3" class="h4 pt-4" (click)="showInput('t3')">
+                            {{form.get('t3').value}}
+                        </p>
+                        <input *ngIf="t3" type="text" class="form-control" formControlName="t3"
+                            (focusout)="showInput('t3')">
+                        <p class="p1 text-muted">
+                            <ngx-editor class="editor-class" [editor]="editor4" formControlName="p3">
+                                <ngx-editor-floating-menu [editor]="editor4">
+                                    <ngx-editor-menu [editor]="editor4" [toolbar]="toolbar"></ngx-editor-menu>
+                                </ngx-editor-floating-menu>
+                            </ngx-editor>
+                        </p>
+                    </div>
+                </div>
+                <div class="col3 me-md-4 mb-md-0 mb-5">
+                    <div class="card pb-4">
+                        <span class="circle-icon" (click)="openModal(icons,'ico3')">
+                            <i [ngClass]='form.get("ico3").value' [style]='form.get("style3").value'></i>
+                        </span>
+
+                        <p *ngIf="!t4" class="h4 pt-4" (click)="showInput('t4')">
+                            {{form.get('t4').value}}
+                        </p>
+                        <input *ngIf="t4" type="text" class="form-control" formControlName="t4"
+                            (focusout)="showInput('t4')">
+                        <p class="p1 text-muted">
+                            <ngx-editor class="editor-class" [editor]="editor5" formControlName="p4">
+                                <ngx-editor-floating-menu [editor]="editor5">
+                                    <ngx-editor-menu [editor]="editor5" [toolbar]="toolbar"></ngx-editor-menu>
+                                </ngx-editor-floating-menu>
+                            </ngx-editor>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col4">
+                <div class="content">
+                    <span class="h-6">
+                        <ngx-editor class="editor-class" [editor]="editor6" formControlName="t6">
+                            <ngx-editor-floating-menu [editor]="editor6">
+                                <ngx-editor-menu [editor]="editor6" [toolbar]="toolbarh"></ngx-editor-menu>
+                            </ngx-editor-floating-menu>
+                        </ngx-editor>
+                    </span>
+                    <p class="h2 mb-4">
+                        <ngx-editor class="editor-class" [editor]="editor1" formControlName="t1">
+                            <ngx-editor-floating-menu [editor]="editor1">
+                                <ngx-editor-menu [editor]="editor1" [toolbar]="toolbar"></ngx-editor-menu>
+                            </ngx-editor-floating-menu>
+                        </ngx-editor>
+                    </p>
+                    <p class="text-muted mb-4">
+                        <ngx-editor [id]="2" class="editor-class" [editor]="editor2" formControlName="p1">
+                            <ngx-editor-floating-menu [editor]="editor2">
+                                <ngx-editor-menu [editor]="editor2" [toolbar]="toolbar"></ngx-editor-menu>
+                            </ngx-editor-floating-menu>
+                        </ngx-editor>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <footer class="py-5 mb-0 mt-5">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Nombre:</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Indentificador del complemento" formControlName="name">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Estado:</span>
+                        </div>
+                        <select id="state_id" class="form-control" formControlName="state_id">
+                            <option *ngFor="let item of status" value="{{item.id}}">{{item.tag | uppercase}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-success float-end" type="submit">Guardar</button>
+                </div>
+            </div>
+
+        </footer>
+    </form>
+</div>
+<!-- Create template reference -->
+<ng-template #icons let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-gallery-icons (onClose)="d('Cross click')" (onSelected)="selected($event)"></app-gallery-icons>
+    </div>
+</ng-template>

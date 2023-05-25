@@ -1,0 +1,125 @@
+<form [formGroup]="primaryForm" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">NUEVO PROVEEDOR</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="1" formControlName="type">
+                        <label class="form-check-label">Persona juridica</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="2" formControlName="type">
+                        <label class="form-check-label">Persona natural</label>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get('type').value==1">
+                    <label class="small mb-1" for="name">Razón social (50 max.)</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control text-capitalize" formControlName="name">
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get('type').value==2">
+                    <label class="small mb-1" for="name">Nombre y apellidos (50 max.)</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control text-capitalize" formControlName="name">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="rut">RUT/IDENTIFICACIÓN</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-id-card"></i></span>
+                        <input type="text" class="form-control" formControlName="rut">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="turn">Giro</label>
+                    <input type="text" class="form-control" formControlName="turn">
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="location">Dirección</label>
+                    <input type="text" class="form-control" formControlName="location">
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <label class="small mb-1" for="email">Email</label>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-regular fa-envelope"></i></span>
+                        <input type="email" class="form-control" placeholder="Email  contacto" formControlName="email">
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <label class="small mb-1" for="phone">Tel.</label>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-phone"></i></span>
+                        <input type="email" class="form-control" placeholder="Telefono contacto" formControlName="phone">
+                    </div>
+                </div>
+
+                <div class="col-md-8 mt-3">
+                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <input type="checkbox" class="btn-check" id="btncheck1" formControlName="isFacebook">
+                        <label class="btn btn-outline-primary" for="btncheck1"><i
+                                class="fa-brands fa-facebook"></i></label>
+
+                        <input type="checkbox" class="btn-check" id="btncheck2" formControlName="isInstagram">
+                        <label class="btn btn-outline-primary" for="btncheck2"><i
+                                class="fa-brands fa-instagram"></i></label>
+
+                        <input type="checkbox" class="btn-check" id="btncheck3" formControlName="isWebsite">
+                        <label class="btn btn-outline-primary" for="btncheck3"><i
+                                class="fa-solid fa-earth-americas"></i></label>
+
+                        <input type="checkbox" class="btn-check" id="btncheck4" formControlName="isWhatsapp">
+                        <label class="btn btn-outline-primary" for="btncheck4"><i
+                                class="fa-brands fa-whatsapp"></i></label>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <img [src]="(primaryForm.get('image'))?primaryForm.get('image').value:'assets/images/default.jpg'" [fallimg]="'default'" class="img-fluid img-thumbnail" (click)="openModal(repository,'xl')" />
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get('isWebsite').value">
+                    <label class="small mb-1" for="website">Sitio web</label>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i
+                                class="fa-solid fa-earth-americas"></i></span>
+                        <input type="email" class="form-control" placeholder="Sitio web" formControlName="website">
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get('isFacebook').value">
+                    <label class="small mb-1" for="facebook">Facebook</label>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-facebook"></i></span>
+                        <input type="email" class="form-control" placeholder="Facebook" formControlName="facebook">
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get('isInstagram').value">
+                    <label class="small mb-1" for="instagram">Instagram</label>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-instagram"></i></span>
+                        <input type="email" class="form-control" placeholder="Instagram" formControlName="instagram">
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="primaryForm.get('isWhatsapp').value">
+                    <label class="small mb-1" for="whatsapp">Whatsapp</label>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-whatsapp"></i></span>
+                        <input type="email" class="form-control" placeholder="Whatsapp" formControlName="whatsapp">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">CREAR
+                PROVEEDOR</button>
+        </div>
+    </div>
+</form>
+
+<ng-template #repository let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-repository-image (onSelected)="primaryForm.get('image').setValue($event)"></app-repository-image>
+    </div>
+</ng-template>
