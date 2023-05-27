@@ -6,7 +6,6 @@ import { Toolbar } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
 import { Products } from 'src/app/models/interfaces/products';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-edit-purchase-order',
@@ -19,7 +18,6 @@ export class EditPurchaseOrderComponent implements OnInit {
     private toast: ToastrService,
     private modal: NgbModal,
     private routeActive: ActivatedRoute,
-    private request: RequestsService
   ) { }
 
   status: any;
@@ -113,8 +111,8 @@ export class EditPurchaseOrderComponent implements OnInit {
         this.primaryForm.patchValue(response.data);
         this.calculePriceProducts();
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }
@@ -125,8 +123,9 @@ export class EditPurchaseOrderComponent implements OnInit {
         let data = response.data as any;
         this.primaryForm.patchValue(response.data);
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
 
@@ -134,16 +133,18 @@ export class EditPurchaseOrderComponent implements OnInit {
       (response) => {
         this.status = response.data;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
     this.api.getProviders().subscribe(
       (response) => {
         this.providers = response.data;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+    
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
     this.api.getPayments().subscribe(
@@ -151,8 +152,9 @@ export class EditPurchaseOrderComponent implements OnInit {
         this.primaryForm.get('payments_id').setValue(1);
         this.payments = response.data;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+       
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }

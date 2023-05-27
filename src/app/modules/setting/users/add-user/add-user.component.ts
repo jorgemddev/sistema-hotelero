@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toast, ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-add-user',
@@ -12,7 +11,7 @@ import { RequestsService } from 'src/app/services/requests.service';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
-  constructor(private api: ApiService, private router:Router, private modal:NgbModal, private request:RequestsService, private toast:ToastrService) {}
+  constructor(private api: ApiService, private router:Router, private modal:NgbModal,  private toast:ToastrService) {}
   usernameDisp = '...';
   textColor="";
   showAlert: boolean = false;
@@ -39,15 +38,13 @@ export class AddUserComponent implements OnInit {
   create() {
     this.api.createUser(this.userForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Creado correctamente','Colaborador');
           setTimeout(() => {
             this.router.navigate(['/colaboradores/listar']);
           }, 3000);
       },
-      (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,'Tenemos un error');
+      (e) => {
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }
@@ -61,13 +58,9 @@ export class AddUserComponent implements OnInit {
             this.textColor='text-success';
             this.usernameDisp = response.msg;
         },
-        (error) => {
-          if(error.status==400){
-            this.textColor='text-danger';
-            this.usernameDisp = error.error.msg;
-          }else{
-            this.request.setCode(error);
-          }
+        (e) => {
+            this.toast.warning(e.error.mistakes,e.error.msg);
+
         }
       );
     }else{

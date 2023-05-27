@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Navs } from 'src/app/models/interfaces/navs';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-product-family',
@@ -19,8 +18,6 @@ export class ProductFamilyComponent implements OnInit {
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
-    private router: Router,
-    private request: RequestsService,
   ) { }
 
   ngOnInit(): void {
@@ -43,15 +40,14 @@ export class ProductFamilyComponent implements OnInit {
   create() {
     this.api.createFamily(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
+        
         this.toast.success('Creado correctamente', 'Familias');
         this.getFamilys();
         this.modal.dismissAll();
       },
       (error) => {
         console.log('advertencia');
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
+            this.toast.warning(error.error.mistakes,
           'Ocurrio un error al crear el registro, verifique'
         );
       }
@@ -69,7 +65,7 @@ export class ProductFamilyComponent implements OnInit {
     }
     this.api.updateFamilys(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
+        
         this.toast.success('Modificado correctamente', 'Familias');
         this.getFamilys();
         this.modal.dismissAll();
@@ -78,14 +74,13 @@ export class ProductFamilyComponent implements OnInit {
         this.toast.warning(error.error.mistakes,
           'No se pudo modificar'
         );
-        this.request.setCode(error);
-      }
+          }
     );
   }
   delete() {
     this.api.deleteFamilys(this.sForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
+        
         this.toast.success(
           'Esta FAMILIA  fue  eliminado correctamente',
           'Familias'
@@ -95,8 +90,7 @@ export class ProductFamilyComponent implements OnInit {
         this.modal.dismissAll();
       },
       (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
+            this.toast.warning(error.error.mistakes,
           'NO fue posible eliminar este item'
         );
       }
@@ -108,8 +102,7 @@ export class ProductFamilyComponent implements OnInit {
         this.form.patchValue(response.data);
       },
       (error) => {
-        this.request.setCode(error);
-      }
+          }
     );
   }
   getFamilys() {
@@ -120,8 +113,7 @@ export class ProductFamilyComponent implements OnInit {
         this.getFamilyFather();
       },
       (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.msg);
+            this.toast.warning(error.error.msg);
       }
     );
   }
@@ -131,8 +123,7 @@ export class ProductFamilyComponent implements OnInit {
         this.familys = response.data;
       },
       (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.msg);
+            this.toast.warning(error.error.msg);
       }
     );
   }

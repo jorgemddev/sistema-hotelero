@@ -9,5 +9,6 @@ export interface Responses {
   msg: string;
   mistakes?: any;
   other?:any;
+  level?:number;
   type_id?: any;
 }

@@ -16,7 +16,7 @@ export class ApiSharedService {
 
   getCodPhones(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/cphone/'+this.helps.getUrlTknUid()
+      this.domain + 'params/cphone/'
     );
   }
 }

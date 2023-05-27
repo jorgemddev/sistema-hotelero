@@ -6,7 +6,6 @@ import { Editor, Toolbar } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
 import { Icons } from 'src/app/models/interfaces/icons';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-view-module-1',
@@ -15,7 +14,7 @@ import { RequestsService } from 'src/app/services/requests.service';
 })
 export class ViewModule1Component implements OnInit {
 
-  constructor(private modal: NgbModal, private api: ApiService, private toast: ToastrService, private request: RequestsService, private router: Router) { }
+  constructor(private modal: NgbModal, private api: ApiService, private toast: ToastrService, private router: Router) { }
   status: any;
   @Output()
   shortcode = new EventEmitter<string>();
@@ -172,11 +171,10 @@ export class ViewModule1Component implements OnInit {
         this.router.navigate(["sitio-web/complementos/listar"]);
         this.modal.dismissAll();
       },
-      (error) => {
-        console.log('advertencia');
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
-          'Ocurrio un error al crear el complemento, verifique'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
       }
     );
@@ -191,11 +189,10 @@ export class ViewModule1Component implements OnInit {
         this.router.navigate(["sitio-web/complementos/listar"]);
         this.modal.dismissAll();
       },
-      (error) => {
-        console.log('advertencia');
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
-          'Ocurrio un error al modificar el complemento, verifique'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
       }
     );

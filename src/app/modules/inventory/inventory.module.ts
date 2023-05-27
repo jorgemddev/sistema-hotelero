@@ -28,6 +28,7 @@ import { ContactsModule } from '../common/contacts/contacts.module';
 import { EditorHtmlModule } from '../common/editor-html/editor-html.module';
 import { SearchesModule } from '../common/searches/searches.module';
 import { SharedsModule } from '../common/shareds/shareds.module';
+import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
 @NgModule({
   declarations: [
     InventoryComponent,
@@ -63,7 +64,7 @@ import { SharedsModule } from '../common/shareds/shareds.module';
     ContactsModule,
     EditorHtmlModule,
     SearchesModule,
-    SharedsModule
+    SharedsModule,ToolbarSearchComponent
 
   ],
   providers: [

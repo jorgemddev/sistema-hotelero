@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Helps } from 'src/app/libs/helps';
 import { Profile } from 'src/app/models/interfaces/profile';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { RequestsService } from 'src/app/services/requests.service';
 import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
@@ -17,13 +17,15 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private api: ApiService,
-    private request: RequestsService,
-    private toast: ToastrService
+
+    private toast: ToastrService,
+    private helps: Helps,
   ) {
     // Recuperar el valor del contador del LocalStorage (si existe)
     const storedTime = localStorage.getItem('time');
-    this.time = storedTime ? parseInt(storedTime) : 30;
-    if (this.time < 30 && this.time != 0) {
+    this.time = (storedTime) ? parseInt(storedTime) : 0;
+    if (this.time <= 30 && this.time != 0) {
+      console.log(this.time);
       this.countDown();
     }
   }
@@ -31,9 +33,10 @@ export class LoginComponent implements OnInit {
   showAlert: boolean = false;
   disabledSubmit: boolean = false;
   domain: string = environment.domain;
-  restore?: boolean;
-  time = 0;
-  int:number=0;
+  restore?: boolean = false;
+  send: boolean = false;
+  time: number = 0;
+  int: number = 0;
   intervalId: any;
   ngOnInit(): void {
     if (this.auth.isLogged) {
@@ -57,24 +60,19 @@ export class LoginComponent implements OnInit {
     const { cod, pass } = this.loginForm.value;
     this.api.login(cod, pass).subscribe(
       (response) => {
-        console.log('validado');
-        var profile = response.data as Profile;
-        this.auth.setLogin(
-          true,
-          profile.uid ?? '',
-          profile.token ?? '',
-          profile.level ?? '0'
-        );
+        console.log("RESPONSE LOGIN:",response );
+        this.helps.saveToken(response);
         this.router.navigate(['/dash']);
       },
-      (result) => {
-        this.request.setCode(result);
-        this.toast.warning(result.error.msg, '¡Tenemos un error!');
+      (e) => {
+        console.log("RESPONSE ERROR LOGIN:",e );
+        this.toast.warning(e.error.mistakes, '¡Tenemos un error!');
       }
     );
     console.log('no validado');
   }
   restorePass() {
+    this.send = true;
     this.time = 30;
     this.int++;
     this.countDown();
@@ -83,12 +81,13 @@ export class LoginComponent implements OnInit {
         this.toast.success(res.msg);
       },
       (e) => {
-        this.toast.warning(e.error.mistakes,e.error.msg);
+        this.toast.warning(e.error.mistakes, e.error.msg);
+        this.stopCount();
       }
     );
   }
   private countDown() {
-    this.restore=true;
+    this.restore = true;
     this.intervalId = setInterval(() => {
       this.time--;
       if (this.time === 0) {
@@ -97,7 +96,8 @@ export class LoginComponent implements OnInit {
     }, 1000);
   }
   stopCount() {
-    this.time=0;
+    this.time = 0;
+    this.send = false;
     clearInterval(this.intervalId);
   }
   inProgress(rs: boolean) {

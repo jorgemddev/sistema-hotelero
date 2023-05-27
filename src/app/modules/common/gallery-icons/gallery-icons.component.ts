@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Images } from 'src/app/models/interfaces/images';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 import { Icons } from 'src/app/models/interfaces/icons'
 @Component({
   selector: 'app-gallery-icons',
@@ -16,7 +15,6 @@ export class GalleryIconsComponent implements OnChanges, OnInit {
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
-    private request: RequestsService
   ) { }
   level: any;
   domain: string = this.api.domain;

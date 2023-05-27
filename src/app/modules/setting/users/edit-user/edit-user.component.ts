@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -16,10 +15,9 @@ export class EditUserComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private modal: NgbModal,
-    private request: RequestsService,
     private toast: ToastrService,
     private routeActive: ActivatedRoute
-  ) {}
+  ) { }
   usernameDisp = '...';
   textColor = '';
   showAlert: boolean = false;
@@ -59,15 +57,13 @@ export class EditUserComponent implements OnInit {
   update() {
     this.api.updateUser(this.userForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Actualizado correctamente', 'Colaborador');
         setTimeout(() => {
           this.router.navigate(['/colaboradores/listar']);
         }, 3000);
       },
       (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,'Error al modificar registro');
+        this.toast.warning(error.error.mistakes, 'Error al modificar registro');
       }
     );
   }
@@ -75,14 +71,12 @@ export class EditUserComponent implements OnInit {
     if (this.passForm.get('pass')?.value == this.passForm.get('rpass')?.value) {
       this.api.updateUserPass(this.passForm).subscribe(
         (response) => {
-          this.request.setLoading(false);
           setTimeout(() => {
             this.modal.dismissAll();
           }, 2000);
         },
         (error) => {
-          this.request.setCode(error);
-          this.toast.warning(error.error.mistakes,'Error al modificar registro');
+          this.toast.warning(error.error.mistakes, 'Error al modificar registro');
         }
       );
     } else {
@@ -112,13 +106,10 @@ export class EditUserComponent implements OnInit {
           this.textColor = 'text-success';
           this.usernameDisp = response.msg;
         },
-        (error) => {
-          if (error.status == 400) {
-            this.textColor = 'text-danger';
-            this.usernameDisp = error.error.msg;
-          } else {
-            this.request.setCode(error);
-          }
+        (e) => {
+
+          this.toast.warning(e.error.mistakes, e.error.msg);
+
         }
       );
     } else {

@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-list-provider',
@@ -19,7 +18,7 @@ export class ListProviderComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private router: Router,
-    private request: RequestsService
+
   ) { }
   view: number = 1;
   status: any;
@@ -63,12 +62,9 @@ export class ListProviderComponent implements OnInit {
         this.modal.dismissAll();
         this.getProviders();
       },
-      (error) => {
-        this.request.setCode(error);
-        this.toast.warning(
-          error.error.mistakes,
-          'No fue posible eliminar el item'
-        );
+      (e) => {
+        
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }
@@ -101,13 +97,9 @@ export class ListProviderComponent implements OnInit {
         console.log(this.collectionSize);
         this.totalPage = data.total;
       },
-      (error) => {
-        this.request.setCode(error);
-        this.items = null;
-        this.page = 1;
-        this.collectionSize = 0;
-        this.totalPage = 0;
-        this.toast;
+      (e) => {
+       
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }

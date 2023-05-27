@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminGuard } from '../models/guard/admin.guard';
 import { InventoryComponent } from '../modules/inventory/inventory.component';
 import { SettingComponent } from '../modules/setting/setting.component';
-import { WebsiteComponent } from '../modules/website/website.component';
 import { DashComponent } from './pages/dash/dash.component';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AdminGuard],
     component: DashComponent,
     data: {
       title: 'Home',
@@ -23,7 +20,6 @@ const routes: Routes = [
   },
   {
     path: 'dash',
-    canActivate: [AdminGuard],
     component: DashComponent,
     data: {
       title: 'Home',
@@ -54,29 +50,6 @@ const routes: Routes = [
         {
           label: 'General',
           url: '/configuracion',
-        },
-      ],
-    },
-  },
-  //module website
-  {
-    path: 'sitio-web',
-    component: WebsiteComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('../modules/website/website.module').then(
-            (m2) => m2.WebsiteModule
-          ),
-      },
-    ],
-    data: {
-      title: 'SITIO WEB',
-      breadcrumb: [
-        {
-          label: 'Sitio web',
-          url: '/sitio-web',
         },
       ],
     },

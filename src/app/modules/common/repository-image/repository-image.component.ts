@@ -10,7 +10,6 @@ import {
 import { ApiService } from 'src/app/services/api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { RequestsService } from 'src/app/services/requests.service';
 import { Images } from 'src/app/models/interfaces/images';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
@@ -24,7 +23,6 @@ export class RepositoryImageComponent implements OnChanges, OnInit {
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
-    private request: RequestsService
   ) { }
   level: any;
   domain: string = this.api.domain;
@@ -61,12 +59,13 @@ export class RepositoryImageComponent implements OnChanges, OnInit {
   getImages() {
     this.api.getImages().subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.items = response.data as Images[];
       },
-      (error) => {
-        this.items = [];
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
   }
@@ -75,7 +74,6 @@ export class RepositoryImageComponent implements OnChanges, OnInit {
     this.form.get('alt').setValue(value);
     this.api.updateImage(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
           this.toast.success('Agregado correctamente', 'Atributo ALT');
           this.getImages();
       },
@@ -95,7 +93,6 @@ export class RepositoryImageComponent implements OnChanges, OnInit {
           'La imagen seleccionada, no fue eliminada',
           'Imagenes'
         );
-        this.request.setCode(error);
       }
     );
   }

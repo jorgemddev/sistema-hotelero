@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Navs } from 'src/app/models/interfaces/navs';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-product-brans',
@@ -20,7 +19,6 @@ export class ProductBransComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private router: Router,
-    private request: RequestsService,
     private routeActive: ActivatedRoute,
   ) { }
 
@@ -46,7 +44,7 @@ export class ProductBransComponent implements OnInit {
   tForm = new UntypedFormGroup({
     id: new UntypedFormControl(),
     tag: new UntypedFormControl(),
-    brand_id:new UntypedFormControl()
+    brand_id: new UntypedFormControl()
   });
   models: any;
   model: any;
@@ -60,14 +58,12 @@ export class ProductBransComponent implements OnInit {
   create() {
     this.api.createBrand(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Creado correctamente', 'Marcas');
         this.getBrands();
         this.modal.dismissAll();
       },
       (error) => {
         console.log('advertencia');
-        this.request.setCode(error);
         this.toast.warning(error.error.mistakes,
           'Ocurrio un error al crear el registro, verifique'
         );
@@ -77,7 +73,6 @@ export class ProductBransComponent implements OnInit {
   update() {
     this.api.updateBrands(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Modificado correctamente', 'Marcas');
         this.getBrands();
         this.modal.dismissAll();
@@ -86,14 +81,12 @@ export class ProductBransComponent implements OnInit {
         this.toast.warning(error.error.mistakes,
           'No se pudo modificar'
         );
-        this.request.setCode(error);
       }
     );
   }
   createModel() {
     this.api.createModel(this.tForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Registro creado correctamente', 'Modelos');
         this.getBrands();
         this.modal.dismissAll();
@@ -102,14 +95,12 @@ export class ProductBransComponent implements OnInit {
         this.toast.warning(error.error.mistakes,
           'No se pudo modificar'
         );
-        this.request.setCode(error);
       }
     );
   }
   updateModel() {
     this.api.updateModel(this.tForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Modificado correctamente', 'Modelos');
         this.getBrands();
         this.modal.dismissAll();
@@ -118,14 +109,12 @@ export class ProductBransComponent implements OnInit {
         this.toast.warning(error.error.mistakes,
           'No se pudo modificar'
         );
-        this.request.setCode(error);
       }
     );
   }
   delete() {
     this.api.deleteBrands(this.sForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success(
           'Esta MARCA  fue  eliminado correctamente',
           'Marcas'
@@ -135,7 +124,6 @@ export class ProductBransComponent implements OnInit {
         this.modal.dismissAll();
       },
       (error) => {
-        this.request.setCode(error);
         this.toast.warning(error.error.mistakes,
           'NO fue posible eliminar este item'
         );
@@ -145,7 +133,6 @@ export class ProductBransComponent implements OnInit {
   deleteModel() {
     this.api.deleteModel(this.tForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success(
           'Este MODELO fue  eliminado correctamente',
           'Modelos'
@@ -155,7 +142,6 @@ export class ProductBransComponent implements OnInit {
         this.modal.dismissAll();
       },
       (error) => {
-        this.request.setCode(error);
         this.toast.warning(error.error.mistakes,
           'No fue posible eliminar este item'
         );
@@ -176,7 +162,6 @@ export class ProductBransComponent implements OnInit {
         this.form.patchValue(response.data);
       },
       (error) => {
-        this.request.setCode(error);
       }
     );
   }
@@ -187,7 +172,6 @@ export class ProductBransComponent implements OnInit {
         this.items = data.items;
       },
       (error) => {
-        this.request.setCode(error);
       }
     );
   }

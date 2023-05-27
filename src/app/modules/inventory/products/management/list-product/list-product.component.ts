@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { Profile } from 'src/app/models/interfaces/profile';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-list-product',
@@ -21,8 +20,7 @@ export class ListProductComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private router: Router,
-    private request: RequestsService
-  ) {}
+  ) { }
   status: any;
   categorys: any;
   idSelected: number = 0;
@@ -31,7 +29,7 @@ export class ListProductComponent implements OnInit {
     this.getProducts();
   }
 
-  view:number=1;
+  view: number = 1;
   items: any;
   page = 1;
   perpage: number = 0;
@@ -66,7 +64,6 @@ export class ListProductComponent implements OnInit {
         this.getProducts();
       },
       (error) => {
-        this.request.setCode(error);
         this.toast.warning(
           error.error.mistakes,
           'No fue posible eliminar el item'
@@ -104,13 +101,8 @@ export class ListProductComponent implements OnInit {
         console.log(this.collectionSize);
         this.totalPage = data.total;
       },
-      (error) => {
-        this.request.setCode(error);
-        this.items = null;
-        this.page = 1;
-        this.collectionSize = 0;
-        this.totalPage = 0;
-        this.toast;
+      (e) => {
+        this.toast.warning(e.error.mistakes, e.error.msg);
       }
     );
   }
@@ -128,5 +120,5 @@ export class ListProductComponent implements OnInit {
   search() {
     this.getProducts();
   }
-  clean() {}
+  clean() { }
 }

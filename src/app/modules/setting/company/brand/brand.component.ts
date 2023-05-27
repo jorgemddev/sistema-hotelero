@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-brand',
@@ -17,8 +16,7 @@ export class BrandComponent implements OnInit {
     private router: Router,
     private routeActive: ActivatedRoute,
     private modal: NgbModal,
-    private toastr: ToastrService,
-    private request: RequestsService
+    private toast: ToastrService,
   ) {}
   usernameDisp = '...';
   textColor = '';
@@ -53,10 +51,10 @@ export class BrandComponent implements OnInit {
     this.api.updateCompany(this.primaryFm).subscribe(
       (response) => {
           this.getCompany();
-          this.toastr.success('Cambios registrados correctamente');
+          this.toast.success('Cambios registrados correctamente');
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }
@@ -66,13 +64,12 @@ export class BrandComponent implements OnInit {
   getCompany() {
     this.api.getCompany().subscribe(
       (response) => {
-        this.request.setLoading(false);
         var data = response.data;
         this.primaryFm.patchValue(data);
         this.image = this.primaryFm.get('image')?.value;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }

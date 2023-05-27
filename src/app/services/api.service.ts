@@ -8,7 +8,6 @@ import {
 import { Injectable, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { RequestsService } from './requests.service';
 import { environment } from 'src/environments/environment';
 import { Responses } from '../models/interfaces/responses';
 import { Products } from '../models/interfaces/products';
@@ -19,16 +18,14 @@ import { Products } from '../models/interfaces/products';
 export class ApiService {
   public domain: string = environment.baseApiUrl;
 
-  private setLoading(show: boolean) {
-    this.request.setLoading(show);
-  }
 
-  constructor(private http: HttpClient, private request: RequestsService) { }
+
+  constructor(private http: HttpClient) { }
   isLogged(): Observable<any> {
-    return this.http.get<Responses>(this.domain + 'user/index/');
+    return this.http.get<Responses>(this.domain + 'user/index/auth/');
   }
   login(cod: string, pass: string): Observable<Responses> {
-    this.request.setLoading(true);
+
     const body = new HttpParams().set('cod', cod).set('pass', pass);
     return this.http.post<Responses>(this.domain + 'user/access/login/', body, {
       headers: new HttpHeaders().set(
@@ -64,7 +61,6 @@ export class ApiService {
     );
   }
   getCompany(): Observable<Responses> {
-    this.request.setLoading(true);
     return this.http.get<Responses>(
       this.domain + 'company/index/' 
     );
@@ -298,7 +294,6 @@ export class ApiService {
     );
   }
   listNews(page: number): Observable<Responses> {
-    this.setLoading(true);
     return this.http.get<Responses>(
       this.domain + 'news/index/list/' + page + '/30/' 
     );
@@ -363,7 +358,6 @@ export class ApiService {
     );
   }
   searchNews(form: UntypedFormGroup, page: number): Observable<Responses> {
-    this.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'news/index/search/' + page + '/' ,
@@ -429,7 +423,6 @@ export class ApiService {
     );
   }
   getImages(): Observable<Responses> {
-    this.setLoading(true);
     return this.http.get<Responses>(
       this.domain + 'company/images/' 
     );
@@ -450,7 +443,6 @@ export class ApiService {
     );
   }
   createUser(form: UntypedFormGroup): Observable<Responses> {
-    this.request.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
 
     return this.http.post<Responses>(
@@ -517,7 +509,6 @@ export class ApiService {
     );
   }
   createPage(form: UntypedFormGroup): Observable<Responses> {
-    this.request.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'pages/index/create/' ,
@@ -727,7 +718,6 @@ export class ApiService {
     );
   }
   updatePage(form: UntypedFormGroup): Observable<Responses> {
-    this.request.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'pages/index/update/' ,
@@ -741,7 +731,6 @@ export class ApiService {
     );
   }
   updateNavs(form: UntypedFormGroup): Observable<Responses> {
-    this.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'params/navs/update/' ,
@@ -781,7 +770,6 @@ export class ApiService {
     );
   }
   updateSettingAlliance(form: UntypedFormGroup): Observable<Responses> {
-    this.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'extensions/alliance/update/' ,
@@ -864,7 +852,6 @@ export class ApiService {
     );
   }
   updateProfile(form: UntypedFormGroup): Observable<Responses> {
-    this.request.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'user/profile/update/' ,
@@ -878,7 +865,6 @@ export class ApiService {
     );
   }
   updateCompany(form: UntypedFormGroup): Observable<Responses> {
-    this.request.setLoading(true);
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'company/index/update/' ,

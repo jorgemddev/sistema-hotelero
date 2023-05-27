@@ -11,7 +11,6 @@ import { PrivateModule } from './private/private.module';
 import { PublicModule } from './public/public.module';
 import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
-import { RequestsService } from './services/requests.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerInterceptor } from './models/interceptors/spinner.interceptor';
 import { NgFallimgModule } from 'ng-fallimg';
@@ -37,7 +36,6 @@ import { SpinnerModule } from './components/spinner/spinner.module';
   providers: [
     ApiService,
     AuthService,
-    RequestsService,
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
   ],
   exports: [NgFallimgModule],

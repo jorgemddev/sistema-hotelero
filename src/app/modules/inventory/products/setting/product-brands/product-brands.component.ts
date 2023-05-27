@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-product-brans',
@@ -18,7 +17,6 @@ export class ProductBrandsComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private router: Router,
-    private request: RequestsService,
     private routeActive: ActivatedRoute,
   ) { }
 
@@ -58,16 +56,14 @@ export class ProductBrandsComponent implements OnInit {
   create() {
     this.api.createBrand(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Creado correctamente', 'Marcas');
         this.getBrands();
         this.modal.dismissAll();
       },
-      (error) => {
-        console.log('advertencia');
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
-          'Ocurrio un error al crear el registro, verifique'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
       }
     );
@@ -75,55 +71,51 @@ export class ProductBrandsComponent implements OnInit {
   update() {
     this.api.updateBrands(this.form).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Modificado correctamente', 'Marcas');
         this.getBrands();
         this.modal.dismissAll();
       },
-      (error) => {
-        this.toast.warning(error.error.mistakes,
-          'No se pudo modificar'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
-        this.request.setCode(error);
       }
     );
   }
   createModel() {
     this.api.createModel(this.tForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Registro creado correctamente', 'Modelos');
         this.getBrands();
         this.modal.dismissAll();
       },
-      (error) => {
-        this.toast.warning(error.error.mistakes,
-          'No se pudo modificar'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
-        this.request.setCode(error);
       }
     );
   }
   updateModel() {
     this.api.updateModel(this.tForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success('Modificado correctamente', 'Modelos');
         this.getBrands();
         this.modal.dismissAll();
       },
-      (error) => {
-        this.toast.warning(error.error.mistakes,
-          'No se pudo modificar'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
-        this.request.setCode(error);
       }
     );
   }
   delete() {
     this.api.deleteBrands(this.sForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success(
           'Esta MARCA  fue  eliminado correctamente',
           'Marcas'
@@ -132,10 +124,10 @@ export class ProductBrandsComponent implements OnInit {
 
         this.modal.dismissAll();
       },
-      (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
-          'NO fue posible eliminar este item'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
       }
     );
@@ -143,7 +135,6 @@ export class ProductBrandsComponent implements OnInit {
   deleteModel() {
     this.api.deleteModel(this.tForm).subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.toast.success(
           'Este MODELO fue  eliminado correctamente',
           'Modelos'
@@ -152,10 +143,10 @@ export class ProductBrandsComponent implements OnInit {
 
         this.modal.dismissAll();
       },
-      (error) => {
-        this.request.setCode(error);
-        this.toast.warning(error.error.mistakes,
-          'No fue posible eliminar este item'
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
         );
       }
     );
@@ -173,8 +164,11 @@ export class ProductBrandsComponent implements OnInit {
       (response) => {
         this.form.patchValue(response.data);
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
   }
@@ -184,8 +178,11 @@ export class ProductBrandsComponent implements OnInit {
         var data = response.data as Paginate;
         this.items = data.items;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
   }

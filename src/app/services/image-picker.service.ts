@@ -19,15 +19,14 @@ import { Helps } from '../libs/helps';
   providedIn: 'root',
 })
 export class ImagePickerService extends FilePickerAdapter {
-  constructor(private http: HttpClient, private apiService: ApiService,private helps:Helps) {
+  constructor(private http: HttpClient, private apiService: ApiService, private helps: Helps) {
     super();
   }
   public uploadFile(fileItem: FilePreviewModel): Observable<UploadResponse> {
     const form = new FormData();
     form.append('file', fileItem.file);
     const api =
-      this.apiService.domain+'company/images/upload/' +
-      this.helps.getUrlTknUid();
+      this.apiService.domain + 'company/images/upload/'
     const req = new HttpRequest('POST', api, form, { reportProgress: true });
     return this.http.request(req).pipe(
       map((res: HttpEvent<any>) => {

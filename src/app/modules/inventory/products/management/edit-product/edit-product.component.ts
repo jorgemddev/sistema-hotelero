@@ -8,7 +8,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { MoneyClPipe } from 'src/app/pipes/money-cl.pipe';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 @Component({
   selector: 'app-edit-product',
   templateUrl: './edit-product.component.html',
@@ -21,7 +20,6 @@ export class EditProductComponent implements OnInit, OnChanges {
     private api: ApiService,
     private toast: ToastrService,
     private modal: NgbModal,
-    private request: RequestsService,
     private moneyPipe:MoneyClPipe
   ) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -118,8 +116,11 @@ export class EditProductComponent implements OnInit, OnChanges {
       (response) => {
         this.status = response.data;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
     this.api.getBrands().subscribe(
@@ -127,8 +128,11 @@ export class EditProductComponent implements OnInit, OnChanges {
         this.brands = response.data;
         this.selectBrand();
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
     this.api.listFamilys(1).subscribe(
@@ -136,16 +140,22 @@ export class EditProductComponent implements OnInit, OnChanges {
         var data=response.data as Paginate;
         this.familys = data.items;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
     this.api.getProviders().subscribe(
       (response) => {
         this.providers = response.data
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(
+          e.error.mistakes,
+          e.error.msg
+        );
       }
     );
   }
@@ -156,10 +166,11 @@ export class EditProductComponent implements OnInit, OnChanges {
         (response) => {
           this.models = response.data;
         },
-        (error) => {
-          this.request.setCode(error);
-          this.models = null;
-          this.primaryForm.get('model_id').setValue(0);
+        (e) => {
+          this.toast.warning(
+            e.error.mistakes,
+            e.error.msg
+          );
         }
       );
     } else {

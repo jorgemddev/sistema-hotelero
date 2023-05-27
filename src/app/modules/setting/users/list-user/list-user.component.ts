@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-list-user',
@@ -21,7 +20,6 @@ export class ListtUserComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private modal: NgbModal,
-    private request: RequestsService,
     private toast:ToastrService
   ) {}
   ngOnInit(): void {
@@ -39,11 +37,10 @@ export class ListtUserComponent implements OnInit {
   getData() {
     this.api.getUsers().subscribe(
       (response) => {
-        this.request.setLoading(false);
         this.items = response.data;
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }
@@ -60,13 +57,12 @@ export class ListtUserComponent implements OnInit {
     this.api.deleteUser(this.dltForm).subscribe(
       (response) => {
         this.toast.success('Colaborador eliminado correctamente','Colaborador');
-        this.request.setLoading(false);
         this.items = response.data;
         this.modal.dismissAll();
         this.getData();
       },
-      (error) => {
-        this.request.setCode(error);
+      (e) => {
+        this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }

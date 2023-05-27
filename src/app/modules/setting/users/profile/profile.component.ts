@@ -9,7 +9,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +20,6 @@ export class ProfileComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private auth: AuthService,
-    private request: RequestsService,
     private routeActive: ActivatedRoute,
     private modal: NgbModal,
     private toast: ToastrService
@@ -142,12 +140,8 @@ export class ProfileComponent implements OnInit {
             this.auth.logout();
           }, 2000);
         },
-        (error) => {
-          this.request.setCode(error);
-          this.toast.warning(
-            error.error.mistakes,
-            'Error al modificar contraseña'
-          );
+        (e) => {
+          this.toast.warning(e.error.mistakes,e.error.msg);
         }
       );
     } else {

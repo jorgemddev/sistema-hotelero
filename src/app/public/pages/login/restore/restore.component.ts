@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Profile } from 'src/app/models/interfaces/profile';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { RequestsService } from 'src/app/services/requests.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,7 +17,6 @@ export class RestoreComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private api: ApiService,
-    private request: RequestsService,
     private toast: ToastrService
   ) {
   }
@@ -47,7 +45,6 @@ export class RestoreComponent implements OnInit {
         this.router.navigate(['/dash']);
       },
       (result) => {
-        this.request.setCode(result);
         this.toast.warning(result.error.msg, '¡Tenemos un error!');
       }
     );

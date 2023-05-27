@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Validators } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
+import { Subject, debounceTime } from 'rxjs';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
-import { RequestsService } from 'src/app/services/requests.service';
+
 
 @Component({
   selector: 'app-list-movements',
@@ -19,10 +20,17 @@ export class ListMovementsComponent implements OnInit {
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
-    private request: RequestsService
+    
   ) { }
+  private keyUpSubject = new Subject<string>();
   ngOnInit(): void {
     this.getMovements();
+    this.keyUpSubject
+    .pipe(debounceTime(500)) // Establece un tiempo de espera de 500 ms (ajústalo según tus necesidades)
+    .subscribe((searchTerm) => {
+      // Realiza la llamada a la API con el término de búsqueda
+      this.getMovements();
+    });
   }
   item: any;
   items: any;
@@ -56,13 +64,8 @@ export class ListMovementsComponent implements OnInit {
         console.log(this.collectionSize);
         this.totalPage = data.total;
       },
-      (error) => {
-        this.request.setCode(error);
-        this.items = null;
-        this.page = 1;
-        this.collectionSize = 0;
-        this.totalPage = 0;
-        this.toast;
+      (e) => {
+       this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
   }
@@ -76,10 +79,10 @@ export class ListMovementsComponent implements OnInit {
   search(q: any) {
     if (q.value.length > 2) {
       this.q = q.value;
-      this.getMovements();
+      this.keyUpSubject.next(q)
     }else{
       this.q="";
-      this.getMovements();
+      this.keyUpSubject.next(q)
     }
 
   }

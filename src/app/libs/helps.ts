@@ -8,6 +8,8 @@ import { Users } from '../models/interfaces/users';
   providedIn: 'root',
 })
 export class Helps {
+  constructor() {}
+
   public encrypt(token: any): string {
     const encryptedToken = CryptoJS.AES.encrypt(
       JSON.stringify(token),
@@ -20,29 +22,28 @@ export class Helps {
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   }
   public saveToken(response: Responses) {
-    let user = response.data as Users;
     sessionStorage.setItem(
       'token',
       this.encrypt({
         token: response.token,
         id: response.id,
         data: response.data,
-        type_id: user.type_id,
+        level: response.level,
       })
     );
   }
   public getToken(): Responses {
     return this.decrypt(sessionStorage.getItem('token'));
   }
-  public deleteItem(){
+  public deleteItem() {
     sessionStorage.removeItem('token');
   }
 
-  public date(){
+  public date() {
     let date: Date = new Date();
     return date;
   }
-  public isNumber(x:any){
+  public isNumber(x: any) {
     if (typeof x === 'number' && Number.isInteger(x)) {
       return true;
     } else {
@@ -50,15 +51,5 @@ export class Helps {
       return false;
     }
   }
-  public getUrlTknUid(): String {
-    if (sessionStorage.getItem('token') != null) {
-      const response = this.getToken();
-      console.log(response);
-      var url: String = '?uid=' + response.id + '&token=' + response.token;
-      return url;
-    }
-    return '';
-  }
+
 }
-
-

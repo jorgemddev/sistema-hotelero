@@ -13,16 +13,24 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Injectable()
 export class SpinnerInterceptor implements HttpInterceptor {
-  constructor(private spinnerService: SpinnerService,private toast:ToastrService,private router:Router,private helps:Helps) {}
-
-
+  constructor(private spinnerService: SpinnerService, private toast: ToastrService, private router: Router, private helps: Helps) { }
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.spinnerService.show();
-    const updatedReq = req.clone({ url: req.url + this.helps.getUrlTknUid() });
+     var updatedReq = req.clone({ url: req.url });
+    if (sessionStorage.getItem('token') != null) {
+      const token = this.helps.getToken()?.token;
+       updatedReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        },
+        url: req.url + "?uid="+this.helps.getToken()?.id
+      });
+    }
+
     return next.handle(updatedReq).pipe(
       tap(
         (event: HttpEvent<Response>) => {
@@ -46,5 +54,4 @@ export class SpinnerInterceptor implements HttpInterceptor {
       )
     );
   }
-
 }

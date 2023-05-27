@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Responses } from 'src/app/models/interfaces/responses';
-import { RequestsService } from 'src/app/services/requests.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,19 +11,12 @@ import { environment } from 'src/environments/environment';
 export class ApiSearchService {
   public domain: string = environment.baseApiUrl;
 
-  constructor(private http: HttpClient, private request: RequestsService) { }
+  constructor(private http: HttpClient) { }
 
 
   searchProducts(q:string, category,page: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/index/search/' +q+'/'+category+'/'+page+'/'+this.getUrlTknUid()
+      this.domain + 'products/index/search/' +q+'/'+category+'/'+page+'/'
     );
-  }
-
-  getUrlTknUid(): String {
-    var uid = sessionStorage.getItem('ccviUid');
-    var token = sessionStorage.getItem('ccviTkn');
-    var url: String = '?uid=' + uid + '&token=' + token;
-    return url;
   }
 }
