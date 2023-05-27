@@ -13,7 +13,6 @@ import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerInterceptor } from './models/interceptors/spinner.interceptor';
-import { NgFallimgModule } from 'ng-fallimg';
 import { SpinnerModule } from './components/spinner/spinner.module';
 
 @NgModule({
@@ -27,10 +26,6 @@ import { SpinnerModule } from './components/spinner/spinner.module';
     PublicModule,
     PrivateModule,
     SpinnerModule,    
-    NgFallimgModule.forRoot({
-      default: '/assets/images/default.jpg',
-      logo: '/assets/images/logo-company-default.png'
-    }),
 
   ],
   providers: [
@@ -38,7 +33,6 @@ import { SpinnerModule } from './components/spinner/spinner.module';
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
   ],
-  exports: [NgFallimgModule],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

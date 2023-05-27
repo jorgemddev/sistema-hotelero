@@ -11,7 +11,6 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { ListtUserComponent } from './users/list-user/list-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RepositoryImageModule } from '../common/repository-image/repository-image.module';
-import { NgFallimgModule } from 'ng-fallimg';
 import { UsersComponent } from './users/users.component';
 import { CompanyComponent } from './company/company.component';
 import { SocialMediaComponent } from './company/social-media/social-media.component';
@@ -45,10 +44,6 @@ import { AddConfigEmailComponent } from './config/config-email/add-config-email/
     RepositoryImageModule,
     NgbPaginationModule,
     NgbModule,
-    NgFallimgModule.forRoot({
-      default: '/assets/img/default.jpg',
-      logo: '/assets/img/logo-company-default.png',
-    }),
   ]
 })
 export class SettingModule { }

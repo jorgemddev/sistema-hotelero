@@ -6,6 +6,7 @@
       for="filter"
       >{{ toolbar?.filterLabel }}</label
     >
+    <span *ngIf="!hideFilter" class="input-group-text"><i class="fa-solid fa-filter"></i></span>
     <select
       *ngIf="!hideFilter"
       class="form-control"
@@ -31,7 +32,7 @@
       class="form-control"
       id="search"
       name="search"
-      (keyup)="searchText(vs.value)"
+      (keyup)="search(vs.value)"
     />
     <!--Buttons-->
 

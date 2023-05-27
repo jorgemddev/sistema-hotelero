@@ -25,15 +25,15 @@ export class SearchProductsComponent implements OnInit {
 
   @Output()
   selected = new EventEmitter<Products>();
-  @Input()  viewSelected:boolean=false;
+  @Input() viewSelected: boolean = false;
 
   @Output()
   edit = new EventEmitter<Products>();
-  @Input()  viewEdit:boolean=true;
+  @Input() viewEdit: boolean = true;
 
   @Output()
   delete = new EventEmitter<Products>();
-  @Input()  viewDelete:boolean=true;
+  @Input() viewDelete: boolean = true;
 
   categorys: any;
 
@@ -81,12 +81,17 @@ export class SearchProductsComponent implements OnInit {
     );
   }
 
-  onSearch(q: string, category: any) {
-    if (q.length > 2) {
-      this.q = q;
-      this.category = category.value;
-      this.getProducts();
+  onSearch(q: string = null, category: any = 0) {
+    if (q != null) {
+ this.q = q;
     }
+   
+    if (category > 0) {
+      this.category = category;
+    }
+
+    this.getProducts();
+
 
   }
   search() {

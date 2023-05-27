@@ -6,7 +6,7 @@ import { ListContactComponent } from './list-contact/list-contact.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RepositoryImageModule } from '../repository-image/repository-image.module';
-import { NgFallimgModule } from 'ng-fallimg';
+
 
 
 
@@ -23,7 +23,6 @@ import { NgFallimgModule } from 'ng-fallimg';
     NgbPaginationModule,
     NgbModule,
     RepositoryImageModule,
-    NgFallimgModule    
   ],exports:[
     AddContactComponent,
     EditContactComponent,

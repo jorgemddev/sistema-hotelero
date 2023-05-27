@@ -11,7 +11,6 @@ import { ShortCodeComponent } from './custom/shortcode/shortcode.component';
 import { ShortCodesComponent } from './short-codes/short-codes.component';
 import { GalleryIconsModule } from '../gallery-icons/gallery-icons.module';
 import { NgbPagination, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgFallimgModule } from 'ng-fallimg';
 import { EmojiComponent } from './custom/emoji/emoji.component';
 
 
@@ -34,7 +33,6 @@ import { EmojiComponent } from './custom/emoji/emoji.component';
     RepositoryImageModule,
     GalleryIconsModule,
     NgbPaginationModule,
-    NgFallimgModule
   ],
   exports: [
     EditorHtmlComponent,

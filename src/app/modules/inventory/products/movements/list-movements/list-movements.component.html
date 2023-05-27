@@ -8,25 +8,13 @@
                     Movimientos
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="input-group mb-1">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                </div>
-                                <input #srch type="text" class="form-control" placeholder="Buscar producto"
-                                    (keyup)="search(srch)">
-                            </div>
+                            <app-toolbar-search (onSearch)="search($event)" [hideFilter]="true"
+                                [placeholder]="'Buscar Producto'" />
                         </div>
                         <div class="col-md-6">
                             <div class="btn-group float-right" role="group">
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text"><i class="fa-solid fa-filter"></i></span>
-                                    <select #filter class="form-control" (change)="filterMovements(filter)">
-                                        <option value="0">TODAS</option>
-                                        <option value="1">ENTRADAS</option>
-                                        <option value="2">SALIDAS</option>
-                                    </select>
-                                </div>
-
+                                <app-toolbar-search (onFilter)="filterMovements($event)" [hideSearch]="true"
+                                    [filters]="filters" />
                             </div>
                         </div>
                     </div>

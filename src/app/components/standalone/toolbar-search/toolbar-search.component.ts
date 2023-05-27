@@ -9,22 +9,18 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
-  UntypedFormGroup,
-  UntypedFormControl,
   FormsModule,
   ReactiveFormsModule,
   FormGroup,
   FormControl,
 } from '@angular/forms';
 import {
-  NgbModal,
   NgbModule,
-  NgbPagination,
   NgbPaginationModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs';
+import { Subject } from 'rxjs/internal/Subject';
 import { Filters } from 'src/app/models/interfaces/filters';
-import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   standalone: true,
@@ -46,6 +42,7 @@ export class ToolbarSearchComponent implements OnInit, OnChanges {
       select: new FormControl(-1),
     });
   }
+  private keyUpSubject = new Subject<string>();
   ngOnChanges(changes: SimpleChanges): void {
     if (this.filters) {
       console.log('UPDATE FILTER');
@@ -58,7 +55,15 @@ export class ToolbarSearchComponent implements OnInit, OnChanges {
 
   form: FormGroup;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.keyUpSubject
+      .pipe(debounceTime(500)) // Establece un tiempo de espera de 500 ms (ajústalo según tus necesidades)
+      .subscribe((searchTerm) => {
+        // Realiza la llamada a la API con el término de búsqueda
+        console.log("RECIBIDO", searchTerm);
+        this.searchText(searchTerm);
+      });
+  }
 
   /**
    * Salidas de busqueda
@@ -120,14 +125,16 @@ export class ToolbarSearchComponent implements OnInit, OnChanges {
   collectionSize = 0;
   totalPage = 0;
 
+  search(q: string) {
+    console.log("SEARCH", q);
+    this.keyUpSubject.next(q)
+  }
   searchText(q: string) {
     if (q.length > 0) {
-      if (this.checkMulti) {
-        this.onSearchFilter.emit({
-          q: this.form.get('input')?.value,
-          filter: this.form.get('select')?.value,
-        });
-      }
+      this.onSearchFilter.emit({
+        q: this.form.get('input')?.value,
+        filter: this.form.get('select')?.value,
+      });
       this.onSearch.emit(q);
     } else {
       this.onEmptyInput.emit(true);

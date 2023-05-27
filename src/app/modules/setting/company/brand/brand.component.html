@@ -8,7 +8,7 @@
                         <div class="card mb-4 mb-xl-0">
                             <div class="card-header">Marca</div>
                             <div class="card-body text-center">
-                                <img (click)="openRepository(repository)" [fallimg]="'logo'" *ngIf="primaryFm.get('logo')?.value; else imgDefault" style="cursor: pointer;" class="img-fluid  mb-2" [src]="primaryFm.get('logo')?.value" alt="">
+                                <img (click)="openRepository(repository)"  *ngIf="primaryFm.get('logo')?.value; else imgDefault" style="cursor: pointer;" class="img-fluid  mb-2" [src]="primaryFm.get('logo')?.value" alt="">
                                 <ng-template #imgDefault><img (click)="openRepository(repository)" style="cursor: pointer;" class="img-account-profile rounded-circle mb-2" src="assets/images/logo-company-default.png" alt=""></ng-template>
                                 <div class="small font-italic text-muted mb-4">JPG o PNG tamaño maximo 5 MB</div>
                                 <button class="btn btn-primary" type="button" (click)="saveImageProfile()" *ngIf="image!=primaryFm.get('logo')?.value">Guardar</button>

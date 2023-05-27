@@ -19,7 +19,6 @@ import { EditProviderComponent } from './providers/provider/edit-provider/edit-p
 import { AddPurchaseOrderComponent } from './providers/purchase-order/add-purchase-order/add-purchase-order.component';
 import { EditPurchaseOrderComponent } from './providers/purchase-order/edit-purchase-order/edit-purchase-order.component';
 import { ListPurchaseOrderComponent } from './providers/purchase-order/list-purchase-order/list-purchase-order.component';
-import { NgFallimgModule } from 'ng-fallimg';
 import { RepositoryImageModule } from '../common/repository-image/repository-image.module';
 import { GeneratorSkuComponent } from './products/management/generator-sku/generator-sku.component';
 import { MoneyClPipe } from 'src/app/pipes/money-cl.pipe';
@@ -58,7 +57,6 @@ import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-se
     ReactiveFormsModule,
     NgbPaginationModule,
     NgbModule,
-    NgFallimgModule,
     RepositoryImageModule,
     NotesModule,
     ContactsModule,

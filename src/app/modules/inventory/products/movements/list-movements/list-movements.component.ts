@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Validators } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, debounceTime } from 'rxjs';
+import { Filters } from 'src/app/models/interfaces/filters';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -20,17 +21,17 @@ export class ListMovementsComponent implements OnInit {
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
-    
+
   ) { }
   private keyUpSubject = new Subject<string>();
   ngOnInit(): void {
     this.getMovements();
     this.keyUpSubject
-    .pipe(debounceTime(500)) // Establece un tiempo de espera de 500 ms (ajústalo según tus necesidades)
-    .subscribe((searchTerm) => {
-      // Realiza la llamada a la API con el término de búsqueda
-      this.getMovements();
-    });
+      .pipe(debounceTime(500)) // Establece un tiempo de espera de 500 ms (ajústalo según tus necesidades)
+      .subscribe((searchTerm) => {
+        // Realiza la llamada a la API con el término de búsqueda
+        this.getMovements();
+      });
   }
   item: any;
   items: any;
@@ -39,8 +40,8 @@ export class ListMovementsComponent implements OnInit {
   collectionSize = 0;
   totalPage = 0;
   filter = 0;
-  q: string="";
-
+  q: string = "";
+  filters: Filters[] = [{ id: 0, tag: 'TODAS' }, { id: 1, tag: 'ENTRADAS' }, { id: 0, tag: 'SALIDAS' }];
   form = new UntypedFormGroup({
     id: new UntypedFormControl(),
     barcode: new UntypedFormControl({ value: '', disabled: true }),
@@ -54,7 +55,7 @@ export class ListMovementsComponent implements OnInit {
   });
 
   getMovements() {
-    this.api.listMovements(this.q,this.filter,this.page).subscribe(
+    this.api.listMovements(this.q, this.filter, this.page).subscribe(
       (response) => {
         var data = response.data as Paginate;
         this.items = data.items;
@@ -65,7 +66,7 @@ export class ListMovementsComponent implements OnInit {
         this.totalPage = data.total;
       },
       (e) => {
-       this.toast.warning(e.error.mistakes,e.error.msg);
+        this.toast.warning(e.error.mistakes, e.error.msg);
       }
     );
   }
@@ -77,17 +78,18 @@ export class ListMovementsComponent implements OnInit {
     });
   }
   search(q: any) {
-    if (q.value.length > 2) {
-      this.q = q.value;
+    console.log("SE RECIBIO", q);
+    if (q.length > 2) {
+      this.q = q;
       this.keyUpSubject.next(q)
-    }else{
-      this.q="";
+    } else {
+      this.q = "";
       this.keyUpSubject.next(q)
     }
 
   }
   filterMovements(filter: any) {
-    this.filter = filter.value;
+    this.filter = filter;
     this.getMovements();
   }
   clean() { }

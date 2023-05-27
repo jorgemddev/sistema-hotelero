@@ -6,18 +6,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="row no-gutters">
-                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                    <select class="form-control" id="category" #category
-                                        (change)="onSearch(vs.value,category)">
-                                        <option value="0">CATEGORIAS</option>
-                                        <option *ngFor="let item of categorys" value="{{item.id}}">{{item.tag |
-                                            uppercase}}</option>
-                                    </select>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-4">
+                                    <app-toolbar-search (onFilter)="onSearch(null,$event)" [hideSearch]="true" [filters]="categorys" />
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-12 p-0">
-                                    <input #vs type="search" placeholder="Escriba el nombre del producto"
-                                        class="form-control" id="search" name="search"
-                                        (keyup)="onSearch(vs.value,category)">
+                                <div class="col-lg-9 col-md-9 col-sm-12 p-4">
+                                    <app-toolbar-search (onSearch)="onSearch($event)" id="search" [hideFilter]="true" [placeholder]="'Escriba el nombre del producto'" />
                                 </div>
                             </div>
                         </div>
@@ -39,7 +32,7 @@
                                             <tr *ngFor="let item of items">
                                                 <td>
                                                     <div class="widget-26-job-emp-img">
-                                                        <img [src]="item.image" [fallimg]="'default'" />
+                                                        <img [src]="item.image" [defaultImage]="'default'" />
                                                     </div>
                                                 </td>
                                                 <td>
@@ -52,10 +45,12 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span class="text-muted time"><i class="fa-regular fa-calendar"></i> Creado {{item.created_at}}</span>
+                                                    <span class="text-muted time"><i class="fa-regular fa-calendar"></i>
+                                                        Creado {{item.created_at}}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="text-muted time"><b>Marca</b> {{item.brand}} <b>Modelo</b> {{item.model}}</span>
+                                                    <span class="text-muted time"><b>Marca</b> {{item.brand}}
+                                                        <b>Modelo</b> {{item.model}}</span>
                                                 </td>
                                                 <td>
                                                     <button *ngIf="viewEdit" type="button" class="btn   text-warning"

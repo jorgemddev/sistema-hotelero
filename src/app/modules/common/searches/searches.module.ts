@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchProductsComponent } from './search-products/search-products.component';
-import { NgFallimgModule } from 'ng-fallimg';
 import { NgbPagination, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiSearchService } from './api-search.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InventoryModule } from '../../inventory/inventory.module';
+import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
+import { ImageDefaultConfig, ImageDefaultModule } from '../image-default/image-default.module';
 
-
+const imageConfig: ImageDefaultConfig = {
+  defaultImages: {
+    default: 'assets/images/default.jpg',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -15,10 +20,11 @@ import { InventoryModule } from '../../inventory/inventory.module';
   ],
   imports: [
     CommonModule,
-    NgFallimgModule,
     NgbPaginationModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToolbarSearchComponent,
+    ImageDefaultModule.forRoot(imageConfig)
   ],
   exports:[
     SearchProductsComponent

@@ -7,7 +7,6 @@ import { GalleryIconsModule } from '../gallery-icons/gallery-icons.module';
 import { RepositoryImageModule } from '../repository-image/repository-image.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
-import { NgFallimgModule } from 'ng-fallimg';
 
 
 
@@ -23,7 +22,6 @@ import { NgFallimgModule } from 'ng-fallimg';
     ReactiveFormsModule,
     FormsModule,
     NgxEditorModule,
-    NgFallimgModule
   ],
   exports:[
     RepositoryShortCodesComponent,

@@ -4,7 +4,6 @@ import { NgbPagination, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { ListNotesComponent } from './list-notes/list-notes.component';
 import { AddNotesComponent } from './add-notes/add-notes.component';
 import { EditNotesComponent } from './edit-notes/edit-notes.component';
-import { NgFallimgModule } from 'ng-fallimg';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorHtmlModule } from '../editor-html/editor-html.module';
 
@@ -19,7 +18,6 @@ import { EditorHtmlModule } from '../editor-html/editor-html.module';
   imports: [
     CommonModule,
     NgbPaginationModule,
-    NgFallimgModule,
     FormsModule,
     ReactiveFormsModule,
     EditorHtmlModule
