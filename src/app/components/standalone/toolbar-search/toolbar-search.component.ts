@@ -197,5 +197,5 @@ export interface ResultSearch {
 export interface Buttons {
   id: number;
   iconFaWSome?: string;
-  vaue: string;
+  value: string;
 }

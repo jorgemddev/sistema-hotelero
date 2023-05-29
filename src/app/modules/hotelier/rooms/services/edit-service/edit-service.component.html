@@ -1,0 +1,52 @@
+<form [formGroup]="form" (ngSubmit)="update()" *ngIf="service_id>0">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">MODIFICAR SERVICIO<br>
+            <i class="fa-solid fa-wifi"></i><i class="fa-solid fa-tv ms-1"></i> <i
+                class="fa-solid fa-square-parking ms-1"></i>
+        </div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_number">Nombre</label>
+                    <input type="text" class="form-control" formControlName="tag">
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_type">Descripción</label>
+                    <input type="text" class="form-control" formControlName="detail">
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">GUARDAR CAMBIOS</button>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Quitar de la Habitación</label>
+                </div>
+                <button type="button" class="btn btn-warning" (click)="removeService()"><i class="fa-solid fa-xmark"></i></button>
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Eliminar Servicio</label>
+                </div>
+                <button type="button" class="btn btn-danger" (click)="openModal(delete)"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<ng-template #delete let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Atención</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body text-center">
+            <i class="fa-solid fa-triangle-exclamation fa-5x text-danger"></i>
+            <h5>¿Desea eliminar?</h5>
+            <p>Se eleminara definitivamente de todos los registros</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger" (click)="deleteService()">Si</button>
+        </div>
+</ng-template>

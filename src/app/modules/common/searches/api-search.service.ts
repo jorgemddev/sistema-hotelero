@@ -19,4 +19,5 @@ export class ApiSearchService {
       this.domain + 'products/index/search/' +q+'/'+category+'/'+page+'/'
     );
   }
+
 }

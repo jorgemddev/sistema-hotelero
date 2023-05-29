@@ -3,15 +3,17 @@ import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Toolbar } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
 import { Paginate } from 'src/app/models/interfaces/paginate';
+import { Rooms } from 'src/app/models/interfaces/rooms';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
-  selector: 'app-product-brands',
-  templateUrl: './product-brands.component.html',
-  styleUrls: ['./product-brands.component.css']
+  selector: 'app-list-rooms',
+  templateUrl: './list-rooms.component.html',
+  styleUrls: ['./list-rooms.component.css']
 })
-export class ProductBrandsComponent implements OnInit {
+export class ListRoomsComponent implements OnInit {
   constructor(
     private api: ApiService,
     private modal: NgbModal,
@@ -19,19 +21,21 @@ export class ProductBrandsComponent implements OnInit {
     private router: Router,
     private routeActive: ActivatedRoute,
   ) { }
-
+  selected:any;
   ngOnInit(): void {
-
-    this.getBrands();
+    this.getRooms();
     this.routeActive.paramMap.subscribe((params: ParamMap) => {
       if (params.get('id') != null) {
         console.log(params.get('id'));
         var id = params.get('id');
-        this.getBrand(id);
+
       }
     });
   }
-  items: any;
+  toolbar: Toolbar = {
+    buttons: [{ id: 1, iconFaWSome: 'fa-circle-plus', value: 'AGREGAR' }]
+  };
+  items: Rooms[];
   form = new UntypedFormGroup({
     id: new UntypedFormControl(),
     tag: new UntypedFormControl(),
@@ -42,7 +46,7 @@ export class ProductBrandsComponent implements OnInit {
   tForm = new UntypedFormGroup({
     id: new UntypedFormControl(),
     tag: new UntypedFormControl(),
-    brand_id:new UntypedFormControl()
+    brand_id: new UntypedFormControl()
   });
   models: any;
   model: any;
@@ -57,7 +61,7 @@ export class ProductBrandsComponent implements OnInit {
     this.api.createBrand(this.form).subscribe(
       (response) => {
         this.toast.success('Creado correctamente', 'Marcas');
-        this.getBrands();
+        this.getRooms();
         this.modal.dismissAll();
       },
       (e) => {
@@ -72,7 +76,7 @@ export class ProductBrandsComponent implements OnInit {
     this.api.updateBrands(this.form).subscribe(
       (response) => {
         this.toast.success('Modificado correctamente', 'Marcas');
-        this.getBrands();
+        this.getRooms();
         this.modal.dismissAll();
       },
       (e) => {
@@ -83,44 +87,16 @@ export class ProductBrandsComponent implements OnInit {
       }
     );
   }
-  createModel() {
-    this.api.createModel(this.tForm).subscribe(
-      (response) => {
-        this.toast.success('Registro creado correctamente', 'Modelos');
-        this.getBrands();
-        this.modal.dismissAll();
-      },
-      (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
-      }
-    );
-  }
-  updateModel() {
-    this.api.updateModel(this.tForm).subscribe(
-      (response) => {
-        this.toast.success('Modificado correctamente', 'Modelos');
-        this.getBrands();
-        this.modal.dismissAll();
-      },
-      (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
-      }
-    );
-  }
+
+
   delete() {
-    this.api.deleteBrands(this.sForm).subscribe(
+    this.api.deleteRooms(this.sForm).subscribe(
       (response) => {
         this.toast.success(
-          'Esta MARCA  fue  eliminado correctamente',
-          'Marcas'
+          'Esta Habitación  fue  eliminado correctamente',
+          'Habitaciones'
         );
-        this.getBrands();
+        this.getRooms();
 
         this.modal.dismissAll();
       },
@@ -132,34 +108,9 @@ export class ProductBrandsComponent implements OnInit {
       }
     );
   }
-  deleteModel() {
-    this.api.deleteModel(this.tForm).subscribe(
-      (response) => {
-        this.toast.success(
-          'Este MODELO fue  eliminado correctamente',
-          'Modelos'
-        );
-        this.getBrands();
+ 
 
-        this.modal.dismissAll();
-      },
-      (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
-      }
-    );
-  }
-  goToUpdate(id: number) {
-    this.router.navigate(['inventario/productos/marcas/editar/' + id]);
-  }
-  goToCreate() {
-    console.log('create');
-    this.router.navigate(['inventario/productos/marcas']);
-  }
-
-  getBrand(id: any) {
+  getRoom(id: any) {
     this.api.getBrand(id).subscribe(
       (response) => {
         this.form.patchValue(response.data);
@@ -172,11 +123,11 @@ export class ProductBrandsComponent implements OnInit {
       }
     );
   }
-  getBrands() {
-    this.api.listBrands(1).subscribe(
+  getRooms() {
+    this.api.listRooms(1).subscribe(
       (response) => {
         var data = response.data as Paginate;
-        this.items = data.items;
+        this.items = data.items as Rooms[];
       },
       (e) => {
         this.toast.warning(
@@ -186,31 +137,20 @@ export class ProductBrandsComponent implements OnInit {
       }
     );
   }
-  openSaveBrand(md: any, size: string = "sm") {
-    this.form.reset();
+  openUpdate(item: any,md: any , size: string = "md") {
+    this.selected=null;
+    this.selected=item;
     this.modal.open(md, {
       size: size,
     });
   }
-  openUpdateBrand(md: any, item: any, size: string = "sm") {
-    this.form.reset();
-    this.form.patchValue(item);
-    this.modal.open(md, {
-      size: size,
-    });
-  }
-  openSaveModel(md: any, item: any, size: string = "sm") {
-    this.tForm.reset();
-    this.tForm.get('brand_id').setValue(item.id);
-    this.modal.open(md, {
-      size: size,
-    });
-  }
-  openMdModel(md: any, item: any, size: string = "sm") {
-    this.tForm.patchValue(item);
-    this.modal.open(md, {
-      size: size,
-    });
+
+  openModal(mdl: any, size: string = 'md',item:any=null) {
+    if(item!=null){
+      console.log("SELECTED->",item);
+      this.selected=item;
+    }
+    this.modal.open(mdl, { size: size });
   }
   openDelete(id: number, md: any) {
     this.sForm.get('id').setValue(id);

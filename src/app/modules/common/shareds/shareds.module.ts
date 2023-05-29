@@ -5,15 +5,16 @@ import { ApiSharedService } from './api-shared.service';
 import { ShareWhatsappComponent } from './share-whatsapp/share-whatsapp.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditorHtmlModule } from '../editor-html/editor-html.module';
 import { NgxEditorModule } from 'ngx-editor';
+import { MoneyClPipe } from 'src/app/pipes/money-cl.pipe';
 
 
 
 @NgModule({
   declarations: [
     SharedPurchaseComponent,
-    ShareWhatsappComponent
+    ShareWhatsappComponent,
+    MoneyClPipe
   ],
   imports: [
     CommonModule,
@@ -23,7 +24,8 @@ import { NgxEditorModule } from 'ngx-editor';
     NgxEditorModule
   ],
   exports:[
-    SharedPurchaseComponent
+    SharedPurchaseComponent,
+    MoneyClPipe
   ],
   providers: [
     ApiSharedService,

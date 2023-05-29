@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { InventoryComponent } from '../modules/inventory/inventory.component';
 import { SettingComponent } from '../modules/setting/setting.component';
 import { DashComponent } from './pages/dash/dash.component';
+import { HotelierComponent } from '../modules/hotelier/hotelier.component';
 
 const routes: Routes = [
   {
@@ -63,7 +64,7 @@ const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('../modules/inventory/inventory.module').then(
-            (m3) => m3.InventoryModule
+            (m2) => m2.InventoryModule
           ),
       },
     ],
@@ -77,7 +78,29 @@ const routes: Routes = [
       ],
     },
   },
-  
+    //module hotelier
+    {
+      path: 'hotel',
+      component: HotelierComponent,
+      children: [
+        {
+          path: '',
+          loadChildren: () =>
+            import('../modules/hotelier/hotelier.module').then(
+              (m3) => m3.HotelierModule
+            ),
+        },
+      ],
+      data: {
+        title: 'HOTEL',
+        breadcrumb: [
+          {
+            label: 'Hotel',
+            url: '/hotel',
+          },
+        ],
+      },
+    },
 ];
 
 @NgModule({

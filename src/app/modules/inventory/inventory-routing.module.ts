@@ -5,7 +5,7 @@ import { FormatsComponent } from './formats/formats.component';
 import { ListProductComponent } from './products/management/list-product/list-product.component';
 import { ListMovementsComponent } from './products/movements/list-movements/list-movements.component';
 import { ProductComponent } from './products/products.component';
-import { ProductBransComponent } from './products/setting/product-brans/product-brans.component';
+import { ProductBrandsComponent } from './products/setting/product-brands/product-brands.component';
 import { ProductFamilyComponent } from './products/setting/product-family/product-family.component';
 import { EditProviderComponent } from './providers/provider/edit-provider/edit-provider.component';
 import { ListProviderComponent } from './providers/provider/list-provider/list-provider.component';
@@ -19,6 +19,19 @@ const routes: Routes = [
     path: 'productos',
     canActivate: [AdminGuard],
     component: ProductComponent,
+    data: {
+      title: 'PRODUCTOS',
+      breadcrumb: [
+        {
+          label: 'Inventario',
+          url: 'inventario',
+        },
+        {
+          label: 'Productos',
+          url: '',
+        },
+      ],
+    },
     children: [
       {
         path: 'gestion',
@@ -67,7 +80,7 @@ const routes: Routes = [
       {
         path: 'marcas',
         canActivate: [AdminGuard],
-        component: ProductBransComponent,
+        component: ProductBrandsComponent,
         data: {
           title: 'MARCAS',
           breadcrumb: [
@@ -135,19 +148,7 @@ const routes: Routes = [
         },
       },
     ],
-    data: {
-      title: 'PRODUCTOS',
-      breadcrumb: [
-        {
-          label: 'Inventario',
-          url: 'inventario',
-        },
-        {
-          label: 'Productos',
-          url: '',
-        },
-      ],
-    },
+
   },
   {
     path: 'formatos',
@@ -201,7 +202,7 @@ const routes: Routes = [
       {
         path: 'marcas',
         canActivate: [AdminGuard],
-        component: ProductBransComponent,
+        component: ProductBrandsComponent,
         data: {
           title: 'MARCAS',
           breadcrumb: [
@@ -223,7 +224,7 @@ const routes: Routes = [
       {
         path: 'marcas/:editar/:id',
         canActivate: [AdminGuard],
-        component: ProductBransComponent,
+        component: ProductBrandsComponent,
         data: {
           title: 'MARCAS',
           breadcrumb: [

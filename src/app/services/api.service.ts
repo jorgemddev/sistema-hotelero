@@ -106,6 +106,11 @@ export class ApiService {
       this.domain + 'products/brands/list/' + page 
     );
   }
+  listRooms(page: number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/rooms/list/' + page 
+    );
+  }
   getBrand(id: number): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'products/brands/' + id 
@@ -214,6 +219,16 @@ export class ApiService {
   getCities(page: number): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'params/cities/list/' + page 
+    );
+  }
+  getAllAmenities(): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/amenities/' 
+    );
+  }
+  getAllAmenitie(id:number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/amenities/' +id
     );
   }
   getProviders(): Observable<Responses> {
@@ -613,6 +628,45 @@ export class ApiService {
       }
     );
   }
+  createRooms(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/rooms/create/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createAmenities(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/amenities/create/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createAmenitie(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/amenitie/create/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
   createPurchase(form: UntypedFormGroup, products: any): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value).append('products', JSON.stringify(products));
     return this.http.post<Responses>(
@@ -743,6 +797,19 @@ export class ApiService {
       }
     );
   }
+  updateAmenities(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/amenities/update/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
   updateProviders(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -855,6 +922,19 @@ export class ApiService {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'user/profile/update/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  updateRooms(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/rooms/update/' ,
       body,
       {
         headers: new HttpHeaders().set(
@@ -1066,6 +1146,20 @@ export class ApiService {
       }
     );
   }
+  deleteRooms(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().set('id', form.get('id')?.value);
+
+    return this.http.post<Responses>(
+      this.domain + 'hotel/rooms/delete/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
   deleteMovements(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
@@ -1110,6 +1204,32 @@ export class ApiService {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
       this.domain + 'products/familys/delete/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  deleteAmenities(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/amenities/delete/' ,
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  removeService(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/amenitie/delete/' ,
       body,
       {
         headers: new HttpHeaders().set(

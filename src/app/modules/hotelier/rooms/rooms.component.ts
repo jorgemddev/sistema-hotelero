@@ -3,20 +3,19 @@ import { Location } from '@angular/common';
 import { AppComponent } from 'src/app/app.component';
 
 @Component({
-  selector: 'app-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.css']
+  selector: 'app-rooms',
+  templateUrl: './rooms.component.html',
+  styleUrls: ['./rooms.component.css']
 })
-export class InventoryComponent {
+export class RoomsComponent implements OnInit {
   constructor(private location: Location, private appComponent:AppComponent) {
     this.appComponent.route.subscribe((route)=>{
-      this.isActive = (route == "/inventario") ? true : false;
+      this.isActive = (route == "/hotel/habitaciones") ? true : false;
     });
   }
-
   ngOnInit(): void {
     const currentPath = this.location.path();
-    this.isActive = (currentPath === "/inventario") ? true : false;
+    this.isActive = (currentPath === "/hotel/habitaciones") ? true : false;
   }
   isActive: boolean=false;
 }

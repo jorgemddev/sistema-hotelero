@@ -12,9 +12,9 @@ export class AppComponent {
   currentRoute: string;
 
   constructor(private router: Router) {
-    this.currentRoute = 'Demo';
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
+        console.log("ROUTE",event.url);
         this.currentRoute = event.url;
         this.route.emit(this.currentRoute);
       }

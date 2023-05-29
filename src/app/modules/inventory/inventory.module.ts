@@ -9,7 +9,6 @@ import { NgbModule, NgbPagination, NgbPaginationModule } from '@ng-bootstrap/ng-
 import { ListMovementsComponent } from './products/movements/list-movements/list-movements.component';
 import { ListProductComponent } from './products/management/list-product/list-product.component';
 import { EditProductComponent } from './products/management/edit-product/edit-product.component';
-import { ProductBransComponent } from './products/setting/product-brans/product-brans.component';
 import { ProductFamilyComponent } from './products/setting/product-family/product-family.component';
 import { FormatsComponent } from './formats/formats.component';
 import { ProvidersComponent } from './providers/providers.component';
@@ -21,13 +20,13 @@ import { EditPurchaseOrderComponent } from './providers/purchase-order/edit-purc
 import { ListPurchaseOrderComponent } from './providers/purchase-order/list-purchase-order/list-purchase-order.component';
 import { RepositoryImageModule } from '../common/repository-image/repository-image.module';
 import { GeneratorSkuComponent } from './products/management/generator-sku/generator-sku.component';
-import { MoneyClPipe } from 'src/app/pipes/money-cl.pipe';
 import { NotesModule } from '../common/notes/notes.module';
 import { ContactsModule } from '../common/contacts/contacts.module';
 import { EditorHtmlModule } from '../common/editor-html/editor-html.module';
 import { SearchesModule } from '../common/searches/searches.module';
 import { SharedsModule } from '../common/shareds/shareds.module';
 import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
+import { ProductBrandsComponent } from './products/setting/product-brands/product-brands.component';
 @NgModule({
   declarations: [
     InventoryComponent,
@@ -36,7 +35,7 @@ import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-se
     AddProductComponent,
     EditProductComponent,
     ListMovementsComponent,
-    ProductBransComponent,
+    ProductBrandsComponent,
     ProductFamilyComponent,
     FormatsComponent,
     ProvidersComponent,
@@ -46,8 +45,7 @@ import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-se
     AddPurchaseOrderComponent,
     EditPurchaseOrderComponent,
     ListPurchaseOrderComponent,
-    GeneratorSkuComponent,
-    MoneyClPipe
+    GeneratorSkuComponent
 
   ],
   imports: [
@@ -62,11 +60,9 @@ import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-se
     ContactsModule,
     EditorHtmlModule,
     SearchesModule,
-    SharedsModule,ToolbarSearchComponent
+    SharedsModule,
+    ToolbarSearchComponent
 
-  ],
-  providers: [
-    MoneyClPipe
   ],
   exports: [InventoryComponent],
 })

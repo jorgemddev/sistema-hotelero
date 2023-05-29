@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MainFooterComponent,
     MainContentComponent,
     MainNavComponent,
-    DashComponent,
+    DashComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgDynamicBreadcrumbModule,
     ToastrModule.forRoot(),
   ],
-  exports: [PrivateComponent,FormsModule,
-    ReactiveFormsModule,],
+  exports: [PrivateComponent, FormsModule,
+    ReactiveFormsModule],
 })
-export class PrivateModule {}
+export class PrivateModule { }

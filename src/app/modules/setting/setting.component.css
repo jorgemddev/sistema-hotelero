@@ -30,7 +30,6 @@
     background: none;
     padding: 0 0.9375rem;
     font-weight: 500;
-    display: flex;
     align-items: center;
     min-height: 50px;
 }
@@ -38,8 +37,15 @@
 .card-header:first-child {
     border-radius: calc(8px - 1px) calc(8px - 1px) 0 0;
 }
-
+.card-header{
+    padding-top: 5px !important;
+    text-align: center !important;
+}
 .card-content {
     display: flex;
     justify-content: center;
+}
+.card-footer{
+    background-color: transparent !important;
+    font-size: x-small !important;
 }
