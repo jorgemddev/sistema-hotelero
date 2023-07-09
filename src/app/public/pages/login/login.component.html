@@ -25,7 +25,7 @@
           <form novalidate [formGroup]="loginForm" (ngSubmit)="login()">
             <h2 class="text-center">{{ domain }}</h2>
             <p class="text-muted text-center">
-              Sistema de gestión de contenido
+              Sistema de gestión de Hotelero
             </p>
 
             <label for="email" *ngIf="restore">Ingrese su correo</label>
@@ -37,7 +37,7 @@
                 type="email"
                 formControlName="email"
                 class="form-control"
-                placeholder="Su email de registro"
+                placeholder="Email de registro"
               />
             </div>
             <div class="alert alert-info" *ngIf="send">
@@ -63,8 +63,9 @@
               <span class="input-group-text"><i class="fa fa-user"></i></span>
               <input
                 type="text"
-                formControlName="cod"
+                formControlName="rut"
                 class="form-control"
+                (keyup)="onFormatRut($event)" autocomplete="off"
                 placeholder="Usuario"
               />
             </div>

@@ -11,4 +11,5 @@ export interface Responses {
   other?:any;
   level?:number;
   type_id?: any;
+  hasStartedCash:boolean;
 }

@@ -1,0 +1,136 @@
+<div class="container-fluid mt-2">
+
+
+  <!-- toolbar -->
+  <div class="toolbar shadow-lg border">
+
+    <mat-form-field>
+      <mat-label>Rango del calendario</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [formGroup]="form">
+        <input matStartDate placeholder="Desde" formControlName="start">
+        <input matEndDate placeholder="Hasta" formControlName="end" (dateChange)="setRangeCalendar()">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  
+    
+
+    <div class="toolbar-btns shadow-lg border" style="border-radius: 10px;">
+      <button class="toolbar-btn" (click)="cambiarMes(-1)">
+        <i class="fas fa-chevron-left"></i> Anterior
+      </button>
+      <span class="toolbar-month m-1">{{ formatMonthSpanish(mesActual) | uppercase }}</span>
+      <button class="toolbar-btn" (click)="cambiarMes(1)">
+        Siguiente <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    <button class="btn btn-secondary btn-sm" (click)="openModal(searchReservation)"><i
+        class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+  </div>
+
+  <!--/toolbar-->
+
+  <!-- start table -->
+  <div class="table-container mb-2">
+    <table>
+      <thead>
+        <tr>
+          <th class="habitaciones-header">Habitaciones</th>
+          <ng-container *ngFor="let fecha of fechas">
+            <th class="fecha-header" [ngClass]="{'feriado': isFeriado(fecha)}">{{ formatDate(fecha) }}</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let habitacion of rooms; let habitacionIndex = index">
+          <td class="habitaciones-header"
+            [ngClass]="{'bg-black text-white':habitacion?.availability_id==5,'bg-info text-white':habitacion?.availability_id==4}">
+            {{ habitacion?.room_number | uppercase }}
+            <i style="cursor: pointer;" *ngIf="habitacion?.availability_id==1 || habitacion?.availability_id==4"
+              class="fa-solid fa-broom" (click)="setClean(habitacion)"></i>
+          </td>
+          <td class="td-container" style="width: 40px;" *ngFor="let fecha of fechas; let fechaIndex = index"
+            (mousedown)="onCellMouseDown(habitacion, fechaIndex)" (mouseup)="onCellMouseUp(habitacion, fechaIndex)"
+            (mouseenter)="onCellMouseEnter(habitacion, fechaIndex)"
+            [class.selected]="isSelected(habitacion, fechaIndex)"
+            [class.reserved]="isReserved(habitacionIndex, fechaIndex)"
+            [ngClass]="{'first-reservation':isFirstDay(habitacionIndex, fechaIndex)}"
+            [ngClass]="{'last-reservation':isLastDay(habitacionIndex, fechaIndex)}"
+            [ngStyle]="{ 'background-color': getReservationColor(habitacionIndex, fechaIndex) }">
+            <div [ngClass]="getStyleDivContent(habitacionIndex,fechaIndex)" class="div-superpuesto"
+              *ngIf="isFirstDay(habitacionIndex, fechaIndex)">
+              {{getReservationData(habitacionIndex,fechaIndex)?.client?.name+"
+              "+getReservationData(habitacionIndex,fechaIndex)?.client?.lastname}}
+            </div>
+            <span *ngIf="isReserved(habitacionIndex,fechaIndex)&& isFirstDay(habitacionIndex,fechaIndex)">
+              <button (click)="showinfo(viewReservations,habitacion,fecha,null,'md')" class="btn btn-sm  btn-round"
+                [ngClass]="{'btn-success':getReservationData(habitacionIndex,fechaIndex)?.confirmed==1,'btn-warning':getReservationData(habitacionIndex,fechaIndex)?.confirmed==0}">
+                <i class="fa-solid fa-triangle-exclamation"
+                  *ngIf="getReservationData(habitacionIndex,fechaIndex)?.confirmed==0"></i>
+                <i class="fa-solid fa-check" *ngIf="getReservationData(habitacionIndex,fechaIndex)?.confirmed==1"></i>
+              </button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- end table -->
+</div>
+
+<ng-template #addReservations>
+  <app-add-reservation [startDefault]="startSelected" [endDefault]="endSelected" [roomDefault]="roomSelected"
+    (success)="getReservations()" />
+</ng-template>
+
+
+
+<ng-template #editReservations let-c="close" let-d="dismiss">
+  <div class="modal-body shadow-lg">
+    <app-edit-reservation [reservations_id]="getReservation()?.id" (success)="getReservations()" />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #viewReservations let-c="close" let-d="dismiss">
+  <div class="modal-body shadow-lg">
+    <app-view-reservation *ngIf="reservationSelected; else defaultView" [reservations_id]="reservationSelected?.id"
+      (success)="getReservations()" />
+    <ng-template #defaultView>
+      <app-view-reservation [reservations_id]="getReservation()?.id" (success)="getReservations()" />
+
+    </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #searchReservation let-c="close" let-d="dismiss">
+  <div class="modal-body shadow-lg">
+    <app-search-reservation (selected)="showinfo(viewReservations,null,null,$event);d('Cross click')" />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #initCash let-c="close" let-d="dismiss">
+  <div class="modal-body shadow-lg">
+    <app-pos-init />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>

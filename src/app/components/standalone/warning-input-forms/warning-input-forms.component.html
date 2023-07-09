@@ -1,0 +1,20 @@
+<div *ngIf="input?.invalid && (input?.dirty || input?.touched)"
+    class="container-alert alert" [ngClass]="alertCss">
+    <i class="fa-solid fa-triangle-exclamation me-1 mt-1"></i>
+
+    <div *ngIf="input?.errors?.['required']">
+        {{name}} es obligatorio
+    </div>
+    <div *ngIf="input?.errors?.['minlength']">
+       Debe ingresar un minimo de <b>{{input?.errors?.['minlength'].requiredLength}} </b> caracteres.
+    </div>
+    <div *ngIf="input?.errors?.['email']">
+        El correo ingresado no es valido
+    </div>
+    <div class="" *ngIf="input?.errors?.['invalidRut']">
+        &nbsp; El RUT ingresado no es valido
+    </div>
+    <div class="" *ngIf="input?.errors?.['pattern']">
+        &nbsp; {{name}} no cumple con el formato requerido
+    </div>
+</div>

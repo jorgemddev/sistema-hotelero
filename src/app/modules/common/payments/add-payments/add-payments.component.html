@@ -1,0 +1,37 @@
+<form [formGroup]="primaryForm" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">REGISTRAR PAGO / DESCUENTO</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-8">
+                    <label class="small mb-1" for="room_number">Pago </label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="addon-wrapping">$</span>
+                        <input type="number" class="form-control" placeholder="0" formControlName="ammount">
+                        <label class="input-group-text" for="inputGroupSelect01">Pesos <i
+                                class="fa-solid fa-hand-holding-dollar"></i></label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="small mb-1" for="room_number">Tipo de pago</label>
+                    <select formControlName="payment_id" class="form-control">
+                        <option value="0">SELECCIONE</option>
+                        <option *ngFor="let pay of payment" [value]="pay?.id">{{pay?.tag |
+                            uppercase}}</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_number">Detalle</label>
+                    <input type="text" class="form-control" placeholder="Descripción del pago o referencia de este."
+                        formControlName="detail">
+                </div>
+                <div class="col-md-12" *ngIf="this.primaryForm.get('payment_id')?.value==7">
+                    <div class="alert alert-warning">Al seleccionar pago en linea, se mantendra pendiente hasta que sea
+                        realizado el pago.</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">GUARDAR</button>
+        </div>
+    </div>
+</form>

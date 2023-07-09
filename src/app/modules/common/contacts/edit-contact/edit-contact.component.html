@@ -1,6 +1,6 @@
 <form [formGroup]="primaryForm" (ngSubmit)="update()">
     <div class="card">
-        <div class="card-header text-center" style="text-transform: uppercase;">EDITAR CONTACTO</div>
+        <div class="card-header text-center" style="text-transform: uppercase;"> {{title}}</div>
         <div class="card-body">
             <div class="row gx-3 mb-3">
                 <div class="col-md-12">
@@ -22,7 +22,7 @@
                         <input type="text" class="form-control" formControlName="rut">
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" *ngIf="!hidePosition">
                     <label class="small mb-1" for="position">Cargo</label>
                     <input type="text" class="form-control" formControlName="position">
                 </div>

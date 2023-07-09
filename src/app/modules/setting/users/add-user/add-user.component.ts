@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Toast, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+import { MyValidators } from 'src/app/libs/my-validators';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -11,85 +12,77 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
-  constructor(private api: ApiService, private router:Router, private modal:NgbModal,  private toast:ToastrService) {}
-  usernameDisp = '...';
-  textColor="";
-  showAlert: boolean = false;
-  error: any;
-  userForm = new UntypedFormGroup({
-    username: new UntypedFormControl(''),
-    name: new UntypedFormControl(''),
+  constructor(
+    private api: ApiService,
+    private toast: ToastrService,
+    private modal: NgbModal
+  ) {}
+  ngOnInit(): void {
+    this.getCities();
+    this.getTypes();
+  }
+  @Output()
+  success = new EventEmitter<boolean>();
+  cities: any;
+  types: any;
+  items: any;
+  form1 = new UntypedFormGroup({
+    name: new UntypedFormControl(),
     lastname: new UntypedFormControl(''),
-    image:new UntypedFormControl(''),
+    rut: new UntypedFormControl('',[Validators.required,MyValidators.rut]),
+    position: new UntypedFormControl(''),
+    location: new UntypedFormControl('', [Validators.required]),
     email: new UntypedFormControl(''),
     phone: new UntypedFormControl(''),
-    position: new UntypedFormControl(''),
-    privileges_id: new UntypedFormControl(0),
-    id: new UntypedFormControl(''),
+    pass:new UntypedFormControl({value:''},[Validators.required,MyValidators.rut]),
+    privileges_id:new UntypedFormControl(0),
+    cities_id:new UntypedFormControl(0)
   });
-  ngOnInit(): void {
-    this.getData();
-  }
-  privileges: any = [];
-  companys: any = [];
-  regions: any = [];
-  cities: any = [];
 
   create() {
-    this.api.createUser(this.userForm).subscribe(
-      (response) => {
-        this.toast.success('Creado correctamente','Colaborador');
-          setTimeout(() => {
-            this.router.navigate(['/colaboradores/listar']);
-          }, 3000);
+    this.api.createUser(this.form1).subscribe(
+      (res) => {
+        this.toast.success(res.msg, 'Registro de participante');
+        this.success.emit(true);
+        this.modal.dismissAll();
       },
       (e) => {
-        this.toast.warning(e.error.mistakes,e.error.msg);
+        this.toast.warning(e.error.mistakes, e.error.msg,{enableHtml:true,closeButton:true});
       }
     );
   }
-
-  checkNick(event: any) {
-    var username: string = this.userForm.get('username')?.value??"";
-    if (username.length > 3) {
-      this.usernameDisp = 'cargando...';
-      this.api.checkUser(username).subscribe(
-        (response) => {
-            this.textColor='text-success';
-            this.usernameDisp = response.msg;
-        },
-        (e) => {
-            this.toast.warning(e.error.mistakes,e.error.msg);
-
-        }
-      );
-    }else{
-      this.textColor='text-warning';
-      this.usernameDisp = 'Minimo 3 caracteres';
+  onFormatRut(value: any) {
+    if (value.target.value.length > 8) {
+      this.form1
+        .get('rut')
+        ?.setValue(formatRut(value.target.value, RutFormat.DOTS_DASH));
     }
-    console.log(username);
   }
-  getData() {
+  getCities() {
+    this.api.getCities().subscribe(
+      (response) => {
+        this.cities = response.data;
+      },
+      (err) => {
+        this.toast.warning(
+          'Lo sentimos, ocurrio un error al cargar las ciudades'
+        );
+      }
+    );
+  }
+  getTypes() {
     this.api.getPrivileges().subscribe(
       (response) => {
-        var data = response.data;
-        this.privileges = data;
+        this.types = response.data;
       },
-      (error) => {
-        this.error = error;
-      }
-    );
-    this.api.getCompanys().subscribe(
-      (response) => {
-        var data = response.data;
-        this.companys = data;
-      },
-      (error) => {
-        this.error = error;
+      (err) => {
+        this.toast.warning(
+          'Lo sentimos, ocurrio un error al cargar los privilegios'
+        );
       }
     );
   }
-  openRepository(inputTag: string, md: any) {
+  openModal(md: any, size = 'md') {
     this.modal.open(md, {
       size: 'xl',
     });

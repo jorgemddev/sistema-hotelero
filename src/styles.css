@@ -1,21 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
     background: rgb(54, 105, 172);
     background: linear-gradient(90deg, rgba(54, 105, 172, 1) 0%, rgba(95, 77, 238, 1) 48%, rgba(0, 212, 255, 1) 100%);
 }
 
+/**colors rooms status **/
+
 .modal-backdrop {
     z-index: 99 !important;
 }
-.bg-grey{
+
+.bg-grey {
     background-color: rgb(250, 242, 242);
 }
+
 .btn-round {
     border-radius: 50% !important;
     height: auto;
     padding-top: 5px !important;
-    padding-bottom: 8px !important;
+    padding-bottom: 5px !important;
 }
 
 .btn-primary {
@@ -29,12 +34,15 @@ body {
 .card-btn:hover {
     background-color: rgb(255, 255, 206) !important;
 }
-.text-bold{
+
+.text-bold {
     font-weight: bold !important;
 }
-.text-primary{
+
+.text-primary {
     color: #2f74b4 !important;
 }
+
 .text-warning {
     color: #ff9e5dec !important;
 }
@@ -42,19 +50,23 @@ body {
 .text-danger {
     color: #d15757 !important;
 }
+
 .text-bg-danger {
     background-color: #d15757 !important;
     color: #ffffff !important;
 }
-.text-circle{
+
+.text-circle {
     text-align: center;
     background-color: #000;
     border-radius: 50%;
     padding: 5px 5px 5px 5px;
 }
+
 .btn-warning {
     background-color: #f76809ec !important;
 }
+
 /**editor ngx**/
 .NgxEditor {
     background: white;
@@ -64,3 +76,42 @@ body {
     border: none !important;
     position: relative;
 }
+
+.bg-success-light {
+    background-color: rgb(169, 208, 169);
+}
+
+.bg-danger-light {
+    background-color: rgb(206, 99, 113);
+}
+
+/* Estilos específicos para resoluciones de dispositivos móviles */
+@media (max-width: 768px) {
+
+    /* Reglas de estilo para dispositivos con un ancho máximo de 768px */
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-fluid {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+}
+/**reglas modal danger*/
+.modal-backdrop-danger {
+    --bs-backdrop-zindex: 1050 !important;
+    --bs-backdrop-bg: #b22424 !important;
+    --bs-backdrop-opacity: 0.8 !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--bs-backdrop-zindex);
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bs-backdrop-bg) !important;
+}
+
+  

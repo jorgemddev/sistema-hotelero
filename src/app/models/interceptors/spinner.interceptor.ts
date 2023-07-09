@@ -14,20 +14,30 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 @Injectable()
 export class SpinnerInterceptor implements HttpInterceptor {
   constructor(private spinnerService: SpinnerService, private toast: ToastrService, private router: Router, private helps: Helps) { }
+  private pollingUrls: string[] = ['/reservations']; // Agrega las URL de las solicitudes de polling aquí
+
+  private isPollingRequest(req: HttpRequest<any>): boolean {
+    return this.pollingUrls.some(url => req.url.includes(url));
+  }
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.spinnerService.show();
-     var updatedReq = req.clone({ url: req.url });
+    const isPollingRequest = this.isPollingRequest(req);
+
+    if (!isPollingRequest) {
+      this.spinnerService.show();
+    }
+
+    var updatedReq = req.clone({ url: req.url });
     if (sessionStorage.getItem('token') != null) {
       const token = this.helps.getToken()?.token;
-       updatedReq = req.clone({
+      updatedReq = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         },
-        url: req.url + "?uid="+this.helps.getToken()?.id
+        url: req.url + "?uid=" + this.helps.getToken()?.id
       });
     }
 

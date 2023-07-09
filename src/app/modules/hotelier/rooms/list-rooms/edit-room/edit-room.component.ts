@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -10,20 +10,33 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './edit-room.component.html',
   styleUrls: ['./edit-room.component.css']
 })
-export class EditRoomComponent implements OnInit {
+export class EditRoomComponent implements OnInit, OnChanges {
   constructor(
     private api: ApiService,
     private toast: ToastrService,
     private modal: NgbModal
   ) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.room != null) {
+      this.form.patchValue(this.room);
+    }
+    if (this.disabledForm) {
+      this.form.disable();
+    }
+  }
   ngOnInit(): void {
     if (this.room != null) {
       this.form.patchValue(this.room);
+    }
+    if (this.disabledForm) {
+      this.form.disable();
     }
   }
   @Input()
   room: Rooms;
 
+  @Input()
+  disabledForm: boolean;
   @Output()
   success = new EventEmitter<boolean>();
   items: any;

@@ -30,6 +30,9 @@ export class EditNotesComponent implements OnChanges {
   providersId: number;
   @Input()
   clientsId: number;
+  @Input()
+  reservationsId: number;
+
   items: any;
   primaryForm = new UntypedFormGroup({
     id: new UntypedFormControl(),
@@ -37,11 +40,11 @@ export class EditNotesComponent implements OnChanges {
     content: new UntypedFormControl(''),
     providers_id: new UntypedFormControl(0),
     clients_id: new UntypedFormControl(0),
+    reservations_id: new UntypedFormControl(0),
   });
   getNote(id: number) {
     this.api.getNote(id).subscribe(
       (response) => {
-        this.toast.info('Nota no encontrada');
         this.primaryForm.patchValue(response.data);
       },
       (error) => {
@@ -52,6 +55,7 @@ export class EditNotesComponent implements OnChanges {
   update() {
     this.primaryForm.get('providers_id').setValue(this.providersId);
     this.primaryForm.get('clients_id').setValue(this.clientsId);
+    this.primaryForm.get('reservations_id').setValue(this.reservationsId);
     this.api.updateNote(this.primaryForm).subscribe(
       (response) => {
         this.toast.success(

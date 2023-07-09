@@ -1,0 +1,30 @@
+.danger{
+    background-color: rgb(255, 173, 173);
+}
+.label-danger{
+    color: rgb(255, 102, 0);
+    margin-left: 5px;
+}
+.list-result{
+    margin-top: 3px;
+    position: absolute;
+    background-color: aliceblue;
+    width: 100%;
+    height: auto;
+    max-height: 120px;
+    overflow-y: auto;
+    border: none;
+    z-index: 99;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.list-result li{
+    list-style: none;
+    margin: 0;
+}
+.list-result li:hover{
+    background-color: antiquewhite;
+    cursor: pointer;
+}

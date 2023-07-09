@@ -22,17 +22,24 @@ export class AddNotesComponent {
   providersId:number;
   @Input()
   clientsId:number;
+
+  @Input()
+  reservationsId:number;
+
+
   items: any;
   primaryForm = new UntypedFormGroup({
     tag: new UntypedFormControl(),
     content: new UntypedFormControl(''),    
     providers_id:new UntypedFormControl(0),
     clients_id:new UntypedFormControl(0),
+    reservations_id:new UntypedFormControl(0),
   });
 
   create() {
     this.primaryForm.get('providers_id').setValue(this.providersId);
     this.primaryForm.get('clients_id').setValue(this.clientsId);
+    this.primaryForm.get('reservations_id').setValue(this.reservationsId);
     this.api.createNote(this.primaryForm).subscribe(
       (response) => {
         this.toast.success('Nota creado correctamente', 'Gestión Notas');

@@ -27,6 +27,12 @@ import { SearchesModule } from '../common/searches/searches.module';
 import { SharedsModule } from '../common/shareds/shareds.module';
 import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
 import { ProductBrandsComponent } from './products/setting/product-brands/product-brands.component';
+import { ImageDefaultConfig, ImageDefaultModule } from '../../directives/image-default/image-default.module';
+const imageConfig: ImageDefaultConfig = {
+  defaultImages: {
+    default: 'assets/images/default.jpg',
+  },
+};
 @NgModule({
   declarations: [
     InventoryComponent,
@@ -57,11 +63,13 @@ import { ProductBrandsComponent } from './products/setting/product-brands/produc
     NgbModule,
     RepositoryImageModule,
     NotesModule,
+    SharedsModule,
     ContactsModule,
     EditorHtmlModule,
     SearchesModule,
     SharedsModule,
-    ToolbarSearchComponent
+    ToolbarSearchComponent,
+    ImageDefaultModule.forRoot(imageConfig)
 
   ],
   exports: [InventoryComponent],

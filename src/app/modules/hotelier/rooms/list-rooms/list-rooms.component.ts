@@ -137,6 +137,20 @@ export class ListRoomsComponent implements OnInit {
       }
     );
   }
+  outService(){
+    let status=(this.selected.availability_id==5)?1:5;
+    const formx = new UntypedFormGroup({
+      id: new UntypedFormControl(),
+      availability_id: new UntypedFormControl(status),
+    });
+    formx.get('id').setValue(this.selected.id);
+    this.api.setStatusRoom(formx).subscribe((res) => {
+      this.toast.success('Ha bloqueado esta habitación');
+      this.getRooms();
+     }, (e) => { 
+      this.toast.warning(e.error.mistakes,e.error.msg);
+     });
+  }
   openUpdate(item: any,md: any , size: string = "md") {
     this.selected=null;
     this.selected=item;
@@ -155,7 +169,7 @@ export class ListRoomsComponent implements OnInit {
   openDelete(id: number, md: any) {
     this.sForm.get('id').setValue(id);
     this.modal.open(md, {
-      size: 'md',
+      size: 'sm',
     });
   }
 }

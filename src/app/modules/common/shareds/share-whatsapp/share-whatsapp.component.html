@@ -12,13 +12,15 @@
                 <label class="small mb-1" for="whatsapp">Whatsapp</label>
                 <div class="input-group flex-nowrap">
                     <select class="form-select" formControlName="code">
-                        <option value="{{item.code}}" *ngFor="let item of codephones">+{{item.code}} {{item.tag}}</option>
+                        <option value="{{item.code}}" *ngFor="let item of codephones">+{{item.code}} {{item.tag}}
+                        </option>
                     </select>
                     <span class="input-group-text" id="addon-wrapping"><i class="fa-brands fa-whatsapp"></i></span>
                     <input type="phone" formControlName="phone" class="form-control w-70" placeholder="Whatsapp">
                 </div>
             </div>
-            <a class="btn btn-success" *ngIf="form.get('content').value" target="_blank" [href]="textToWsp()">Envio Whatsapp Web</a>
+            <a class="btn btn-success" *ngIf="form.get('content').value" target="_blank" [href]="textToWsp()">Envio
+                Whatsapp Web</a>
         </form>
     </div>
 
@@ -27,19 +29,5 @@
 
 <!-- Create template reference -->
 <ng-template #customMenu>
-
-    <div class="NgxEditor__MenuItem NgxEditor__MenuItem--Text"
-        [ngClass]="{'NgxEditor__MenuItem--Active': isActive, 'NgxEditor--Disabled': isDisabled}">
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="First group">
-                <button type="button" class="btn" *ngFor="let item of groupEmojis"
-                    (click)="emojiFilter(item)">{{item.icharacter}}</button>
-            </div>
-        </div>
-        <ul *ngIf="showEmojis" class="emoji-grid shadow-lg" role="group" aria-label="First group">
-            <li class="btn emojis-items" *ngFor="let item of emojis" (click)="selected(item)">{{item.icharacter}}</li>
-        </ul>
-    </div>
-
-
+    <app-ngx-editor-emoji />
 </ng-template>

@@ -19,19 +19,23 @@ export class ListNotesComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService,
     private router: Router,
-  ) {}
+  ) { }
   @Input()
   providers_id: number = 0;
   @Input()
   clients_id: number = 0;
+  @Input()
+  reservations_id: number = 0;
+  @Input()
+  hiddenButton: boolean = false;
 
-  view: number = 1;
-  status: any;
-  categorys: any;
   idSelected: number = 0;
   ngOnInit(): void {
-    this.getData();
-    this.getNotes();
+    this.setFilter();
+    if(this.idSend>0){
+      this.getNotes();
+    }
+    
   }
 
   items: any;
@@ -40,25 +44,16 @@ export class ListNotesComponent implements OnInit {
   collectionSize = 0;
   totalPage = 0;
 
+  //Id enviado para las soliciotudes
+  idSend: number;
+  filter: string;
+
   brands: any;
-  primaryForm = new UntypedFormGroup({
-    id: new UntypedFormControl(),
-    name: new UntypedFormControl(),
-    barcode: new UntypedFormControl(''),
-    serie: new UntypedFormControl(''),
-    sku: new UntypedFormControl(''),
-    brand_id: new UntypedFormControl(),
-    model_id: new UntypedFormControl(''),
-    family_id: new UntypedFormControl(0),
-    state_id: new UntypedFormControl(0),
-    from: new UntypedFormControl(0),
-    to: new UntypedFormControl(0),
-  });
-  secondForm = new UntypedFormGroup({
+  form = new UntypedFormGroup({
     id: new UntypedFormControl(),
   });
   delete() {
-    this.api.deleteNote(this.secondForm).subscribe(
+    this.api.deleteNote(this.form).subscribe(
       (response) => {
         this.toast.success(
           'Producto eliminado correctamente',
@@ -81,30 +76,20 @@ export class ListNotesComponent implements OnInit {
     console.log('crete');
     this.router.navigate(['complementos/slider-principal']);
   }
-  getData() {
-    this.api.getState().subscribe(
-      (response) => {
-        this.status = response.data;
-        this.primaryForm.get('state_id')?.setValue(3);
-      },
-      (error) => {
-        this.error = error;
-      }
-    );
+  setFilter() {
+    if (this.clients_id > 0) {
+      this.idSend = this.clients_id;
+      this.filter = "clients";
+    } else if (this.providers_id > 0) {
+      this.idSend = this.clients_id;
+      this.filter = "providers";
+    } else if(this.reservations_id>0){
+      this.idSend = this.reservations_id;
+      this.filter = "reservations";
+    }
   }
   getNotes() {
-    console.log("provider:"+this.providers_id);
-    var id: number = this.providers_id
-      ? this.providers_id
-      : this.clients_id
-      ? this.clients_id
-      : 0;
-    var filter: string = this.providers_id
-      ? 'providers'
-      : this.clients_id
-      ? 'clients'
-      : 'none';
-    this.api.getNotesFilter(id,filter, this.page).subscribe(
+    this.api.getNotesFilter(this.idSend, this.filter, this.page).subscribe(
       (response) => {
         var data = response.data as Paginate;
         this.items = data.items;
@@ -113,12 +98,6 @@ export class ListNotesComponent implements OnInit {
         this.collectionSize = data.count;
         console.log(this.collectionSize);
         this.totalPage = data.total;
-      },
-      (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
       }
     );
   }
@@ -128,13 +107,13 @@ export class ListNotesComponent implements OnInit {
     });
   }
   openDelete(id: number, md: any) {
-    this.secondForm.get('id').setValue(id);
+    this.form.get('id').setValue(id);
     this.modal.open(md, {
       size: 'md',
     });
   }
   openEdit(id: number, md: any) {
-  this.idSelected=id;
+    this.idSelected = id;
     this.modal.open(md, {
       size: 'md',
     });
@@ -142,5 +121,5 @@ export class ListNotesComponent implements OnInit {
   search() {
     this.getNotes();
   }
-  clean() {}
+  clean() { }
 }

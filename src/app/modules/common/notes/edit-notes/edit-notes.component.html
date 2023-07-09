@@ -1,6 +1,6 @@
 <form [formGroup]="primaryForm" (ngSubmit)="update()">
     <div class="card">
-        <div class="card-header text-center" style="text-transform: uppercase;">EDITAR CONTACTO</div>
+        <div class="card-header text-center" style="text-transform: uppercase;">EDITAR NOTA</div>
         <div class="card-body">
             <div class="row gx-3 mb-3">
                 <div class="col-md-12">
@@ -12,7 +12,8 @@
                 <div class="col-md-12">
                     <label class="small mb-1" for="lastname">Contenido</label>
                     <div class="input-group">
-                        <div style="border: #e9e9e9 solid 1px; min-height:250px; width:100%;"><app-editor-html [form]="primaryForm" [myToolbar]="toolbar"></app-editor-html></div>
+                        <div style="border: #e9e9e9 solid 1px; min-height:250px; width:100%;">
+                            <app-editor-html  [form]="primaryForm" [myToolbar]="toolbar"/></div>
                     </div>
                 </div>
 

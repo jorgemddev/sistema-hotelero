@@ -1,96 +1,122 @@
-<div class="row">
-    <div class="col-md-12 col-lg-12 col-xl-9">
-        <div class="card h-100">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-md-10">
-                        <h3 class="card-title">LISTADO</h3>
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-12 col-md-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Usuarios del sistema 
+                    <div class="btn-group float-end" role="group">
+                        <button class="btn btn-primary" (click)="openModal(add)"><i class="fa-solid fa-circle-plus"></i>
+                            Nuevo</button>
                     </div>
-                    <div class="col-md-2">
-                        <div class="input-group">
-
-                        </div>
+  
+                </div>
+                <div class="card-body">
+  
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>PRIVILEGIO</span></th>
+                                    <th><span>NOMBRE</span></th>
+                                    <th><span>APELLIDOS</span></th>
+                                    <th><span>RUT</span></th>
+                                    <th><span>TELEFONO</span></th>
+                                    <th><span>EMAIL</span></th>
+                                    <th><span>FECHA CREACIÓN</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of users">
+                                    <td>
+                                        <span class="badge bg-secondary" *ngIf="item?.privileges_id==1">{{item?.privileges?.tag}}</span>
+                                        <span class="badge bg-primary" *ngIf="item?.privileges_id==2">{{item?.privileges?.tag}}</span>
+                                        <span class="badge bg-warning" *ngIf="item?.privileges_id==3">{{item?.privileges?.tag}}</span>
+                                        <span class="badge bg-danger" *ngIf="item?.privileges_id==4">{{item?.privileges?.tag}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.name | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                      <span>{{item.lastname | uppercase}}</span>
+                                  </td>
+                                    <td>
+                                        <span>{{item.rut | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.phone | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.email | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                          <button type="button" class="btn   text-warning"
+                                                (click)="openEdit(item,edit)">
+                                                    <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn  text-danger"
+                                                (click)="openDelete(item,remove)">
+                                                    <i class="fa-solid fa-trash"></i>
+  
+                                            </button>
+                                        </div>
+  
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!users">
+                                    <td colspan="7" class="fw-lighter text-muted">No se encontraron registros</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table user-list">
-                        <thead>
-                            <tr>
-                                <th><span>ID</span></th>
-                                <th><span>NICK</span></th>
-                                <th><span>NOMBRE</span></th>
-                                <th><span>APELLIDOS</span></th>
-                                <th><span>PRIVILEGIO</span></th>
-                                <th><span>ESTADO</span></th>
-                                <th><span>FECHA CREACIÓN</span></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of items">
-                                <td>
-                                    <span>{{item.id}}</span>
-                                </td>
-                                <td>
-                                    {{item.nick}}
-                                </td>
-                                <td>
-                                    {{item.name}}
-                                </td>
-                                <td>
-                                    {{item.lastname}}
-                                </td>
-                                <td>
-                                    {{item.profile}}
-                                </td>
-                                <td>
-                                    {{item.state}}
-                                </td>
-                                <td>
-                                    {{item.created_at}}
-                                </td>
-                                <td>
-                                    <button type="button" class="btn   text-warning" (click)="update(item.id)">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </button>
-                                    <button type="button" class="btn  text-danger" (click)="openDelete(item.id,dlt)">
-                                        <span class="fa-stack">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
         </div>
     </div>
-</div>
+  
+  </div>
+  <ng-template #remove let-c="close" let-d="dismiss">
 
-<ng-template #dlt let-c="close" let-d="dismiss">
-    <form (submit)="delete()" novalidate [formGroup]="dltForm">
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">COLABORADOR</h4>
+            <h4 class="modal-title" id="modal-basic-title">Eliminar registro</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-
         <div class="modal-body">
             <p>¿Esta seguro que desea eliminar este registro?</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
-            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+            <button type="button" ngbAutofocus class="btn btn-danger" (click)="delete()">Si</button>
         </div>
-    </form>
-</ng-template>
+
+  </ng-template>
+  
+  <ng-template #add let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+          <app-add-user  (success)="getUsers()"/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  </ng-template>
+  
+  
+  <ng-template #edit let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+          <app-edit-user [users]="usersSelected" (success)="getUsers()"/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  </ng-template>

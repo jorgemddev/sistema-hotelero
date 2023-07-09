@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="send()" *ngIf="(clients && clients?.email) else noClient">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">ENVIAR EMAIL</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-text">Plantilla email</span>
+                        <select class="select-form form-control" formControlName="template_id" (change)="setHtml()">
+                            <option value="0">SELECCIONE</option>
+                            <option *ngFor="let item of templates" [value]="item.id">{{item?.tag}}</option>
+                        </select>
+                        <span class="input-group-text">Asunto email:</span>
+                        <input type="text" class="form-control" formControlName="subject" />
+                        <button *ngIf="form.get('template_id')?.value>0" class="btn btn-success btn-sm" type="submit"><i
+                                class="fa-solid fa-paper-plane"></i> </button>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="form.get('template_id')?.value>0">
+                    <label class="small mb-1" for="lastname">Mensaje</label>
+                    <div class="input-group">
+                        <div style="border: #e9e9e9 solid 1px; min-height:80px; width:100%;">
+                            <app-editor-html [showUpload]="true" [showEmoji]="true" [form]="form"
+                                [myToolbar]="toolbar"></app-editor-html>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template #noClient>
+    <p class="alert alert-warning">
+        Para usar este modulo, debe seleccionar un cliente y este debe contar con un <b>email valido</b>.
+    </p>
+</ng-template>
+<ng-template #repository let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+    </div>
+</ng-template>

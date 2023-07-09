@@ -12,8 +12,6 @@ import { environment } from 'src/environments/environment';
 export class ApiSharedService {
   public domain: string = environment.baseApiUrl;
   constructor(private http: HttpClient,private helps:Helps) { }
-
-
   getCodPhones(): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'params/cphone/'

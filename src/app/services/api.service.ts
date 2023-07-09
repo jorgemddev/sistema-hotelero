@@ -17,16 +17,14 @@ import { Products } from '../models/interfaces/products';
 })
 export class ApiService {
   public domain: string = environment.baseApiUrl;
-
-
-
   constructor(private http: HttpClient) { }
+  
   isLogged(): Observable<any> {
     return this.http.get<Responses>(this.domain + 'user/index/auth/');
   }
-  login(cod: string, pass: string): Observable<Responses> {
+  login(form:UntypedFormGroup): Observable<Responses> {
 
-    const body = new HttpParams().set('cod', cod).set('pass', pass);
+    const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(this.domain + 'user/access/login/', body, {
       headers: new HttpHeaders().set(
         'Content-Type',
@@ -35,12 +33,12 @@ export class ApiService {
     });
   }
   validatePass(token: string): Observable<Responses> {
-    return this.http.get<Responses>(this.domain + 'user/index/islinkvalid/'+token);
+    return this.http.get<Responses>(this.domain + 'user/index/islinkvalid/' + token);
   }
   restorePass(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'user/access/restore/' ,
+      this.domain + 'user/access/restore/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -52,202 +50,305 @@ export class ApiService {
   }
   getUser(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'user/index/' + id 
+      this.domain + 'user/index/' + id
     );
   }
-  getUsers(): Observable<Responses> {
+  getUsers(page:number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'user/index/' 
+      this.domain + 'user/index/paginate/' + page + '/30/'
     );
   }
   getCompany(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'company/index/' 
+      this.domain + 'company/index/'
     );
   }
   getProfile(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'user/profile/' 
+      this.domain + 'user/profile/'
     );
   }
   getSlider(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/sliders/' + id 
+      this.domain + 'extensions/sliders/' + id
     );
   }
 
   getSliders(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/sliders/' 
+      this.domain + 'extensions/sliders/'
     );
   }
-  searchEmoji(q: string): Observable<Responses> {
+  getTypePayments(){
     return this.http.get<Responses>(
-      this.domain + 'extensions/emoji/search/' + q 
+      this.domain + 'company/info/typePayment/'
     );
   }
-  getGroupEmoji(): Observable<Responses> {
+  getRoom(id:number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/emoji/group/'
-    );
-  }
-  getAllEmojis(): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'extensions/emoji/'
+      this.domain + 'hotel/rooms/'+id
     );
   }
   getBrands(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/brands/' 
+      this.domain + 'products/brands/'
     );
   }
   listBrands(page: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/brands/list/' + page 
+      this.domain + 'products/brands/list/' + page
     );
   }
   listRooms(page: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'hotel/rooms/list/' + page 
+      this.domain + 'hotel/rooms/list/' + page
+    );
+  }
+  getAllRooms(): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/rooms'
+    );
+  }
+  getRoomsAvailable(form: UntypedFormGroup): Observable<Responses> {
+    const params = new HttpParams()
+    .set('reservations_id',form.get('reservations_id')?.value)
+      .set('start', form.get('start')?.value)
+      .set('end', form.get('end')?.value);
+
+    return this.http.get<Responses>(
+      this.domain + 'hotel/rooms/available', { params }
+    );
+  }
+  filterAllReservations(form: UntypedFormGroup): Observable<Responses> {
+    const params = new HttpParams()
+      .set('start', form.get('start')?.value)
+      .set('end', form.get('end')?.value);
+
+    return this.http.get<Responses>(
+      this.domain + 'hotel/reservations/filter', { params }
+    );
+  }
+  allRangeReservations(form: UntypedFormGroup): Observable<Responses> {
+    const params = new HttpParams()
+      .set('start', form.get('start')?.value)
+      .set('end', form.get('end')?.value);
+
+    return this.http.get<Responses>(
+      this.domain + 'hotel/reservations/allRange', { params }
+    );
+  }
+  detailReservations(form: UntypedFormGroup): Observable<Responses> {
+    const params = new HttpParams()
+      .set('id', form.get('id')?.value)
+      .set('start', form.get('start')?.value)
+      .set('end', form.get('end')?.value);
+
+    return this.http.get<Responses>(
+      this.domain + 'hotel/reservations/detail', { params }
     );
   }
   getBrand(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/brands/' + id 
+      this.domain + 'products/brands/' + id
     );
   }
   getFamilys(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/familys/' 
+      this.domain + 'products/familys/'
     );
   }
   listFamilys(page: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/familys/list/' + page 
+      this.domain + 'products/familys/list/' + page
     );
   }
   getFamilyFathers(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/familys/fathers/' 
+      this.domain + 'products/familys/fathers/'
     );
   }
   getFamily(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/familys/' + id 
+      this.domain + 'products/familys/' + id
     );
   }
   getModels(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/models/' 
+      this.domain + 'products/models/'
     );
   }
   getFilterModels(brand_id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/models/filter/' + brand_id 
+      this.domain + 'products/models/filter/' + brand_id
+    );
+  }
+  getReservation(reservation_id: number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/reservations/' + reservation_id
+    );
+  }
+
+  getReservationByRut(rut: string): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/reservations/byRut/' + rut
     );
   }
   getModel(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/models/' + id 
+      this.domain + 'products/models/' + id
     );
   }
   getExtension(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/index/' + id 
+      this.domain + 'extensions/index/' + id
     );
   }
   getExtensions(page: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/index/list/' + page 
+      this.domain + 'extensions/index/list/' + page
     );
   }
   getNav(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/navs/' + id 
+      this.domain + 'params/navs/' + id
     );
   }
   getNavs(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/navs/' 
+      this.domain + 'params/navs/'
     );
   }
   getAllNavs(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/navs/all/' 
+      this.domain + 'params/navs/all/'
     );
   }
   getPaths(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/navs/paths/' 
+      this.domain + 'params/navs/paths/'
     );
   }
   getSettingAlliance(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/alliance/' 
+      this.domain + 'extensions/alliance/'
     );
   }
   getNews(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'news/index/' + id 
+      this.domain + 'news/index/' + id
     );
   }
   getPage(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'pages/index/' + id 
+      this.domain + 'pages/index/' + id
     );
   }
   getProvider(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'providers/index/' + id 
+      this.domain + 'providers/index/' + id
+    );
+  }
+  getClient(id: number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'clients/index/' + id
+    );
+  }
+  getCarsParking(reservations_id: number,page:number): Observable<Responses> {
+    const params = new HttpParams()
+      .set('reservations_id', reservations_id)
+    return this.http.get<Responses>(
+      this.domain + 'hotel/cars/paginate/'+    page +
+      '/30/' , { params }
+    );
+  }
+  getListPayments(reservations_id: number,page:number): Observable<Responses> {
+    const params = new HttpParams()
+      .set('reservations_id', reservations_id)
+    return this.http.get<Responses>(
+      this.domain + 'hotel/payments/paginate/'+    page +
+      '/30/' , { params }
+    );
+  }
+  getAllPaymentCash(): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/payments/cash/'
+    );
+  }
+  getListCharges(reservations_id: number,page:number): Observable<Responses> {
+    const params = new HttpParams()
+      .set('reservations_id', reservations_id)
+    return this.http.get<Responses>(
+      this.domain + 'hotel/charges/paginate/'+    page +
+      '/30/' , { params }
+    );
+  }
+  getAllCharges(reservations_id: number): Observable<Responses> {
+    const params = new HttpParams()
+      .set('reservations_id', reservations_id)
+    return this.http.get<Responses>(
+      this.domain + 'hotel/charges/', { params }
+    );
+  }
+  searchClientByRut(rut: string): Observable<Responses> {
+    const params = new HttpParams()
+      .set('rut', rut)
+    return this.http.get<Responses>(
+      this.domain + 'clients/index/searchByRut', { params }
     );
   }
   getContact(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'contacts/index/' + id 
+      this.domain + 'contacts/index/' + id
     );
   }
   getNote(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/notes/' + id 
+      this.domain + 'params/notes/' + id
+    );
+  }
+  getParking(id: number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'hotel/cars/' + id
     );
   }
   getRegion(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/regions/' 
+      this.domain + 'params/regions/'
     );
   }
-  getCities(page: number): Observable<Responses> {
+  getCities(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/cities/list/' + page 
+      this.domain + 'params/cities/list/'
     );
   }
   getAllAmenities(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'hotel/amenities/' 
+      this.domain + 'hotel/amenities/'
     );
   }
-  getAllAmenitie(id:number): Observable<Responses> {
+  getAllAmenitie(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'hotel/amenities/' +id
+      this.domain + 'hotel/amenities/' + id
     );
   }
   getProviders(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'providers/index/' 
+      this.domain + 'providers/index/'
     );
   }
   getPayments(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/payments/' 
+      this.domain + 'params/payments/'
     );
   }
+
   getCitiesPaginateFilter(filter: string, page: number): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain +
       'params/cities/list/' +
       page +
       '/30/' +
-      filter 
+      filter
     );
   }
   getPurchasesProvidersFilter(
@@ -260,8 +361,8 @@ export class ApiService {
       id +
       '/' +
       page +
-      '/30/' 
-  
+      '/30/'
+
     );
   }
   getPurchase(
@@ -270,8 +371,8 @@ export class ApiService {
     return this.http.get<Responses>(
       this.domain +
       'providers/purchase/' +
-      id  
-  
+      id
+
     );
   }
   getContactsFilter(
@@ -287,10 +388,11 @@ export class ApiService {
       filter +
       '/' +
       page +
-      '/30/' 
-  
+      '/30/'
+
     );
   }
+
   getNotesFilter(
     id: number,
     filter: string,
@@ -304,29 +406,34 @@ export class ApiService {
       filter +
       '/' +
       page +
-      '/30/' 
-  
+      '/30/'
+
     );
   }
   listNews(page: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'news/index/list/' + page + '/30/' 
+      this.domain + 'news/index/list/' + page + '/30/'
     );
   }
   listProviders(page: number, perpage: number = 30): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'providers/index/list/' + page + '/' + perpage + '/' 
+      this.domain + 'providers/index/list/' + page + '/' + perpage + '/'
+    );
+  }
+  listClients(page: number, perpage: number = 30): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'clients/index/list/' + page + '/' + perpage + '/'
     );
   }
   listMovements(q: string, filter: number, page: number, perpage: number = 30): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/movements/list/' + page + '/' + perpage + '/' + filter + '/' + q 
+      this.domain + 'products/movements/list/' + page + '/' + perpage + '/' + filter + '/' + q
     );
   }
   searchProducts(form: UntypedFormGroup, page: number): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/index/search/' + page + '/' ,
+      this.domain + 'products/index/search/' + page + '/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -339,43 +446,43 @@ export class ApiService {
 
   getProduct(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'products/index/' + id 
+      this.domain + 'products/index/' + id
     );
   }
   getAllCities(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/cities/all/' 
+      this.domain + 'params/cities/all/'
     );
   }
   getAllCitiesFull(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/cities/allfull/' 
+      this.domain + 'params/cities/allfull/'
     );
   }
   getCitiesFilter(filter: string): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/regions/filter/' + filter 
+      this.domain + 'params/regions/filter/' + filter
     );
   }
   getState(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/state/' 
+      this.domain + 'params/state/'
     );
   }
   getCategorys(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'news/category/' 
+      this.domain + 'news/category/'
     );
   }
   getCategory(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'news/category/' + id + '/' 
+      this.domain + 'news/category/' + id + '/'
     );
   }
   searchNews(form: UntypedFormGroup, page: number): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'news/index/search/' + page + '/' ,
+      this.domain + 'news/index/search/' + page + '/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -391,8 +498,8 @@ export class ApiService {
       this.domain +
       'providers/index/search/' +
       page +
-      '/' 
-  ,
+      '/'
+      ,
       body,
       {
         headers: new HttpHeaders().set(
@@ -408,8 +515,8 @@ export class ApiService {
       this.domain +
       'providers/purchase/search/' +
       page +
-      '/' 
-  ,
+      '/'
+      ,
       body,
       {
         headers: new HttpHeaders().set(
@@ -422,7 +529,7 @@ export class ApiService {
   searchPages(form: UntypedFormGroup, page: number): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'pages/index/search/' + page + '/' ,
+      this.domain + 'pages/index/search/' + page + '/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -434,34 +541,34 @@ export class ApiService {
   }
   getIcons(page: number, perpage: number = 20): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'extensions/icons/list/' + page + '/' + perpage + '/' 
+      this.domain + 'extensions/icons/list/' + page + '/' + perpage + '/'
     );
   }
   getImages(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'company/images/' 
+      this.domain + 'company/images/'
     );
   }
   getPrivileges(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/privileges/' 
+      this.domain + 'params/privileges/'
     );
   }
   getCompanys(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'company/index/' 
+      this.domain + 'company/index/'
     );
   }
   checkUser(username: string): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'user/index/check/' + username 
+      this.domain + 'user/index/check/' + username
     );
   }
   createUser(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
 
     return this.http.post<Responses>(
-      this.domain + 'user/index/create/' ,
+      this.domain + 'user/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -474,7 +581,7 @@ export class ApiService {
   createNews(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'news/index/create/' ,
+      this.domain + 'news/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -487,7 +594,7 @@ export class ApiService {
   createBrand(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/brands/create/' ,
+      this.domain + 'products/brands/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -500,7 +607,20 @@ export class ApiService {
   createFamily(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/familys/create/' ,
+      this.domain + 'products/familys/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createReservations(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/reservations/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -513,7 +633,7 @@ export class ApiService {
   createModel(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/models/create/' ,
+      this.domain + 'products/models/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -526,7 +646,7 @@ export class ApiService {
   createPage(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'pages/index/create/' ,
+      this.domain + 'pages/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -539,7 +659,7 @@ export class ApiService {
   createSlider(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'extensions/sliders/create/' ,
+      this.domain + 'extensions/sliders/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -552,7 +672,7 @@ export class ApiService {
   createAlliance(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'extensions/alliances/create/' ,
+      this.domain + 'extensions/alliances/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -565,7 +685,7 @@ export class ApiService {
   createNavs(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'params/navs/create/' ,
+      this.domain + 'params/navs/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -578,7 +698,7 @@ export class ApiService {
   createExtentions(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'extensions/index/create/' ,
+      this.domain + 'extensions/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -592,7 +712,7 @@ export class ApiService {
   createCategory(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'news/category/create/' ,
+      this.domain + 'news/category/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -605,7 +725,7 @@ export class ApiService {
   createProduct(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/index/create/' ,
+      this.domain + 'products/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -618,7 +738,20 @@ export class ApiService {
   createProviders(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'providers/index/create/' ,
+      this.domain + 'providers/index/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createClients(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'clients/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -631,7 +764,7 @@ export class ApiService {
   createRooms(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/create/' ,
+      this.domain + 'hotel/rooms/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -644,7 +777,7 @@ export class ApiService {
   createAmenities(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/amenities/create/' ,
+      this.domain + 'hotel/amenities/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -657,7 +790,7 @@ export class ApiService {
   createAmenitie(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/amenitie/create/' ,
+      this.domain + 'hotel/amenitie/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -670,7 +803,7 @@ export class ApiService {
   createPurchase(form: UntypedFormGroup, products: any): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value).append('products', JSON.stringify(products));
     return this.http.post<Responses>(
-      this.domain + 'providers/purchase/create/' ,
+      this.domain + 'providers/purchase/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -683,7 +816,7 @@ export class ApiService {
   createContact(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'contacts/index/create/' ,
+      this.domain + 'contacts/index/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -696,7 +829,33 @@ export class ApiService {
   createNote(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'params/notes/create/' ,
+      this.domain + 'params/notes/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createCars(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/cars/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  updateCars(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/cars/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -709,7 +868,7 @@ export class ApiService {
   updateImage(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'company/images/update/' ,
+      this.domain + 'company/images/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -722,7 +881,7 @@ export class ApiService {
   updateProduct(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/index/update/' ,
+      this.domain + 'products/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -735,7 +894,7 @@ export class ApiService {
   updateExtensions(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'extensions/index/update/' ,
+      this.domain + 'extensions/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -748,7 +907,7 @@ export class ApiService {
   updateContact(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'contacts/index/update/' ,
+      this.domain + 'contacts/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -761,7 +920,7 @@ export class ApiService {
   updateNote(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'params/notes/update/' ,
+      this.domain + 'params/notes/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -774,7 +933,7 @@ export class ApiService {
   updatePage(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'pages/index/update/' ,
+      this.domain + 'pages/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -787,7 +946,7 @@ export class ApiService {
   updateNavs(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'params/navs/update/' ,
+      this.domain + 'params/navs/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -800,7 +959,7 @@ export class ApiService {
   updateAmenities(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/amenities/update/' ,
+      this.domain + 'hotel/amenities/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -813,7 +972,7 @@ export class ApiService {
   updateProviders(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'providers/index/update/' ,
+      this.domain + 'providers/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -823,10 +982,49 @@ export class ApiService {
       }
     );
   }
-  updatePurchase(form: UntypedFormGroup,products:any): Observable<Responses> {
+  updateClients(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'clients/index/update/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createPayments(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/payments/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createCharges(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/charges/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  updatePurchase(form: UntypedFormGroup, products: any): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value).append('products', JSON.stringify(products));
     return this.http.post<Responses>(
-      this.domain + 'providers/purchase/update/' ,
+      this.domain + 'providers/purchase/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -839,7 +1037,20 @@ export class ApiService {
   updateSettingAlliance(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'extensions/alliance/update/' ,
+      this.domain + 'extensions/alliance/update/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  setStatusRoom(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/rooms/status/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -852,7 +1063,7 @@ export class ApiService {
   updateCategory(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'news/category/update/' ,
+      this.domain + 'news/category/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -865,7 +1076,7 @@ export class ApiService {
   updateNews(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'news/index/update/' ,
+      this.domain + 'news/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -878,7 +1089,7 @@ export class ApiService {
   frontPageNew(id: number): Observable<Responses> {
     const body = new HttpParams().set('id', id);
     return this.http.post<Responses>(
-      this.domain + 'news/index/front/' ,
+      this.domain + 'news/index/front/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -893,7 +1104,7 @@ export class ApiService {
       .set('pass', form.get('pass')?.value)
       .set('id', form.get('id')?.value);
     return this.http.post<Responses>(
-      this.domain + 'user/index/pass/' ,
+      this.domain + 'user/index/pass/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -908,7 +1119,7 @@ export class ApiService {
       .set('pass', form.get('pass')?.value)
       .set('npass', form.get('npass')?.value);
     return this.http.post<Responses>(
-      this.domain + 'user/profile/pass/' ,
+      this.domain + 'user/profile/pass/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -921,7 +1132,20 @@ export class ApiService {
   updateProfile(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'user/profile/update/' ,
+      this.domain + 'user/profile/update/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  updateReservations(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/reservations/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -934,7 +1158,7 @@ export class ApiService {
   updateRooms(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/update/' ,
+      this.domain + 'hotel/rooms/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -947,7 +1171,7 @@ export class ApiService {
   updateCompany(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'company/index/update/' ,
+      this.domain + 'company/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -960,7 +1184,7 @@ export class ApiService {
   updateUser(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'user/index/update/' ,
+      this.domain + 'user/index/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -973,7 +1197,7 @@ export class ApiService {
   updateBrands(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/brands/update/' ,
+      this.domain + 'products/brands/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -986,7 +1210,7 @@ export class ApiService {
   updateFamilys(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/familys/update/' ,
+      this.domain + 'products/familys/update/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -999,7 +1223,33 @@ export class ApiService {
   updateModel(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/models/update/' ,
+      this.domain + 'products/models/update/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  checkIn(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/reservations/checkin/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  checkOut(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'hotel/reservations/checkout/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1012,7 +1262,7 @@ export class ApiService {
   deletePages(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
     return this.http.post<Responses>(
-      this.domain + 'pages/index/delete/' ,
+      this.domain + 'pages/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1025,7 +1275,7 @@ export class ApiService {
   deleteExtensions(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
     return this.http.post<Responses>(
-      this.domain + 'extensions/index/delete/' ,
+      this.domain + 'extensions/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1038,7 +1288,7 @@ export class ApiService {
   deleteNews(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
     return this.http.post<Responses>(
-      this.domain + 'news/index/delete/' ,
+      this.domain + 'news/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1052,7 +1302,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'news/category/delete/' ,
+      this.domain + 'news/category/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1066,7 +1316,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'user/index/delete/' ,
+      this.domain + 'user/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1080,7 +1330,21 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'providers/purchase/delete/' ,
+      this.domain + 'providers/purchase/delete/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  deleteClients(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().set('id', form.get('id')?.value);
+
+    return this.http.post<Responses>(
+      this.domain + 'clients/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1094,7 +1358,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'providers/index/delete/' ,
+      this.domain + 'providers/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1108,7 +1372,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'contacts/index/delete/' ,
+      this.domain + 'contacts/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1122,7 +1386,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'params/notes/delete/' ,
+      this.domain + 'params/notes/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1136,7 +1400,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'products/index/delete/' ,
+      this.domain + 'products/index/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1150,7 +1414,21 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/delete/' ,
+      this.domain + 'hotel/rooms/delete/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  deleteReservation(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().set('id', form.get('id')?.value);
+
+    return this.http.post<Responses>(
+      this.domain + 'hotel/reservations/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1164,7 +1442,7 @@ export class ApiService {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'products/movements/delete/' ,
+      this.domain + 'products/movements/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1177,7 +1455,7 @@ export class ApiService {
   deleteNavs(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'params/navs/delete/' ,
+      this.domain + 'params/navs/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1190,7 +1468,7 @@ export class ApiService {
   deleteBrands(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/brands/delete/' ,
+      this.domain + 'products/brands/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1203,7 +1481,7 @@ export class ApiService {
   deleteFamilys(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/familys/delete/' ,
+      this.domain + 'products/familys/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1216,7 +1494,7 @@ export class ApiService {
   deleteAmenities(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/amenities/delete/' ,
+      this.domain + 'hotel/amenities/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1229,7 +1507,7 @@ export class ApiService {
   removeService(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'hotel/amenitie/delete/' ,
+      this.domain + 'hotel/amenitie/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1242,7 +1520,7 @@ export class ApiService {
   deleteModel(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
-      this.domain + 'products/models/delete/' ,
+      this.domain + 'products/models/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1255,7 +1533,7 @@ export class ApiService {
   deleteImage(id: number): Observable<Responses> {
     const body = new HttpParams().set('id', id);
     return this.http.post<Responses>(
-      this.domain + 'company/images/delete/' ,
+      this.domain + 'company/images/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1267,7 +1545,7 @@ export class ApiService {
   }
 
   getImage(id: number) {
-    return this.domain + 'download/image/'  + '&id=' + id;
+    return this.domain + 'download/image/' + '&id=' + id;
   }
   //Metodo que envia los archivos al endpoint /upload
 

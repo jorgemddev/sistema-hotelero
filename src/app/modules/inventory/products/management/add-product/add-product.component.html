@@ -4,8 +4,10 @@
         <div class="card-body">
             <div class="row gx-3 mb-3">
                 <div class="col-md-12">
+
                     <label class="small mb-1" for="name ">Descripción (50 max.)</label>
                     <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-box"></i></span>
                         <input  type="text" class="form-control" formControlName="name">
                     </div>
                 </div>
@@ -62,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row m-0 p-0">
                     <div class="col-md-6">
                         <label class="small mb-1" for="brand_id">Marca</label>
                         <div class="input-group">
@@ -90,6 +92,7 @@
                     <div class="mb-1">
                         <label class="small mb-1" for="family_id">Familia</label>
                         <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-boxes-stacked"></i></span>
                             <select id="family_id" class="form-control" formControlName="family_id">
                                 <option value="0">SIN FAMILIA</option>
                                 <optgroup *ngFor="let item of familys" label="{{item.tag}}">
@@ -103,6 +106,16 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="family_id">Ubicación</label>
+                        <div class="input-group">
+                            <span class="input-group-text">  <i class="fa-solid fa-warehouse"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Ubicación / oficina / bodega" aria-label="location" formControlName="location">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="form.get('type')?.value==1">
                     <div class="mb-1">
                         <label class="small mb-1" for="providers_id">Proveedor</label>
                         <div class="input-group">

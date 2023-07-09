@@ -83,9 +83,9 @@ export class SearchProductsComponent implements OnInit {
 
   onSearch(q: string = null, category: any = 0) {
     if (q != null) {
- this.q = q;
+      this.q = q;
     }
-   
+
     if (category > 0) {
       this.category = category;
     }

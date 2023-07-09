@@ -1,0 +1,22 @@
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    color: #333;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-lastname {
+    margin-bottom: 10px;
+}
+
+.current-datetime {
+    font-size: 18px;
+    color: #888;
+}
+

@@ -4,15 +4,9 @@
         <div class="col-xl-12 col-md-12">
             <div class="card h-100">
                 <div class="card-header">
-                    Contactos asociados
+
                     <div class="btn-group float-right" role="group">
-                        <button class="btn btn-secondary" *ngIf="view==2" (click)="view=1">
-                            <i class="fa-solid fa-list"></i>
-                        </button>
-                        <button class="btn btn-secondary" *ngIf="view==1" (click)="view=2">
-                            <i class="fa-solid fa-table-cells-large"></i>
-                        </button>
-                        <button class="btn btn-primary" (click)="openModal(add)"><i class="fa-solid fa-circle-plus"></i>
+                        <button *ngIf="!hiddenButton" class="btn btn-primary" (click)="openModal(add)"><i class="fa-solid fa-circle-plus"></i>
                             Nuevo</button>
                     </div>
 
@@ -20,7 +14,7 @@
                 <div class="card-body">
                     <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
                         (pageChange)="search()"></ngb-pagination>
-                    <div class="table-responsive" *ngIf="view==1;else viewBox">
+                    <div class="table-responsive">
                         <table class="table user-list">
                             <thead>
                                 <tr>
@@ -33,6 +27,43 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr *ngIf="personDefault">
+                                    <td>
+                                        <span>{{personDefault?.person?.name | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{personDefault?.person?.rut | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{personDefault?.person?.phone | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{personDefault?.person?.email | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        {{personDefault?.person?.created_at}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic mixed styles example"
+                                            *ngIf="!personDefault?.callBack; else callback">
+                                            <button *ngIf="!hiddenButton" type="button" class="btn   text-warning"
+                                                (click)="openEdit(personDefault?.person?.id,edit)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn  text-danger"
+                                                (click)="openDelete(personDefault?.person?.id,remove)">
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+                                        </div>
+                                        <ng-template #callback>
+                                            <button type="button" class="btn   text-warning"
+                                            (click)="personDefault?.callBack && personDefault.callBack(personDefault?.person)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        </ng-template>
+                                    </td>
+                                </tr>
                                 <tr *ngFor="let item of items">
                                     <td>
                                         <span>{{item.name | uppercase}}</span>
@@ -51,45 +82,25 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                            <button type="button" class="btn   text-warning"
+                                            <button *ngIf="!hiddenButton" type="button" class="btn   text-warning"
                                                 (click)="openEdit(item.id,edit)">
-                                                    <i class="fa fa-pencil"></i>
+                                                <i class="fa fa-pencil"></i>
                                             </button>
                                             <button type="button" class="btn  text-danger"
                                                 (click)="openDelete(item.id,remove)">
-                                                    <i class="fa-solid fa-trash"></i>
+                                                <i class="fa-solid fa-trash"></i>
 
                                             </button>
                                         </div>
 
                                     </td>
                                 </tr>
-                                <tr *ngIf="!items">
+                                <tr *ngIf="!items && !personDefault">
                                     <td colspan="7" class="fw-lighter text-muted">No se encontraron registros</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <ng-template #viewBox>
-                        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate"
-                            data-aos="fade-up">
-                            <div class="col my-3" *ngFor="let item of items">
-                                <div class="card border-hover-primary hover-scale card-btn">
-                                    <div class="card-body">
-                                        <div class="text-primary mb-5">
-                                            <i class="fa-regular fa-address-card fa-3x"></i>
-                                        </div>
-                                        <h6 class="font-weight-bold mb-3">{{item.name}}<br>
-                                            <small>{{item.turn}}</small>
-
-                                            <p class="fw-light fs-6" *ngIf="item.location"><i
-                                                    class="fa-solid fa-location-dot"></i> {{item.location}}</p>
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-template>
                 </div>
             </div>
         </div>
@@ -116,8 +127,8 @@
 
 <ng-template #add let-c="close " let-d="dismiss">
     <div class="modal-body shadow-lg">
-        <app-add-contact [clientsId]="clients_id" [providersId]="providers_id" (success)="getContacts()">
-        </app-add-contact>
+        <app-add-contact *ngIf="(reservations_id>0) || (clients_id>0) || (providers_id>0)" [clientsId]="clients_id" [reservationsId]="reservations_id" [hidePosition]="(reservations_id>0)"  [providersId]="providers_id" (success)="getContacts()" />
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
@@ -125,10 +136,12 @@
         </button>
     </div>
 </ng-template>
+
+
 <ng-template #edit let-c="close " let-d="dismiss">
     <div class="modal-body shadow-lg">
-        <app-edit-contact [contactId]="idSelected" [clientsId]="clients_id" [providersId]="providers_id"
-            (success)="getContacts()"></app-edit-contact>
+        <app-edit-contact [contactId]="idSelected" [clientsId]="clients_id" [hidePosition]="(reservations_id>0)" [providersId]="providers_id" [reservationsId]="reservations_id"
+            (success)="getContacts()" />
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar

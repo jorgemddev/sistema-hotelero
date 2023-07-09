@@ -4,6 +4,9 @@ import { InventoryComponent } from '../modules/inventory/inventory.component';
 import { SettingComponent } from '../modules/setting/setting.component';
 import { DashComponent } from './pages/dash/dash.component';
 import { HotelierComponent } from '../modules/hotelier/hotelier.component';
+import { AdminGuard } from '../models/guard/admin.guard';
+import { SalesComponent } from '../modules/sales/sales.component';
+
 
 const routes: Routes = [
   {
@@ -36,6 +39,7 @@ const routes: Routes = [
   {
     path: 'configuracion',
     component: SettingComponent,
+    canActivate: [AdminGuard],
     children: [
       {
         path: '',
@@ -78,33 +82,55 @@ const routes: Routes = [
       ],
     },
   },
-    //module hotelier
-    {
-      path: 'hotel',
-      component: HotelierComponent,
-      children: [
+  //module hotelier
+  {
+    path: 'hotel',
+    component: HotelierComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('../modules/hotelier/hotelier.module').then(
+            (m3) => m3.HotelierModule
+          ),
+      },
+    ],
+    data: {
+      title: 'HOTEL',
+      breadcrumb: [
         {
-          path: '',
-          loadChildren: () =>
-            import('../modules/hotelier/hotelier.module').then(
-              (m3) => m3.HotelierModule
-            ),
+          label: 'Hotel',
+          url: '/hotel',
         },
       ],
-      data: {
-        title: 'HOTEL',
-        breadcrumb: [
-          {
-            label: 'Hotel',
-            url: '/hotel',
-          },
-        ],
-      },
     },
+  },
+  {
+    path: 'ventas',
+    component: SalesComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('../modules/sales/sales.module').then(
+            (m4) => m4.SalesModule
+          ),
+      },
+    ],
+    data: {
+      title: 'VENTAS',
+      breadcrumb: [
+        {
+          label: 'Ventas',
+          url: '/ventas',
+        },
+      ],
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PrivateRoutingModule {}
+export class PrivateRoutingModule { }

@@ -1,0 +1,9 @@
+.container-alert{
+    display: flex;
+    justify-content: flex-start !important;
+}
+.alert {
+    margin-top: 0 !important;
+    padding: 5px !important;
+    font-size: 0.9rem!important;
+}

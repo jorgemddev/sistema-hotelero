@@ -1,0 +1,8 @@
+<div [formGroup]="form" *ngIf="items && items.length>0">
+    <input   #ipt type="text" id=input [ngClass]="{'danger':itemSelected==null && form.get('input')?.value}" formControlName="input" class="{{class}}" (blur)="checkResult()" (keyup)="filterItems($event)">
+    <label *ngIf="label" class="label-control"  for="input">{{label}} <span class="label-danger"> {{msg}}</span></label>
+</div>
+<ul class="list-result" *ngIf="itemsReceived">
+    <li *ngFor="let option of filteredItems" (click)="selected(option)" >{{option.tag}}</li>
+</ul>
+

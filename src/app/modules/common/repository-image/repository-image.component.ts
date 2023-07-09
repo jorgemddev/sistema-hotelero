@@ -66,6 +66,7 @@ export class RepositoryImageComponent implements OnChanges, OnInit {
           e.error.mistakes,
           e.error.msg
         );
+        this.items=null;
       }
     );
   }
@@ -104,7 +105,6 @@ export class RepositoryImageComponent implements OnChanges, OnInit {
     item.link=link;
     this.toast.success('Imagen seleccionada correctamente', 'Multimedia');
     this.onSelected.emit(item);
-    this.modal.dismissAll();
   }
 
   getDownloadImage() {

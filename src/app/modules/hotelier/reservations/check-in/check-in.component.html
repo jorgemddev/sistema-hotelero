@@ -1,0 +1,171 @@
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="card h-100">
+                <form novalidate [formGroup]="form" (ngSubmit)="update()">
+                    <div class="card-header bg-success-light text-white text-center" style="text-transform: uppercase;">CHECK IN</div>
+                    <div class="card-body">
+
+                        <div class="row gx-3 mb-3">
+
+                            <div class="mb-3 col-md-6">
+                                <label for="check_ing" class="form-label">Fecha de ingreso</label>
+                                <input formControlName="check_ing" type="date" class="form-control" id="fechaEntrada"
+                                    name="fechaEntrada">
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="hour_ing" class="form-label">Hora de imgreso</label>
+                                <input formControlName="hour_ing" type="time" class="form-control">
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <label class="small mb-1" for="room_number">Reserva<button
+                                        (click)="openModal(editReservations)" type="button" class="btn"><i
+                                            class="fa-solid fa-pen"></i></button> <span *ngIf="daysLate>0"
+                                        class="badge bg-danger" id="addon-wrapping">{{daysLate}} días tarde</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="addon-wrapping">Ing.</span>
+                                    <input type="date" class="form-control" formControlName="start">
+                                    <span class="input-group-text" id="addon-wrapping">Sal.</span>
+                                    <input type="date" class="form-control" formControlName="end">
+                                </div>
+                                <div class="input-group">
+                                    <select formControlName="rooms_id" class="form-control"
+                                        (change)="onSelectedRoom();calculePrice()">
+                                        <option value="0">SELECCIONE</option>
+                                        <option *ngFor="let room of rooms" [value]="room?.id">{{room?.room_number |
+                                            uppercase}}</option>
+                                    </select>
+                                    <span class="input-group-text" id="addon-wrapping"><i
+                                            class="fa-solid fa-bed"></i>&nbsp; {{form.get('capacity')?.value}}</span>
+                                    <label class="input-group-text" for="inputGroupSelect01">Precio:</label>
+                                    <span class="input-group-text">{{this.form?.get('price').value |
+                                        currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2" *ngIf="roomSelected!=null">
+                                <label class="small mb-1">Servicios</label>
+                                <div *ngIf="roomSelected?.amenities; else notAmenities">
+                                    <span class="badge rounded-pill badge-dark text-wrap ms-1"
+                                        style="font-size: 10px; font-weight: 400;"
+                                        *ngFor="let am of roomSelected.amenities">{{am.amenitie.tag}}</span>
+                                </div>
+                                <ng-template #notAmenities>
+                                    <span class="badge bg-danger">Sin servicios asociados</span>
+                                </ng-template>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="button" id="btn-charge" (click)="openModal(addCharge,'md')"
+                                    class="m-1 float-end btn btn-warning btn-sm"><i
+                                        class="fa-solid fa-file-invoice-dollar"></i></button>
+                                <app-summary-payment [reservations]="reservations" [totalPayment]="totalPayment" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer shadow-lg">
+                        <button class="btn btn-success w-100" type="submit">GRABAR INGRESO
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-7 col-xl-8">
+            <div class="card h-100">
+                <div class="card-header">
+                    Opciones disponibles
+                    <div class="btn-group float-right" role="group">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                        <li [ngbNavItem]="1">
+                            <a ngbNavLink>HISTORIAL DE PAGOS</a>
+                            <ng-template ngbNavContent *ngIf="reservations_id>0">
+                                <app-payments [reservations_id]="reservations_id" (totalPay)="totalPayment=$event" />
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <a ngbNavLink>HUESPEDES</a>
+                            <ng-template ngbNavContent *ngIf="reservations_id>0">
+                                <app-list-contact
+                                    [personDefault]="{person:reservations?.client,callBack:openEditClient}"
+                                    [reservations_id]="reservations_id" />
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                            <a ngbNavLink>ESTACIONAMIENTO</a>
+                            <ng-template ngbNavContent *ngIf="reservations_id>0">
+                                <app-parking [reservations_id]="reservations_id" />
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="4">
+                            <a ngbNavLink>NOTAS</a>
+                            <ng-template ngbNavContent *ngIf="reservations_id>0">
+                                <app-list-notes [reservations_id]="reservations_id" />
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #addClient let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-add-client [modalRef]="modalOtherRef" [data]="contact" (record)="form.patchValue($event)" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #editClient let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-edit-client [modalRef]="modalOtherRef" [template]="'small'" [clients_id]="client?.id"
+            (record)="reservations.client=$event" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #searchReversation let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-search-reservation />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #editReservations let-c="close" let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-edit-reservation [reservations_id]="reservations_id" (success)="reload()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #addCharge let-c="close" let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-add-charges [reservationsId]="reservations_id" (success)="reload()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

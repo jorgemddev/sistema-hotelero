@@ -1,0 +1,44 @@
+<form [formGroup]="form">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">BUSCAR RESERVACIÓN</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_number">Numero Reserva</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-bell-concierge"></i></span>
+                        <input  type="button"  formControlName="reservations_id" type="text" aria-label="First name" class="form-control">
+                        <button (click)="search()" class="btn btn-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_number">Buscar por Cliente</label>
+                    <div class="input-group">
+                        <span class="input-group-text">R.U.T/D.N.I</span>
+                        <input formControlName="rut" type="text" aria-label="First name" class="form-control"
+                            (keyup)="onFormatRut($event)">
+                    </div>
+                </div>
+                <div class="row m-0 p-0 mt-3" *ngIf="client">
+                    <h6>Cliente encontrado </h6>
+                    <div class="col-md-6">
+                        <label for="name" class="small mb-1">Nombre</label>
+                        <input type="text" formControlName="name" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastname" class="small mb-1">Apellidos</label>
+                        <input type="text" formControlName="lastname" class="form-control" />
+                    </div>
+                    <div class="col-md-12">
+                        <label for="reservations_id">Reservaciones encontradas</label>
+                        <select formControlName="reservations_id" class="form-control" id="reservations_id">
+                            <option *ngFor="let item of reservations" [value]="item.id">DESDE: {{item.start}} HASTA:
+                                {{item.end}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary w-100" (click)="onSelected()" *ngIf="client">VER</button>
+        </div>
+    </div>
+</form>

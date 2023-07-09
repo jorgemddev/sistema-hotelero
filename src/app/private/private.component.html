@@ -15,11 +15,13 @@
                 <app-main-nav></app-main-nav>
                 <!-- /man nav -->
 
+                <!--breadcrumb-->
+                <div class="container-fluid" stickyMobile>
+                    <app-ng-dynamic-breadcrumb></app-ng-dynamic-breadcrumb>
+                </div>
+                <!--/breadcrumb-->
                 <!-- content -->
-                <div class="container-fluid">
-                    <div class="ml-4 mr-3">
-                        <app-ng-dynamic-breadcrumb></app-ng-dynamic-breadcrumb>
-                    </div>
+                <div  class="container-fluid">
                     <router-outlet></router-outlet>
                 </div>
                 <!-- /content -->

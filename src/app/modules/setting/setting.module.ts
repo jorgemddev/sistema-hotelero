@@ -8,7 +8,7 @@ import { MultimediaComponent } from './company/multimedia/multimedia.component';
 import { ProfileComponent } from './users/profile/profile.component';
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
-import { ListtUserComponent } from './users/list-user/list-user.component';
+import { ListUserComponent } from './users/list-user/list-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RepositoryImageModule } from '../common/repository-image/repository-image.module';
 import { UsersComponent } from './users/users.component';
@@ -18,15 +18,24 @@ import { ConfigComponent } from './config/config.component';
 import { ConfigEmailComponent } from './config/config-email/config-email.component';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddConfigEmailComponent } from './config/config-email/add-config-email/add-config-email.component';
+import { ImageDefaultConfig, ImageDefaultModule } from '../../directives/image-default/image-default.module';
+import { WarningInputFormsComponent } from 'src/app/components/standalone/warning-input-forms/warning-input-forms.component';
+import { InputPasswordGenerateComponent } from 'src/app/components/standalone/input-password-generate/input-password-generate.component';
+import { InputTextCompleteComponent } from 'src/app/components/standalone/input-text-complete/input-text-complete.component';
 
-
+const imageConfig: ImageDefaultConfig = {
+  defaultImages: {
+    avatar: 'assets/images/avatar.png',
+    beda: 'assets/images/beda.png'
+  },
+};
 @NgModule({
   declarations: [
     SettingComponent,
     ProfileComponent,
     AddUserComponent,
     EditUserComponent,
-    ListtUserComponent,
+    ListUserComponent,
     MultimediaComponent,
     BrandComponent,
     UsersComponent,
@@ -34,7 +43,7 @@ import { AddConfigEmailComponent } from './config/config-email/add-config-email/
     SocialMediaComponent,
     ConfigComponent,
     ConfigEmailComponent,
-    AddConfigEmailComponent,
+    AddConfigEmailComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +52,10 @@ import { AddConfigEmailComponent } from './config/config-email/add-config-email/
     ReactiveFormsModule,
     RepositoryImageModule,
     NgbPaginationModule,
-    NgbModule,
+    WarningInputFormsComponent,
+    InputPasswordGenerateComponent,
+    InputTextCompleteComponent,
+    NgbModule, ImageDefaultModule.forRoot(imageConfig)
   ]
 })
 export class SettingModule { }

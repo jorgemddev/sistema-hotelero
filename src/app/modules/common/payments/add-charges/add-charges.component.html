@@ -1,0 +1,23 @@
+<form [formGroup]="primaryForm" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">REGISTRO DE  COBRO</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_number">Cobro </label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="addon-wrapping">$</span>
+                        <input type="number" class="form-control" placeholder="0" formControlName="ammount">
+                        <label class="input-group-text" for="inputGroupSelect01">Pesos <i
+                                class="fa-solid fa-hand-holding-dollar"></i></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="small mb-1" for="room_number">Motivo</label>
+                    <input type="text" class="form-control" placeholder="Descripción del pago o referencia de este." formControlName="detail">
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">GENERAR</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,64 @@
+<form [formGroup]="form">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">CIERRE DE CAJA</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <div class="user-name"><b>Cajero :</b>{{ user?.name }} {{ user?.lastname }}</div>
+                    <div class="user-name"><b>Total de recaudado :</b>{{ totalSales |
+                        currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe }}</div>
+                    <div class="user-name"><b>Efectivo :</b>{{ efectivo | currency:'CAD':'symbol-narrow':'3.0-0' |
+                        moneyClPipe }}</div>
+
+                </div>
+                <div class="col-md-12">
+                    <form [formGroup]="myForm">
+                        <table class="table  table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Denominación</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="denominations">
+                                <tr *ngFor="let denominationControl of denominationsFormArray.controls; let i = index">
+                                    <td>{{ denominations[i].name }}</td>
+                                    <td>
+                                        <input type="number" min="0" [formControlName]="i"
+                                            (input)="updateSubtotal(i)" />
+                                    </td>
+                                    <td>{{ denominations[i].subtotal | currency:'CAD':'symbol-narrow':'3.0-0' |
+                                        moneyClPipe}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pendiente: {{form.get('earring')?.value| currency:'CAD':'symbol-narrow':'3.0-0'
+                                        | moneyClPipe}}</td>
+                                    <td class="text-right"><b>Total:</b></td>
+                                    <td>{{total | currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</td>
+                                </tr>
+                            </tbody>
+                            <input type="hidden" />
+                        </table>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <label for="obs">Observación</label>
+                    <textarea class="form-control" formControlName="obs"></textarea>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" type="button" (click)="openValidation(validation,'sm')">CERRAR
+                CAJA</button>
+        </div>
+    </div>
+</form>
+<ng-template #validation let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-pos-validation [modalRef]="modalRef" (success)="d('Cross click');create($event)" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

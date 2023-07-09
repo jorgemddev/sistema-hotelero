@@ -1,9 +1,12 @@
+import { Privileges } from "./privileges";
+
 export interface Users{
     id?:number;
     name?:string;
     lastname?:string;
     level?:number;
-    type_id?:number;
+    privileges_id?:number;
+    privileges?:Privileges;
     email:string;
     rut?:string;
     phone?:string;

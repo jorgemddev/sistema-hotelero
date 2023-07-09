@@ -7,6 +7,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
 import { MoneyClPipe } from 'src/app/pipes/money-cl.pipe';
+import { EmojiModule } from '../emoji/emoji.module';
 
 
 
@@ -21,7 +22,8 @@ import { MoneyClPipe } from 'src/app/pipes/money-cl.pipe';
     NgbNavModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxEditorModule
+    NgxEditorModule,
+    EmojiModule
   ],
   exports:[
     SharedPurchaseComponent,

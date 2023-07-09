@@ -1,0 +1,6 @@
+#btn-charge{
+    position: absolute;
+    z-index: 99;
+    top: 24px;
+    right: 12px;
+}

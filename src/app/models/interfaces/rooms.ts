@@ -1,4 +1,5 @@
 import { Amenities } from "./amenities";
+import { Availability } from "./availability";
 
 export interface Rooms{
     id:number;
@@ -7,7 +8,8 @@ export interface Rooms{
     capacity?:number;
     amenities?:any;
     price?:number;
-    availability?:string;
+    availability?:Availability;
+    availability_id?:number;
     created_at?:string;
     update_in?:string;
 }

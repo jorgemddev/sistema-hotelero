@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Images } from 'src/app/models/interfaces/images';
@@ -18,6 +18,7 @@ export class GalleryIconsComponent implements OnChanges, OnInit {
   ) { }
   level: any;
   domain: string = this.api.domain;
+
 
   @Output()
   onSelected = new EventEmitter<Icons>();
@@ -54,19 +55,11 @@ export class GalleryIconsComponent implements OnChanges, OnInit {
     this.api.getIcons(this.page).subscribe(
       (response) => {
         var data = response.data as Paginate;
-        if (response.status == 'ok') {
           this.items = data.items;
           this.page = data.current;
           this.perpage = data.per_page;
           this.collectionSize = data.count;
           this.totalPage = data.total;
-        } else {
-          this.items = data.items;
-          this.page = data.current;
-          this.perpage = data.per_page;
-          this.collectionSize = data.count;
-          this.totalPage = data.total;
-        }
       },
       (error) => {
         this.toast.error("No se pudo obtener los iconos solicitados", "Iconos");

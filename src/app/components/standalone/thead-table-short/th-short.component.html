@@ -1,0 +1,16 @@
+<div *ngIf="data?.length>1">
+  <div class="input-group ms-1 me-1" *ngIf="short === orderTypes.ALPHABETICAL">
+    <button  class="btn btn-sm btn-outline-secondary" (click)="sortTable(short); toggleOrder('asc')">
+      <i class="fa-solid fa-arrow-up-z-a" [ngClass]="{'text-primary': currentOrder === 'asc'}"></i>
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" (click)="sortTable(short); toggleOrder('desc')">
+      <i class="fa-solid fa-arrow-up-a-z" [ngClass]="{'text-primary': currentOrder === 'desc'}"></i>
+    </button>
+  </div>
+  <div class="input-group ms-1 me-1" *ngIf=" short=== orderTypes.NUMERIC">
+    <button class="btn btn-sm btn-outline-secondary" (click)="sortTable(short); toggleOrderInv()">
+      <i *ngIf="currentOrder==='asc'" class="fa-solid fa-arrow-up-wide-short text-primary" ></i>
+      <i *ngIf="currentOrder==='desc'" class="fa-solid fa-arrow-down-wide-short text-primary"></i>
+    </button>
+  </div>
+</div>

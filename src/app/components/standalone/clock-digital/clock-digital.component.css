@@ -1,0 +1,32 @@
+.clock-container {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  display: flex;
+  background-color: #000;
+  padding: 0.2rem;
+  border-radius: 5px;
+}
+
+.segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0.2rem;
+}
+
+.digit {
+  font-family: 'Digital-7', sans-serif;
+  font-size: 1.5rem;
+  color: rgb(255, 255, 255);
+}
+
+.separator {
+  font-size: 0.7rem;
+  color: rgb(204, 204, 204);
+  margin: 0.5rem 0;
+}

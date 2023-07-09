@@ -4,9 +4,10 @@ import { EditorView } from 'prosemirror-view';
 
 import { Editor } from 'ngx-editor';
 import { isNodeActive } from 'ngx-editor/helpers';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
 import { SettingRoutingModule } from 'src/app/modules/setting/setting-routing.module';
+import { ApiEditorHtmlService } from '../../api-editor-html.service';
 
 
 @Component({
@@ -16,10 +17,13 @@ import { SettingRoutingModule } from 'src/app/modules/setting/setting-routing.mo
 })
 export class EmojiComponent implements OnInit {
 
-  constructor(private modal: NgbModal, private api: ApiService) { }
+  constructor(private modal: NgbModal, private api: ApiEditorHtmlService) { }
 
+  modalRef:NgbModalRef;
+ 
   @Input()
   editor: Editor = new Editor();
+
   isActive = false;
   isDisabled = false;
 
@@ -35,7 +39,6 @@ export class EmojiComponent implements OnInit {
         };
       },
     });
-
     this.editor.registerPlugin(plugin);
   }
   update = (view: EditorView) => {
@@ -47,35 +50,10 @@ export class EmojiComponent implements OnInit {
 
   selected(item: any) {
     this.editor.commands.insertText(item.icharacter).insertNewLine().exec();
-    this.modal.dismissAll();
-
-  }
-
-  getEmojis() {
-    this.api.searchEmoji(this.q).subscribe(
-      (response) => {
-        this.items = response.data;
-      },
-      (error) => {
-        this.items = null;
-      }
-    );
-  }
-
-
-  onSearch(q: string) {
-    if (q.length > 2) {
-      this.q = q;
-      this.getEmojis();
-    }
-
-  }
-  search() {
-    this.getEmojis();
   }
 
   openModal(md: any) {
-    this.modal.open(md, {
+   this.modalRef= this.modal.open(md, {
       size: 'md',
     });
   }

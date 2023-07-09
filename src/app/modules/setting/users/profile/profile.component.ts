@@ -24,12 +24,10 @@ export class ProfileComponent implements OnInit {
     private modal: NgbModal,
     private toast: ToastrService
   ) {}
-  usernameDisp = '...';
   textColor = '';
   image: string = '';
   error: any;
   userForm = new UntypedFormGroup({
-    username: new UntypedFormControl({ value: '', disabled: true }),
     name: new UntypedFormControl(''),
     lastname: new UntypedFormControl(''),
     email: new UntypedFormControl(''),
@@ -67,30 +65,6 @@ export class ProfileComponent implements OnInit {
   }
   saveImageProfile() {
     this.update();
-  }
-  checkNick(event: any) {
-    var username: string = this.userForm.get('username')?.value;
-    if (username.length > 3) {
-      this.usernameDisp = 'cargando...';
-      this.api.checkUser(username).subscribe(
-        (response) => {
-          if (response.status == 'ok') {
-            this.textColor = 'text-success';
-            this.usernameDisp = response.msg;
-          } else {
-            this.textColor = 'text-danger';
-            this.usernameDisp = response.msg;
-          }
-        },
-        (error) => {
-          this.error = error;
-        }
-      );
-    } else {
-      this.textColor = 'text-warning';
-      this.usernameDisp = 'Minimo 3 caracteres';
-    }
-    console.log(username);
   }
   getProfile() {
     this.api.getProfile().subscribe(
@@ -148,8 +122,10 @@ export class ProfileComponent implements OnInit {
       this.toast.warning('Las contraseñas no coinciden', 'Tenemos un error');
     }
   }
-  openPass(md: any) {
-    this.modal.open(md);
+  openPass(md: any,size:string='md') {
+    this.modal.open(md,{
+      size:size
+    });
   }
   openRepository(inputTag: string, md: any) {
     this.modal.open(md, {

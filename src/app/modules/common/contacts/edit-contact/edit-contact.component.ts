@@ -22,20 +22,30 @@ export class EditContactComponent implements OnChanges {
     private api: ApiService,
     private toast: ToastrService,
     private modal: NgbModal
-  ) {}
+  ) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.contactId > 0) {
       this.getContact(this.contactId);
+      if (this.clientsId > 0) {
+        this.hidePosition = true;
+      }
     }
   }
   @Output()
   success = new EventEmitter<boolean>();
+  @Input()
+  title: string = "EDITAR REGISTRO";
+  @Input()
+  hidePosition: boolean = false;
   @Input()
   contactId: number = 0;
   @Input()
   providersId: number;
   @Input()
   clientsId: number;
+  @Input()
+  reservationsId: number;
+
   items: any;
   primaryForm = new UntypedFormGroup({
     id: new UntypedFormControl(),
@@ -49,6 +59,7 @@ export class EditContactComponent implements OnChanges {
     whatsapp: new UntypedFormControl(''),
     providers_id: new UntypedFormControl(0),
     clients_id: new UntypedFormControl(0),
+    reservations_id: new UntypedFormControl(0),
   });
   getContact(id: number) {
     this.api.getContact(id).subscribe(
@@ -64,11 +75,12 @@ export class EditContactComponent implements OnChanges {
   update() {
     this.primaryForm.get('providers_id').setValue(this.providersId);
     this.primaryForm.get('clients_id').setValue(this.clientsId);
+    this.primaryForm.get('reservations_id').setValue(this.clientsId);
     this.api.updateContact(this.primaryForm).subscribe(
       (response) => {
         this.toast.success(
-          'Contacto modificado correctamente',
-          'Gestión Contactos'
+          'Persona modificada correctamente',
+          'Gestión'
         );
         this.success.emit(true);
         this.modal.dismissAll();

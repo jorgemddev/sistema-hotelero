@@ -1,0 +1,27 @@
+<div class="container-fluid" *ngIf="form.get('id')?.value>0">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 col-xl-2">
+         
+                    <!--habitación-->
+                   <app-edit-room [room]="room" [disabledForm]="true"/>
+                    <!--/habitacion-->
+
+                </div>
+                <div class="col-md-8 col-lg-9 colxl-10">
+                    <full-calendar #calendar [options]="calendarOptions" >
+                        <ng-template #eventContent let-arg>
+                            <b>{{arg.timeText}}</b>
+                            <i>{{arg.event.title}}</i>
+                        </ng-template>
+                    </full-calendar> 
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<ng-template #editReservation>
+    <app-edit-reservation [reservations_id]="reservation_id" (success)="filterReservations()" />
+</ng-template>

@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="update()" *ngIf="room!=null">
     <div class="card">
-        <div class="card-header text-center" style="text-transform: uppercase;">EDITAR HABITACIÓN</div>
+        <div class="card-header text-center" style="text-transform: uppercase;">HABITACIÓN</div>
         <div class="card-body">
             <div class="row gx-3 mb-3">
                 <div class="col-md-12">
@@ -45,7 +45,7 @@
                 </div>
 
             </div>
-            <button class="btn btn-primary w-100" type="submit">GUARDAR CAMBIOS</button>
+            <button *ngIf="!disabledForm" class="btn btn-primary w-100" type="submit">GUARDAR CAMBIOS</button>
         </div>
     </div>
 </form>

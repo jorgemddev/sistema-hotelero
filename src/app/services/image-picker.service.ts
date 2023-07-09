@@ -14,7 +14,7 @@ import {
 import { Observable, map, catchError, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { Helps } from '../libs/helps';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +26,7 @@ export class ImagePickerService extends FilePickerAdapter {
     const form = new FormData();
     form.append('file', fileItem.file);
     const api =
-      this.apiService.domain + 'company/images/upload/'
+      environment?.domain + 'company/images/upload/'
     const req = new HttpRequest('POST', api, form, { reportProgress: true });
     return this.http.request(req).pipe(
       map((res: HttpEvent<any>) => {

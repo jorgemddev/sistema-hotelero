@@ -8,12 +8,7 @@
                     Listado de productos
                     <div class="btn-group float-right" role="group">
                         <button class="btn btn-info" (click)="openModal(searchp,'xl')"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
-                        <button class="btn btn-secondary" *ngIf="view==2" (click)="view=1">
-                            <i class="fa-solid fa-list"></i>
-                        </button>
-                        <button class="btn btn-secondary" *ngIf="view==1" (click)="view=2">
-                            <i class="fa-solid fa-table-cells-large"></i>
-                        </button>
+                  
                         <button class="btn btn-primary" (click)="openModal(addProduct)"><i
                                 class="fa-solid fa-circle-plus"></i> Nuevo</button>
                     </div>
@@ -21,7 +16,7 @@
                 <div class="card-body">
                     <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
                         (pageChange)="search()"></ngb-pagination>
-                    <div class="table-responsive" *ngIf="view==1;else viewBox">
+                    <div class="table-responsive" >
                         <table class="table user-list">
                             <thead>
                                 <tr>
@@ -32,6 +27,7 @@
                                     <th><span>PROVEEDOR</span></th>
                                     <th><span>MARCA</span></th>
                                     <th><span>MODELO</span></th>
+                                    <th><span>UBICACIÓN</span></th>
                                     <th><span>STOCK</span></th>
                                     <th><span>FECHA CREACIÓN</span></th>
 
@@ -62,6 +58,9 @@
                                         <span>{{item.model | uppercase}}</span>
                                     </td>
                                     <td>
+                                        <span class="badge" [ngClass]="{'bg-dark':item?.location,'bg-warning':!item?.location}">{{(item?.location | uppercase) || "NO DEFINIDA"}}</span>
+                                    </td>
+                                    <td>
                                         {{item.amount}}
                                     </td>
                                     <td>
@@ -87,35 +86,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <ng-template #viewBox>
-                        <div class="row row-cols-lg-4 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate"
-                            data-aos="fade-up">
-                            <div class="col my-3" *ngFor="let item of items">
-                                <div class="card border-hover-primary hover-scale">
-                                    <div class="card-body">
-                                        <div class="text-primary mb-5" style="cursor: pointer;" (click)="goToUpdate(item.id,editProduct)">
-                                            <i class="fa-solid fa-box-open fa-3x"></i>
-                                        </div>
-                                        <h5 class="mb-3">{{item.name | uppercase}}<br>
-                                            <small><b>STOCK</b> {{item.amount}}</small>
-                                        </h5>
-                                        <span class="mb-3"><b>CATEGORIA</b> {{item.family |
-                                            uppercase}}</span><br>
-                                        <span class="mb-3"><b>MARCA</b> {{item.brand | uppercase}}</span>
-                                        <span class="mb-3"><b> MODELO</b> {{item.model | uppercase}}</span>
-
-                                        <button type="button" title="Eliminar sección"
-                                            class="btn  text-danger float-end" (click)="openDelete(item.id,remove)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-template>
+         
                 </div>
             </div>
         </div>

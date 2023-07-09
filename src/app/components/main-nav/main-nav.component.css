@@ -1,12 +1,26 @@
 .bg-navbar {
-    background-color: #6b6c72 !important;
-    background: rgb(65, 51, 57) !important;
-    background: linear-gradient(90deg, rgba(65, 51, 57, 1) 0%, rgba(56, 81, 156, 1) 100%) !important;
+    background-color: #38393d !important;
+    background: rgb(44, 41, 42) !important;
+    background: linear-gradient(90deg, rgb(39, 42, 72) 0%, rgb(41, 55, 97) 100%) !important;
     box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
     -webkit-box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
-    -moz-box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
+    -moz-box-shadow: 1px 4px 15px -1px rgba(52, 52, 52, 0.75) !important;
 }
 
 a i {
     cursor: pointer !important;
 }
+
+/**Directive Stycky*/
+.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    /* Agrega aquí cualquier otro estilo adicional que desees aplicar */
+  }
+  .read-notification{
+    font-weight: 300;
+    color: #a9a9a9;
+  }

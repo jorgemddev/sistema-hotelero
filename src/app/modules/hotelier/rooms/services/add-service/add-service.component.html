@@ -8,7 +8,7 @@
             <div class="input-group">
                 <select class="custom-select" id="inputGroupSelect04" formControlName="amenities_id">
                     <option value="0" selected>SELECCIONE</option>
-                    <option *ngFor="let item of amenities" [value]="item?.id">{{item.tag}}</option>
+                    <option *ngFor="let item of amenities" [value]="item?.id">{{item.tag | uppercase}}</option>
                 </select>
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="button" (click)="addnew=true"><i

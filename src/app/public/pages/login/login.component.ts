@@ -7,6 +7,7 @@ import { Profile } from 'src/app/models/interfaces/profile';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { formatRut, RutFormat } from '@fdograph/rut-utilities';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -51,14 +52,13 @@ export class LoginComponent implements OnInit {
     });
   }
   loginForm = new UntypedFormGroup({
-    cod: new UntypedFormControl(''),
+    rut: new UntypedFormControl(''),
     email: new UntypedFormControl(''),
     pass: new UntypedFormControl(''),
   });
 
   login() {
-    const { cod, pass } = this.loginForm.value;
-    this.api.login(cod, pass).subscribe(
+    this.api.login(this.loginForm).subscribe(
       (response) => {
         console.log("RESPONSE LOGIN:",response );
         this.helps.saveToken(response);
@@ -103,5 +103,12 @@ export class LoginComponent implements OnInit {
   inProgress(rs: boolean) {
     console.log('inProgress' + rs);
     this.disabledSubmit = rs;
+  }
+  onFormatRut(value: any) {
+    if (value.target.value.length > 8) {
+      this.loginForm
+        .get('rut')
+        ?.setValue(formatRut(value.target.value, RutFormat.DOTS_DASH));
+    }
   }
 }

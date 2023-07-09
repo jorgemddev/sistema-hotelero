@@ -1,0 +1,187 @@
+<form [formGroup]="form" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">RESERVAR HABITACIÓN</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+
+                <div class="mb-3 col-md-4" *ngIf="!startDefault; else startDef">
+                    <label for="fechaEntrada" class="form-label">Fecha de ingreso</label>
+                    <input formControlName="start" type="date" class="form-control"
+                        (change)="form.get('end').setValue(form.get('start')?.value);filterReservations();calculePrice()"
+                        id="fechaEntrada" name="fechaEntrada">
+                </div>
+                <ng-template #startDef>
+                    <div class="mb-3 col-md-4">
+                        <label for="fechaEntrada" class="form-label">Fecha de ingreso</label>
+                        <input formControlName="startV" type="date" class="form-control" id="fechaEntrada"
+                            name="fechaEntrada">
+                        <input type="hidden" formControlName="start" />
+                    </div>
+                </ng-template>
+
+                <div class="mb-3 col-md-4" *ngIf="!endDefault; else endDef">
+                    <label for="fechaSalida" class="form-label">Fecha de salida</label>
+                    <input formControlName="end" type="date" class="form-control" id="fechaSalida"
+                        (change)="filterReservations();calculePrice()" name="fechaSalida" />
+                </div>
+
+                <ng-template #endDef>
+                    <div class="mb-3 col-md-4">
+                        <label for="fechaSalida" class="form-label">Fecha de salida</label>
+                        <input formControlName="endV" type="date" class="form-control" id="fechaSalida" />
+                        <input type="hidden" formControlName="end" />
+                    </div>
+                </ng-template>
+
+
+                <div class="mb-3 col-md-4" *ngIf="!roomDefault; else roomDef">
+                    <label for="fechaEntrada" class="form-label">Habitación</label>
+                    <select formControlName="rooms_id" class="form-control" (change)="onSelectedRoom();calculePrice()">
+                        <option value="0">SELECCIONE</option>
+                        <option *ngFor="let room of rooms" [value]="room?.id">{{room?.room_number |
+                            uppercase}}</option>
+                    </select>
+                </div>
+
+                <ng-template #roomDef>
+                    <div class="mb-3 col-md-4">
+                        <label for="fechaSalida" class="form-label">Habitación</label>
+                        <input disabled type="text" class="form-control"
+                            [value]="roomDefault?.room_number | uppercase" />
+                        <input type="hidden" formControlName="rooms_id" value="{{roomDefault?.id}}" />
+
+                    </div>
+                </ng-template>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--cliente-->
+                        <div class="input-group">
+                            <span class="input-group-text">R.U.T/D.N.I</span>
+                            <input formControlName="rut" type="text" aria-label="First name" class="form-control"
+                                (keyup)="onFormatRut($event)">
+                            <button *ngIf="btnNewClient" type="button" (click)="openModal(addClient)"
+                                class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></button>
+                        </div>
+                        <div class="m-0 p-0  mt-2" *ngIf="client">
+                            <span><b>Nombre Apellidos:</b>{{form.get('name')?.value}}
+                                {{form.get('lastname')?.value}}</span><br>
+                            <span><b>Telefono:</b>{{form.get('phone')?.value}}</span><br>
+                            <span><b>Email:</b> {{form.get('email')?.value}}</span>
+                            <input type="hidden" formControlName="name" class="form-control" />
+                            <input type="hidden" formControlName="lastname" class="form-control" />
+                            <input type="hidden" formControlName="email" class="form-control" />
+                            <input type="hidden" formControlName="phone" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Nota</label>
+                            <textarea class="form-control" formControlName="obs" id="exampleFormControlTextarea1"
+                                rows="3"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 alert alert-primary">
+                        <h6>Resumen de pago</h6>
+                        <!--pago-->
+                        <label class="small mb-1" for="room_number">Huespedes adicionales</label>
+                        <div class="input-group">
+                            <span class="input-group-text">Cant.</span>
+                            <input (keyup)="calculePrice()" (change)="calculePrice()" formControlName="aditional"
+                                type="number" aria-label="aditional" class="form-control">
+                            <span class="input-group-text">$</span>
+                            <input (keyup)="calculePrice()" (change)="calculePrice()" formControlName="price_aditional"
+                                type="number" aria-label="Precio adicional" class="form-control">
+                            <span class="input-group-text">C/U</span>
+                        </div>
+                        <label class="small mb-1" for="room_number">Precio Habitación</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-bed"></i></span>
+                            <input type="number" class="form-control" placeholder="0" formControlName="capacity">
+                            <label class="input-group-text" for="inputGroupSelect01">Precio:</label>
+                            <span class="input-group-text">
+                                {{this.form?.get('price').value | currency:'CAD':'symbol-narrow':'3.0-0' |
+                                moneyClPipe}}</span>
+                        </div>
+                        <label class="small mb-1" for="room_number">Pago abono, reserva</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="addon-wrapping">$</span>
+                            <input (keyup)="calculePrice()" type="number" class="form-control" placeholder="0"
+                                formControlName="abono">
+                            <label class="input-group-text" for="inputGroupSelect01">Pesos <i
+                                    class="fa-solid fa-hand-holding-dollar"></i></label>
+                        </div>
+                        <label class="small mb-1" for="room_number">Referencia del pago</label>
+                        <input type="text" class="form-control" placeholder="Transf. N° xx"
+                            formControlName="payment_ref">
+                        <div class="mb-3">
+                            <label class="small mb-1" for="room_number">Tipo de pago</label>
+                            <select formControlName="payment_id" class="form-control">
+                                <option value="0">SELECCIONE</option>
+                                <option *ngFor="let pay of payment" [value]="pay?.id">{{pay?.tag |
+                                    uppercase}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <span class="badge bg-danger"><strong>Total:</strong> {{form.get('total_price')?.value |
+                                currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-2" *ngIf="roomSelected!=null">
+                    <label class="small mb-1">Servicios</label>
+                    <div *ngIf="roomSelected?.amenities; else notAmenities">
+                        <span class="badge rounded-pill badge-dark text-wrap ms-1"
+                            style="font-size: 10px; font-weight: 400;"
+                            *ngFor="let am of roomSelected.amenities">{{am.amenitie.tag}}</span>
+                    </div>
+                    <ng-template #notAmenities>
+                        <span class="badge bg-danger">Sin servicios asociados</span>
+                    </ng-template>
+                </div>
+                <!--<div class="col-md-12" *ngIf="form.get('clients_id')?.value && form.get('rooms_id')?.value">
+                    <div class="alert alert-warning mt-2">
+                        <h5>Resumén</h5>
+                        <strong>Días:</strong> {{days}}<br>
+                        <b>Huespedes:</b> {{form.get('aditional')?.value+1}}<br>
+                        <span class="badge bg-success"><strong>Abono:</strong> {{form.get('abono')?.value |
+                            currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span><br>
+                        <span class="badge bg-danger"><strong>Total:</strong> {{form.get('total_price')?.value |
+                            currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span><br>
+                        <span class="badge bg-info">Saldo pendiente: {{saldo |
+                            currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span><br>
+
+                    </div>
+                </div>-->
+
+            </div>
+            <button class="btn btn-primary w-100" type="submit">CREAR RESERVACIÓN</button>
+        </div>
+        <div class="card-footer">
+            <button type="button" (click)="closeModal()" class="btn btn-sm btn-warning float-end">Cerrar</button>
+        </div>
+    </div>
+</form>
+<ng-template #addClient let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-add-client [modalRef]="modalOtherRef" [data]="contact"
+            (record)="setClient($event);getClientByRut($event?.rut)" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #editClient let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-edit-client [modalRef]="modalOtherRef" [template]="'small'" [clients_id]="form.get('clients_id')?.value"
+            (record)="setClient($event)" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

@@ -1,6 +1,7 @@
 export const environment = {
+  sk:"dasdas526#",
   production: true,
-  domain:"bedadev.cl",
-  baseApiUrl:"https://api.bedadev.cl/",
-  baseWebsiteUrl:"https://api.bedadev.cl/"
+  domain:"Katarsyshostel.cl",
+  baseApiUrl:"https://api.katarsyshostel.cl/",
+  baseWebsiteUrl:"https://api.katarsyshostel.cl/"
 };

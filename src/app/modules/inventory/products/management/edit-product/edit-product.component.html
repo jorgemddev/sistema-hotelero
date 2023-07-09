@@ -90,6 +90,7 @@
                     <div class="mb-1">
                         <label class="small mb-1" for="family_id">Familia</label>
                         <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-boxes-stacked"></i></span>
                             <select id="family_id" class="form-control" formControlName="family_id">
                                 <option value="0">SIN FAMILIA</option>
                                 <optgroup *ngFor="let item of familys" label="{{item.tag}}">
@@ -104,8 +105,19 @@
                 </div>
                 <div class="col-md-12">
                     <div class="mb-1">
+                        <label class="small mb-1" for="family_id">Ubicación</label>
+                        <div class="input-group">
+                            <span class="input-group-text">  <i class="fa-solid fa-warehouse"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Ubicación / oficina / bodega" aria-label="location" formControlName="location">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-1">
                         <label class="small mb-1" for="providers_id">Proveedor</label>
                         <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-user-tie"></i></span>
                             <select id="providers_id" class="form-control" formControlName="providers_id">
                                 <option value="0">SIN PROVEEDOR</option>
                                 <option *ngFor="let item of providers" value="{{item.id}}">{{item.name | uppercase}}

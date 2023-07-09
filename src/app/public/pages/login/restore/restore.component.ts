@@ -36,12 +36,7 @@ export class RestoreComponent implements OnInit {
       (response) => {
         console.log('validado');
         var profile = response.data as Profile;
-        this.auth.setLogin(
-          true,
-          profile.uid ?? '',
-          profile.token ?? '',
-          profile.level ?? '0'
-        );
+
         this.router.navigate(['/dash']);
       },
       (result) => {

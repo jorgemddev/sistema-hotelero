@@ -30,7 +30,14 @@
                                     <td>
                                         <span>{{item.id}}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-white" [ngClass]="{
+                                        'bg-success':item?.availability_id==1,
+                                        'bg-danger':item?.availability_id==2,
+                                        'bg-warning':item?.availability_id==3,
+                                        'bg-info':item?.availability_id==4,
+                                        'bg-secondary':item?.availability_id==5,
+                                    }">
+                                        
                                         {{'HAB. '+item?.room_number | uppercase}}
                                     </td>
                                     <td>
@@ -39,18 +46,12 @@
                                     <td>
                                         <!--services-->
 
-                                        <div *ngIf="item.amenities else nomodels" class="alert alert-primary">
+               
                                             <span class="badge badge-dark p-2 m-2" (click)="openModal(editService,'md',am)"
                                                 style="cursor: pointer;"
                                                 *ngFor="let am of item.amenities">{{am.amenitie.tag}}</span>
                          
-                                        </div>
-
-
-                                        <ng-template #nomodels>
-                                            <span class="badge bg-warning mt-0 me-1" style="font-size: 13px;">Servicios incluidos 
-                                                    </span>
-                                        </ng-template>
+                     
 
                                         <button type="button" class="btn btn-primary btn-sm"
                                         (click)="openModal(addService,'md',item)"><i
@@ -64,20 +65,20 @@
                                         {{item.created_at}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn  text-warning"
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-secondary btn-sm" title="Fuera de servicio" (click)="openModal(outOfService,'sm',item)">
+                                                <i class="fa-solid fa-burst"></i>
+                                        </button>
+                                        <button type="button" class="btn  btn-warning btn-sm" title="Editar"
                                             (click)="openUpdate(item,editRooms)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                            </span>
+                                            <i class="fa-solid fa-pen"></i>  
                                         </button>
-                                        <button type="button" class="btn  text-danger"
+                                        <button type="button" class="btn  btn-danger btn-sm" title="Eliminar"
                                             (click)="openDelete(item.id,remove)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </button>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>   
+                                        </div>
+                                     
                                     </td>
                                 </tr>
                             </tbody>
@@ -93,7 +94,7 @@
 <ng-template #remove let-c="close" let-d="dismiss">
     <form (submit)="delete()" novalidate [formGroup]="sForm">
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Atención</h4>
+            <h4 class="modal-title" id="modal-basic-title">Eliminar Habitación</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -101,7 +102,7 @@
 
         <div class="modal-body text-center">
             <i class="fa-solid fa-triangle-exclamation fa-5x text-danger"></i>
-            <h3>¿Esta seguro que desea eliminar?</h3>
+            <h6>¿Esta seguro que desea eliminar?</h6>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
@@ -110,11 +111,28 @@
     </form>
 </ng-template>
 
+<ng-template #outOfService let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Bloquer/desbloquear Habitación</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body text-center">
+            <i class="fa-solid fa-triangle-exclamation fa-5x text-warning"></i>
+            <h6>¿Bloquera/desbloquear  esta habitación?</h6>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="button" (click)="outService()" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+</ng-template>
 
 
 <ng-template #addRooms let-c="close " let-d="dismiss">
     <div class="modal-body shadow-lg">
-        <app-add-room />
+        <app-add-room (success)="getRooms()" />
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar

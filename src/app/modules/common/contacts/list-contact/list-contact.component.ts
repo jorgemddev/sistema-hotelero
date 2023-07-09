@@ -1,39 +1,67 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Clients } from 'src/app/models/interfaces/clients';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
+
 
 @Component({
   selector: 'app-list-contact',
   templateUrl: './list-contact.component.html',
   styleUrls: ['./list-contact.component.css'],
 })
-export class ListContactComponent implements OnInit {
+export class ListContactComponent implements OnInit, OnChanges {
   error: any;
   constructor(
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
     private router: Router
-  ) {}
+  ) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.setFilter();
+  }
   @Input()
   providers_id: number = 0;
   @Input()
   clients_id: number = 0;
+  @Input()
+  reservations_id: number = 0;
+  @Input()
+  personDefault: Person;
+  @Input()
+  hiddenButton: boolean = false;
+
+  //Id enviado para las soliciotudes
+  idSend: number;
+  filter: string;
 
   view: number = 1;
   status: any;
   categorys: any;
   idSelected: number = 0;
   ngOnInit(): void {
+    console.log("LIST CONTACTS");
+    this.setFilter();
     this.getData();
     this.getContacts();
   }
-
-  items: any;
+  setFilter() {
+    if (this.clients_id > 0) {
+      this.idSend = this.clients_id;
+      this.filter = "clients";
+    } else if (this.providers_id > 0) {
+      this.idSend = this.clients_id;
+      this.filter = "providers";
+    } else {
+      this.idSend = this.reservations_id;
+      this.filter = "reservations";
+    }
+  }
+  items: Clients[];
   page = 1;
   perpage: number = 0;
   collectionSize = 0;
@@ -60,9 +88,9 @@ export class ListContactComponent implements OnInit {
     this.api.deleteContacts(this.secondForm).subscribe(
       (response) => {
         this.toast.success(
-          'Producto eliminado correctamente',
-          'Gestión productos'
+          'Registro eliminado correctamente'
         );
+        this.getContacts();
         this.modal.dismissAll();
       },
       (error) => {
@@ -92,21 +120,10 @@ export class ListContactComponent implements OnInit {
     );
   }
   getContacts() {
-
-    var id: number = this.providers_id
-      ? this.providers_id
-      : this.clients_id
-      ? this.clients_id
-      : 0;
-    var filter: string = this.providers_id
-      ? 'providers'
-      : this.clients_id
-      ? 'clients'
-      : 'none';
-    this.api.getContactsFilter(id,filter, this.page).subscribe(
+    this.api.getContactsFilter(this.idSend, this.filter, this.page).subscribe(
       (response) => {
         var data = response.data as Paginate;
-        this.items = data.items;
+        this.items = data.items as Clients[];
         this.page = data.current;
         this.perpage = data.per_page;
         this.collectionSize = data.count;
@@ -134,7 +151,7 @@ export class ListContactComponent implements OnInit {
     });
   }
   openEdit(id: number, md: any) {
-  this.idSelected=id;
+    this.idSelected = id;
     this.modal.open(md, {
       size: 'md',
     });
@@ -142,5 +159,17 @@ export class ListContactComponent implements OnInit {
   search() {
     this.getContacts();
   }
-  clean() {}
+  clean() { }
+  callBackHandler(person:Clients){
+    if (this.personDefault?.callBack) {
+      const result = this.personDefault.callBack(person);
+      // Hacer algo con el resultado, si es necesario
+      console.log(result);
+    }
+  }
+}
+export interface Person{
+  person:Clients;
+  callBackVoid?:()=>void;
+  callBack?:(result:any)=>any;
 }

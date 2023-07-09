@@ -15,26 +15,10 @@ export class AuthService {
    */
   public isLogged: Observable<boolean> = this.isValid.asObservable();
 
-  setLogin(valid: boolean, uid: string, token: string, level: string): void {
-    console.log('AuthService emitir ' + valid);
-    if (valid) {
-      sessionStorage.setItem('ccviUid', uid);
-      sessionStorage.setItem('ccviTkn', token);
-      sessionStorage.setItem('ccviLevel', level);
-      this.isValid.next(valid);
-    } else {
-      sessionStorage.removeItem('ccviUid');
-      sessionStorage.removeItem('ccviTkn');
-      sessionStorage.removeItem('ccviLevel');
-      this.isValid.next(valid);
-      this.logout();
-    }
-  }
+
 
   public logout() {
-    sessionStorage.removeItem('ccviUid');
-    sessionStorage.removeItem('ccviTkn');
-    sessionStorage.removeItem('ccviLevel');
+    sessionStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 

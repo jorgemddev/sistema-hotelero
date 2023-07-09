@@ -1,0 +1,22 @@
+<form [formGroup]="form" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-header text-center" style="text-transform: uppercase;">APERTURA DE CAJA</div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="user-info">
+                    <div class="user-name">{{ user?.name }}</div>
+                    <div class="user-lastname">{{ user?.lastname }}</div>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-text">Monto inicial:
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </span> <input class="form-control" type="number" formControlName="iniammount" />
+                        <button class="btn btn-primary" type="submit">INICIAR TURNO</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -60,6 +60,7 @@ export class AddProductComponent implements OnInit, OnChanges {
     gain: new UntypedFormControl(30),
     tax: new UntypedFormControl(19),
     sale: new UntypedFormControl(0),
+    location: new UntypedFormControl(''),
     providers_id: new UntypedFormControl(0),
     family_id: new UntypedFormControl(0),
     brand_id: new UntypedFormControl(0),
@@ -166,10 +167,7 @@ export class AddProductComponent implements OnInit, OnChanges {
           this.models = response.data;
         },
         (e) => {
-          this.toast.warning(
-            e.error.mistakes,
-            e.error.msg
-          );
+          this.models=null;
         }
       );
     } else {

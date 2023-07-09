@@ -1,149 +1,113 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
+import { formatRut, RutFormat } from '@fdograph/rut-utilities';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { MyValidators } from 'src/app/libs/my-validators';
+import { Users } from 'src/app/models/interfaces/users';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.css'],
+  styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit, OnChanges {
   constructor(
     private api: ApiService,
-    private router: Router,
-    private modal: NgbModal,
     private toast: ToastrService,
-    private routeActive: ActivatedRoute
-  ) { }
-  usernameDisp = '...';
-  textColor = '';
-  showAlert: boolean = false;
-  error: any;
-  userForm = new UntypedFormGroup({
-    username: new UntypedFormControl(''),
-    name: new UntypedFormControl(''),
+    private modal: NgbModal
+  ) {}
+  ngOnInit(): void {
+    this.getCities();
+    this.getTypes();
+  
+    if (this.users != null) {
+      this.getusers(this.users);
+    }
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.users != null) {
+      this.getusers(this.users);
+    }
+  }
+  @Output()
+  success = new EventEmitter<boolean>();
+  @Input()
+  users?: Users;
+  types: any;
+
+  cities: any;
+  items: any;
+  form1 = new UntypedFormGroup({
+    id: new UntypedFormControl(),
+    name: new UntypedFormControl(),
     lastname: new UntypedFormControl(''),
-    image: new UntypedFormControl(''),
+    rutview: new UntypedFormControl({value:'',disabled:true}),
+    rut: new UntypedFormControl(),
+    cities_id: new UntypedFormControl(0),
+    location: new UntypedFormControl(''),
     email: new UntypedFormControl(''),
     phone: new UntypedFormControl(''),
-    position: new UntypedFormControl(''),
-    privileges_id: new UntypedFormControl(0),
-    id: new UntypedFormControl(''),
+    pass:new UntypedFormControl(''),
+    privileges_id:new UntypedFormControl(0),
+    whatsapp: new UntypedFormControl(''),
   });
-  passForm = new UntypedFormGroup({
-    id: new UntypedFormControl(0, Validators.required),
-    rpass: new UntypedFormControl('', Validators.required),
-    pass: new UntypedFormControl('', Validators.required),
-  });
-  ngOnInit(): void {
-    var data = this.routeActive.snapshot.params;
-    if (data['id'] != null) {
-      this.getData();
-      console.log('id:' + data['id']);
-      this.getUser(data['id']);
-    } else {
-      console.log('Se devuelve');
-      this.router.navigate(['/users/list-user']);
+  getusers(users: Users) {
+    this.api.getUser(users.id).subscribe((res)=>{
+      let data=res.data as Users;
+      this.form1.patchValue(res.data);
+      this.form1.get('rutview')?.setValue(data?.rut);
+    },error=>{
+      this.toast.warning(error.error.mistakes,error.error.msg,{enableHtml:true,closeButton:true});
+    });
+  }
+  getCities() {
+    this.api.getCities().subscribe(
+      (response) => {
+        this.cities = response.data;
+      },
+      (err) => {
+        this.toast.warning(
+          'Lo sentimos, ocurrio un error al cargar las ciudades'
+        );
+      }
+    );
+  }
+  onFormatRut(value: any) {
+    if (value.target.value.length > 8) {
+      this.form1
+        .get('rut')
+        ?.setValue(formatRut(value.target.value, RutFormat.DOTS_DASH));
     }
   }
-  privileges: any = [];
-  companys: any = [];
-  regions: any = [];
-  cities: any = [];
-
   update() {
-    this.api.updateUser(this.userForm).subscribe(
+    this.api.updateUser(this.form1).subscribe(
       (response) => {
-        this.toast.success('Actualizado correctamente', 'Colaborador');
-        setTimeout(() => {
-          this.router.navigate(['/colaboradores/listar']);
-        }, 3000);
+        this.toast.success(response.msg, 'Usuarios');
+        this.success.emit(true);
+        this.modal.dismissAll();
       },
-      (error) => {
-        this.toast.warning(error.error.mistakes, 'Error al modificar registro');
+      (err) => {
+        this.toast.warning(err.error.mistakes, err.error.msg,{enableHtml:true,closeButton:true});
       }
     );
   }
-  updatePass() {
-    if (this.passForm.get('pass')?.value == this.passForm.get('rpass')?.value) {
-      this.api.updateUserPass(this.passForm).subscribe(
-        (response) => {
-          setTimeout(() => {
-            this.modal.dismissAll();
-          }, 2000);
-        },
-        (error) => {
-          this.toast.warning(error.error.mistakes, 'Error al modificar registro');
-        }
-      );
-    } else {
-      this.toast.warning(
-        'Las contraseñas, no coinciden',
-        '¡Tenemos un problema!'
-      );
-    }
-  }
-  getUser(id: number) {
-    this.api.getUser(id).subscribe(
-      (response) => {
-        this.userForm.patchValue(response.data);
-        this.passForm.get('id')?.setValue(id);
-      },
-      (error) => {
-        this.error = error;
-      }
-    );
-  }
-  checkNick(event: any) {
-    var username: string = this.userForm.get('username')?.value ?? '';
-    if (username.length > 3) {
-      this.usernameDisp = 'cargando...';
-      this.api.checkUser(username).subscribe(
-        (response) => {
-          this.textColor = 'text-success';
-          this.usernameDisp = response.msg;
-        },
-        (e) => {
-
-          this.toast.warning(e.error.mistakes, e.error.msg);
-
-        }
-      );
-    } else {
-      this.textColor = 'text-warning';
-      this.usernameDisp = 'Minimo 3 caracteres';
-    }
-    console.log(username);
-  }
-  getData() {
+  getTypes() {
     this.api.getPrivileges().subscribe(
       (response) => {
-        var data = response.data;
-        this.privileges = data;
+        this.types = response.data;
       },
-      (error) => {
-        this.error = error;
-      }
-    );
-    this.api.getCompanys().subscribe(
-      (response) => {
-        var data = response.data;
-        this.companys = data;
-      },
-      (error) => {
-        this.error = error;
+      (err) => {
+        this.toast.warning(
+          'Lo sentimos, ocurrio un error al cargar los privilegios'
+        );
       }
     );
   }
-  openRepository(inputTag: string, md: any) {
+  openModal(md: any, size = 'md') {
     this.modal.open(md, {
       size: 'xl',
     });
-  }
-  openPass(modal: any) {
-    this.modal.open(modal);
   }
 }

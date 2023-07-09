@@ -76,24 +76,7 @@ export class ShareWhatsappComponent implements OnInit {
         this.codephones = null;
       }
     );
-    this.api.getGroupEmoji().subscribe(
-      (response) => {
-        var data = response.data;
-        this.groupEmojis = data;
-      },
-      (error) => {
-        this.groupEmojis = null;
-      }
-    );
-    this.api.getAllEmojis().subscribe(
-      (response) => {
-        var data = response.data;
-        this.allEmoji = data;
-      },
-      (error) => {
-        this.groupEmojis = null;
-      }
-    );
+
   }
   selected(item: any) {
     this.editor.commands.insertText(item.icharacter).exec();

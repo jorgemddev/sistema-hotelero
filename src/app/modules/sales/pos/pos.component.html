@@ -1,0 +1,129 @@
+<div class="card h-100">
+    <div class="card-header">
+        Movimientos de caja
+        <div class="btn-group float-right" role="group">
+            <button *ngIf="(exitsPos$ | async)"  class="btn btn-sm  btn-success" (click)="openModal(add)">
+                <i class="fa-solid fa-plus"></i><i class="fa-solid fa-dollar-sign"></i></button>
+            <button  *ngIf="(exitsPos$ | async)"   class="btn btn-sm  btn-danger" (click)="openModal(remove)">
+                <i class="fa-solid fa-minus"></i><i class="fa-solid fa-dollar-sign"></i></button>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive table-container">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th><span></span></th>
+                        <th><span>FECHA</span></th>
+                        <th><span>MONTO</span></th>
+                        <th><span>DETALLE</span></th>
+                        <th><span>VALIDACIÓN</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items">
+                        <td>
+                            <span class="badge"
+                                [ngClass]="{'bg-success': item?.operation == 'Ingreso', 'bg-danger':item?.operation=='Egreso','bg-primary':item?.operation=='Pago','bg-dark':item?.operation=='Apertura'}">{{item?.operation
+                                |
+                                uppercase}}</span>
+                        </td>
+                        <td>
+                            <span>{{item?.created_at | uppercase}}</span>
+                        </td>
+                        <td>
+                            {{item?.ammount | currency:'CAD':'symbol-narrow':'3.0-0' |
+                            moneyClPipe}}
+                            <span>({{item?.payment | titlecase}})</span>
+                        </td>
+                        <td>
+                            {{item?.detail}}
+                        </td>
+                        <td>
+                            <span class="text-muted">
+                                {{item?.autorization | titlecase}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!items">
+                        <td colspan="7" class="fw-lighter text-muted">No existen movimientos registrados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="shadow-lg border-1 p-1">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tipo de Pago</th>
+                        <th>Monto</th>
+                        <th>Transacciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of breakdown">
+                        <td>{{ item?.tag }}</td>
+                        <td>{{ item?.results?.total | currency:'CAD':'symbol-narrow':'3.0-0' |
+                            moneyClPipe }}</td>
+                        <td>{{ item?.results?.count }} transacciones</td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">TOTAL RECAUDADO</td>
+                        <td colspan="2"><b>{{getTotal() | currency:'CAD':'symbol-narrow':'3.0-0' |
+                                moneyClPipe}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+    <div class="card-footer">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button *ngIf="!(exitsPos$ | async)" class="btn btn-success" (click)="openModal(initPos)"><i class="fa-solid fa-cash-register"></i> Inicio de Caja</button>
+            <button *ngIf="(exitsPos$ | async)" class="btn btn-danger" (click)="openModal(closePos)"><i class="fa-solid fa-cash-register"></i> Cierre de Caja</button>
+        </div>
+      </div>
+</div>
+
+<ng-template #add let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-pos-add (success)="getMovements()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #remove let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-pos-remove (success)="getMovements()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #closePos let-c="close" let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-pos-close *ngIf="getTotal()" [totalSales]="getTotal()" [efectivo]="efectivo" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #initPos let-c="close" let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-pos-init  />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

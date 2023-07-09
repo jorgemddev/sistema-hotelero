@@ -14,7 +14,6 @@ import { AuthService } from './services/auth.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerInterceptor } from './models/interceptors/spinner.interceptor';
 import { SpinnerModule } from './components/spinner/spinner.module';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -26,7 +25,6 @@ import { SpinnerModule } from './components/spinner/spinner.module';
     PublicModule,
     PrivateModule,
     SpinnerModule,    
-
   ],
   providers: [
     ApiService,

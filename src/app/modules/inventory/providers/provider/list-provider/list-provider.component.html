@@ -37,7 +37,7 @@
                             <tbody>
                                 <tr *ngFor="let item of items">
                                     <td>
-                                        <img [src]="item.img_path"  class="img-thumbnail" style="max-width: 150px;">
+                                        <img [defaultImage]="'default'" [src]="item.img_path"  class="img-thumbnail" style="max-width: 150px;">
                                     </td>
                                     <td>
                                         <span>{{item.name | uppercase}}</span>

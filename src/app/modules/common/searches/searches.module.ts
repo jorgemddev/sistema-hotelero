@@ -6,7 +6,7 @@ import { ApiSearchService } from './api-search.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InventoryModule } from '../../inventory/inventory.module';
 import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
-import { ImageDefaultConfig, ImageDefaultModule } from '../image-default/image-default.module';
+import { ImageDefaultConfig, ImageDefaultModule } from '../../../directives/image-default/image-default.module';
 
 const imageConfig: ImageDefaultConfig = {
   defaultImages: {

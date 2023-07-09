@@ -1,0 +1,109 @@
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-12 col-md-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Vehículos registrados
+                    <div class="btn-group float-right" role="group">
+
+                        <button *ngIf="!hiddenButton" class="btn btn-primary" (click)="openModal(add)"><i class="fa-solid fa-circle-plus"></i>
+                            Agregar</button>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                        (pageChange)="search()"></ngb-pagination>
+                    <div class="table-responsive" >
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>ESTACIONAMIENTO</span></th>
+                                    <th><span>P.P.U</span></th>
+                                    <th><span>MARCA</span></th>
+                                    <th><span>MODELO</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <span>{{item.parking | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        {{item.ppu}}
+                                    </td>
+                                    <td>
+                                        {{item.brand}}
+                                    </td>
+                                    <td>
+                                        {{item.model}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn   text-warning"
+                                                (click)="openEdit(item.id,edit)">
+                                                    <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn  text-danger"
+                                                (click)="openDelete(item.id,remove)">
+
+                                                    <i class="fa-solid fa-trash"></i>
+                        
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!items">
+                                    <td colspan="7" class="fw-lighter text-muted">Huesped sin vehículos registrados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Eliminar registro</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar este registro?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #add let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-add-parking [clientsId]="clients_id" [reservationsId]="reservations_id" [providersId]="providers_id" (success)="getParking()"></app-add-parking>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #edit let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-edit-parking [id]="idSelected" [reservationsId]="reservations_id"  [clientsId]="clients_id" [providersId]="providers_id" (success)="getParking()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

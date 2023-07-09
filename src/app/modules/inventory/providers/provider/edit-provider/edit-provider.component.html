@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 mt-3">
-                                    <img [src]="primaryForm.get('img_path').value" style="cursor: pointer;"  class="img-fluid img-thumbnail" (click)="openModal(repository,'xl')" />
+                                    <img [defaultImage]="'default'" [src]="primaryForm.get('img_path').value" style="cursor: pointer;"  class="img-fluid img-thumbnail" (click)="openModal(repository,'xl')" />
                                 </div>
                                 <div class="col-md-12" *ngIf="primaryForm.get('isWebsite').value">
                                     <label class="small mb-1" for="website">Sitio web</label>
@@ -156,11 +156,6 @@
                             <a ngbNavLink>NOTAS</a>
                             <ng-template ngbNavContent>
                                 <app-list-notes [providers_id]="id"></app-list-notes>
-                            </ng-template>
-                        </li>
-                        <li [ngbNavItem]="4">
-                            <a ngbNavLink>ADJUNTOS</a>
-                            <ng-template ngbNavContent>
                             </ng-template>
                         </li>
                     </ul>

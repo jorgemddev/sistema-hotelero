@@ -1,0 +1,9 @@
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" class="btn" *ngFor="let item of groupEmojis"
+            (click)="emojiFilter(item)">{{item.icharacter}}</button>
+    </div>
+</div>
+<ul *ngIf="showEmojis" class="emoji-grid shadow-lg" role="group" aria-label="First group">
+    <li class="btn emojis-items" *ngFor="let item of emojis" (click)="selected(item)">{{item.icharacter}}</li>
+</ul>

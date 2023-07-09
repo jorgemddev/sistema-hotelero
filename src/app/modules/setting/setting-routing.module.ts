@@ -10,7 +10,7 @@ import { ConfigEmailComponent } from './config/config-email/config-email.compone
 import { ConfigComponent } from './config/config.component';
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
-import { ListtUserComponent } from './users/list-user/list-user.component';
+import { ListUserComponent } from './users/list-user/list-user.component';
 import { ProfileComponent } from './users/profile/profile.component';
 
 import { UsersComponent } from './users/users.component';
@@ -137,7 +137,7 @@ const routes: Routes = [
       {
         path: 'listar',
         canActivate: [AdminGuard],
-        component: ListtUserComponent,
+        component: ListUserComponent,
         data: {
           title: 'LISTAR',
           breadcrumb: [

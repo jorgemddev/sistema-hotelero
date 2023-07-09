@@ -1,48 +1,42 @@
-<ul class="navbar-nav shadow text-white sidebar  accordion toggled" id="accordionSidebar">
+<ul class="navbar-nav shadow text-white sidebar" [ngClass]="{ 'sidebar-hidden': sidebarVisible }">
 
-    <a class="sidebar-brand bg-header d-flex align-items-center justify-content-center" routerLink="/">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <img src="/assets/images/beda.png" style="max-width: 40px; max-height: 50px;">
+    <a class="sidebar-brand" routerLink="/">
+        <div class="sidebar-brand-icon">
+            <img [defaultImage]="'beda'" [src]="company?.logo" style="max-width: 50px; max-height: 50px;">
+            <div class="sidebar-brand-text">{{company?.domain || 'bedadev.cl'}}</div>
         </div>
-        <div class="sidebar-brand-text mx-3">BEDADEV</div>
     </a>
 
     <hr class="sidebar-divider my-0">
-    <li class="nav-item active">
-        <a class="nav-link" routerLink="/">
+    <li class="nav-item shadow-lg">
+        <a class="nav-link d-flex flex-column align-items-center" routerLink="/" routerLinkActive="item-active"
+            [routerLinkActiveOptions]="{exact: true}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Home</span></a>
     </li>
 
     <hr class="sidebar-divider">
-    <div class="sidebar-heading text-bg-danger">
-        ADMIN
-    </div>
-    <li class="nav-item">
-        <a class="nav-link" routerLink="/configuracion">
+    <li class="nav-item shadow-lg" *ngIf="level>9">
+        <a class="nav-link d-flex flex-column align-items-center" routerLink="/configuracion"
+            routerLinkActive="item-active">
             <i class="fa-solid fa-pen-ruler"></i>
-            <span>GENERAL</span>
+            <span>AJUSTES</span>
         </a>
     </li>
     <hr class="sidebar-divider">
-    <div class="sidebar-heading text-bg-danger">
-        INVENTARIO
-    </div>
-
-    <li class="nav-item shadow-lg">
-        <a class="nav-link" routerLink="/inventario">
+    <li class="nav-item shadow-lg" *ngIf="level>9">
+        <a class="nav-link d-flex flex-column align-items-center" routerLink="/inventario"
+            routerLinkActive="item-active">
             <i class="fa-solid fa-boxes-packing"></i>
             <span>Logística</span>
         </a>
     </li>
     <hr class="sidebar-divider">
-    <div class="sidebar-heading text-bg-danger">
-        HOTEL
-    </div>
     <li class="nav-item shadow-lg">
-        <a class="nav-link" routerLink="/hotel">
+        <a class="nav-link d-flex flex-column align-items-center" routerLink="/hotel" routerLinkActive="item-active">
             <i class="fa-solid fa-square-h"></i>
             <span>Gestión</span>
         </a>
     </li>
+    <app-clock-digital />
 </ul>
