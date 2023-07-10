@@ -30,6 +30,7 @@ export class BrandComponent implements OnInit {
     rut: new UntypedFormControl(''),
     location: new UntypedFormControl(''),
     email: new UntypedFormControl(''),
+    email_notification: new UntypedFormControl(''),
     phone: new UntypedFormControl(''),
     whatsapp: new UntypedFormControl(''),
     instagram: new UntypedFormControl(''),

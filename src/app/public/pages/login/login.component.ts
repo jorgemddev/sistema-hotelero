@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,12 +8,14 @@ import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { formatRut, RutFormat } from '@fdograph/rut-utilities';
+import { RecaptchaComponent } from 'ng-recaptcha';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('captcha') reCaptcha: RecaptchaComponent | undefined;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -55,6 +57,7 @@ export class LoginComponent implements OnInit {
     rut: new UntypedFormControl(''),
     email: new UntypedFormControl(''),
     pass: new UntypedFormControl(''),
+    captcha:new UntypedFormControl(''),
   });
 
   login() {
@@ -67,6 +70,7 @@ export class LoginComponent implements OnInit {
       (e) => {
         console.log("RESPONSE ERROR LOGIN:",e );
         this.toast.warning(e.error.mistakes, '¡Tenemos un error!');
+        this.reCaptcha?.reset();
       }
     );
     console.log('no validado');
@@ -110,5 +114,8 @@ export class LoginComponent implements OnInit {
         .get('rut')
         ?.setValue(formatRut(value.target.value, RutFormat.DOTS_DASH));
     }
+  }
+  resolved(captchaResponse: string) {
+    this.loginForm.get('captcha')?.setValue(captchaResponse);
   }
 }

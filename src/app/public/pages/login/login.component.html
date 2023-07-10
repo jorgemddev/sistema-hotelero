@@ -2,15 +2,13 @@
   <div class="row">
     <div class="col-md-4 register-left">
       <img
-        src="https://bedadev.cl/logo_beda.png"
+        src="assets/images/logo-katarsys.png"
         class="img-fluid"
         alt="Logo bededadev.cl"
       />
       <p>
-        <i
-          ><b>Soluciones creativas e informáticas BEDA SpA,</b> proyectos
-          digitales a medida.</i
-        >
+        <i>Desarrollado</i> por Soluciones creativas e informáticas BEDA SpA
+        
       </p>
       <a
         href="https://bedadev.cl"
@@ -80,6 +78,10 @@
             </div>
 
             <div class="row">
+              <div class="mt-4 mb-2">
+                <re-captcha #captcha (resolved)="resolved($event)"
+                    siteKey="6Lebpw0nAAAAAJhBhXNsI8NQNInRPrJ4Gpe2y9at"></re-captcha>
+            </div>
               <div class="col-md-12 col-lg-6">
                 <button
                   *ngIf="!restore"
@@ -99,7 +101,7 @@
                   {{int>0?'REENVIAR':'SOLICITAR'}}
                 </button>
               </div>
-              <div class="col-md-12 col-lg-6 text-right" *ngIf="!restore">
+              <!--<div class="col-md-12 col-lg-6 text-right" *ngIf="!restore">
                 <button
                   type="button"
                   class="btn btn-link px-0"
@@ -107,7 +109,7 @@
                 >
                   ¿Olvide mi contraseña?
                 </button>
-              </div>
+              </div>-->
               <div class="col-md-12 col-lg-6 text-right" *ngIf="restore">
                 <button           type="button"
                 class="btn btn-link px-0" (click)="restore=false"> Iniciar Sesión </button>

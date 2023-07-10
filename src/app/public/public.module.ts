@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RestoreComponent } from './pages/login/restore/restore.component';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [PublicComponent, LoginComponent, RestoreComponent],
@@ -14,7 +15,8 @@ import { RestoreComponent } from './pages/login/restore/restore.component';
     CommonModule,
     PublicRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RecaptchaModule,
   ],
   exports: [PublicComponent],
 })

@@ -78,7 +78,17 @@
                             <textarea class="form-control" formControlName="obs" id="exampleFormControlTextarea1"
                                 rows="3"></textarea>
                         </div>
-
+                        <div class="col-md-12 mt-2" *ngIf="roomSelected!=null">
+                            <h5 class="mb-1">Servicios incluidos en la habitación</h5>
+                            <div *ngIf="roomSelected?.amenities; else notAmenities">
+                                <span class="badge rounded-pill badge-primary text-wrap ms-1"
+                                    style="font-size: 14px; font-weight: 400;"
+                                    *ngFor="let am of roomSelected.amenities">{{am.amenitie.tag}}</span>
+                            </div>
+                            <ng-template #notAmenities>
+                                <span class="badge bg-danger">Sin servicios asociados</span>
+                            </ng-template>
+                        </div>
                     </div>
                     <div class="col-md-6 alert alert-primary">
                         <h6>Resumen de pago</h6>
@@ -126,18 +136,6 @@
                                 currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe}}</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-12 mt-2" *ngIf="roomSelected!=null">
-                    <label class="small mb-1">Servicios</label>
-                    <div *ngIf="roomSelected?.amenities; else notAmenities">
-                        <span class="badge rounded-pill badge-dark text-wrap ms-1"
-                            style="font-size: 10px; font-weight: 400;"
-                            *ngFor="let am of roomSelected.amenities">{{am.amenitie.tag}}</span>
-                    </div>
-                    <ng-template #notAmenities>
-                        <span class="badge bg-danger">Sin servicios asociados</span>
-                    </ng-template>
                 </div>
                 <!--<div class="col-md-12" *ngIf="form.get('clients_id')?.value && form.get('rooms_id')?.value">
                     <div class="alert alert-warning mt-2">
