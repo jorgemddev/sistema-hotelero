@@ -49,7 +49,7 @@ export class PosComponent implements OnInit, OnChanges {
 
 
   total: number = 0;
-
+egresos:number=0;
  
 
   items: CashMovements[];
@@ -80,6 +80,7 @@ export class PosComponent implements OnInit, OnChanges {
       (response) => {
         let data = response.data as Paginate;
         this.items = data.items as CashMovements[];
+     
         this.breakdown = data.other as Breakdown[];
         if (this.breakdown?.length > 0) {
           this.efectivo = this.breakdown.find(b => b.payment_id == 2)?.results?.total;
@@ -101,6 +102,17 @@ export class PosComponent implements OnInit, OnChanges {
     if (this.breakdown?.length > 0) {
       this.breakdown.forEach(b => {
         sum = Number(sum) + Number(b.results?.total);
+      });
+    }
+    return sum;
+  }
+  getETotal(): number {
+    let sum = 0;
+    if (this.items?.length > 0) {
+      this.items.forEach(b => {
+        if(b?.operation=='Egreso'){
+            sum = Number(sum) + Number(b.ammount);
+        }
       });
     }
     return sum;

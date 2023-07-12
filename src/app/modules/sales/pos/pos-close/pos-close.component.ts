@@ -36,6 +36,8 @@ export class PosCloseComponent implements OnInit, OnChanges {
   totalSales: number;
   @Input()
   efectivo: number;
+  @Input()
+  retiros: number=0;
 
   constructor(private modal: NgbModal, private auth: AuthService, private formBuilder: FormBuilder, private helps: Helps, private api: ApiSalesService, private apiPrimary: ApiService, private toast: ToastrService) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,7 +46,7 @@ export class PosCloseComponent implements OnInit, OnChanges {
       this.form.get('totalsales')?.setValue(this.totalSales);
     }
     if (this.efectivo > 0) {
-      this.form.get('earring')?.setValue(this.efectivo);
+      this.form.get('earring')?.setValue(this.efectivo-this.retiros);
     }
   }
   user: Users;
@@ -106,7 +108,7 @@ export class PosCloseComponent implements OnInit, OnChanges {
     for (const denomination of this.denominations) {
       this.total += denomination.subtotal;
     }
-    this.form.get('earring')?.setValue(Number(this.efectivo) - Number(this.total));
+    this.form.get('earring')?.setValue(Number(this.efectivo-this.retiros) - Number(this.total));
   }
 
   get denominationsFormArray() {

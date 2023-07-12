@@ -8,7 +8,13 @@
                     <div class="user-name"><b>Total de recaudado :</b>{{ totalSales |
                         currency:'CAD':'symbol-narrow':'3.0-0' | moneyClPipe }}</div>
                     <div class="user-name"><b>Efectivo :</b>{{ efectivo | currency:'CAD':'symbol-narrow':'3.0-0' |
-                        moneyClPipe }}</div>
+                        moneyClPipe }}
+                        <b>Retiros :</b>{{ retiros | currency:'CAD':'symbol-narrow':'3.0-0' |
+                        moneyClPipe }}
+                        <span class="badge bg-danger">A rendir :{{ (efectivo-retiros) | currency:'CAD':'symbol-narrow':'3.0-0' |
+                        moneyClPipe }}</span>
+                        
+                    </div>
 
                 </div>
                 <div class="col-md-12">

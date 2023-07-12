@@ -73,6 +73,11 @@
                         <td colspan="2"><b>{{getTotal() | currency:'CAD':'symbol-narrow':'3.0-0' |
                                 moneyClPipe}}</b></td>
                     </tr>
+                    <tr>
+                        <td colspan="1">RETIROS (EFECTIVO)</td>
+                        <td colspan="2"><b>{{getETotal() | currency:'CAD':'symbol-narrow':'3.0-0' |
+                                moneyClPipe}}</b></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -109,7 +114,7 @@
 </ng-template>
 <ng-template #closePos let-c="close" let-d="dismiss">
     <div class="modal-body shadow-lg">
-        <app-pos-close *ngIf="getTotal()" [totalSales]="getTotal()" [efectivo]="efectivo" />
+        <app-pos-close *ngIf="getTotal()" [totalSales]="getTotal()" [retiros]="getETotal()" [efectivo]="efectivo" />
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar

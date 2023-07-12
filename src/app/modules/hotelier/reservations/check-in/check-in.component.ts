@@ -181,6 +181,7 @@ export class CheckInComponent implements OnInit, OnChanges {
         } else {
           this.modal.dismissAll();
         }
+        this.router.navigate(['/hotel/habitaciones/reservas']);
       },
       (error) => {
         this.toast.warning(error.error.mistakes, 'Tenemos un error');

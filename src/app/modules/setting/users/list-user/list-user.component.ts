@@ -55,6 +55,7 @@ export class ListUserComponent implements OnInit {
     id: new UntypedFormControl(),
   });
   delete() {
+    this.secondForm.get('id')?.setValue(this.usersSelected?.id);
     this.api.deleteUser(this.secondForm).subscribe(
       (res) => {
         this.toast.success('Usuario eliminado correctamente', 'USUARIOS');
@@ -105,6 +106,7 @@ export class ListUserComponent implements OnInit {
   }
   openDelete(users: Users, md: any) {
     this.usersSelected = users;
+    console.log("USER",users);
     this.modal.open(md, {
       size: 'md',
     });
