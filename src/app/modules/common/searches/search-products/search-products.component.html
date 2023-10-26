@@ -40,7 +40,10 @@
                                                         <a href="#">{{item.name | uppercase}}</a>
                                                         <p class="m-0">
                                                             <i class="fa-solid fa-barcode"></i> {{item.barcode |
-                                                            uppercase}}
+                                                            uppercase}} {{item.serie |
+                                                                uppercase}} {{item.sku |
+                                                                    uppercase}} {{item.id 
+                                                                        }}
                                                         </p>
                                                     </div>
                                                 </td>
@@ -51,6 +54,10 @@
                                                 <td>
                                                     <span class="text-muted time"><b>Marca</b> {{item.brand}}
                                                         <b>Modelo</b> {{item.model}}</span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-muted time"><b>Stock</b> {{item?.amount}}
+                                                        </span>
                                                 </td>
                                                 <td>
                                                     <button *ngIf="viewEdit" type="button" class="btn   text-warning"

@@ -6,7 +6,8 @@
                 <div class="card-header">
 
                     <div class="btn-group float-right" role="group">
-                        <button *ngIf="!hiddenButton" class="btn btn-primary" (click)="openModal(add)"><i class="fa-solid fa-circle-plus"></i>
+                        <button *ngIf="!hiddenButton" class="btn btn-primary" (click)="openModal(add)"><i
+                                class="fa-solid fa-circle-plus"></i>
                             Nuevo</button>
                     </div>
 
@@ -26,7 +27,7 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="items?.length>0;else notResult">
                                 <tr *ngIf="personDefault">
                                     <td>
                                         <span>{{personDefault?.person?.name | uppercase}}</span>
@@ -58,9 +59,9 @@
                                         </div>
                                         <ng-template #callback>
                                             <button type="button" class="btn   text-warning"
-                                            (click)="personDefault?.callBack && personDefault.callBack(personDefault?.person)">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
+                                                (click)="personDefault?.callBack && personDefault.callBack(personDefault?.person)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
                                         </ng-template>
                                     </td>
                                 </tr>
@@ -95,10 +96,15 @@
 
                                     </td>
                                 </tr>
-                                <tr *ngIf="!items && !personDefault">
-                                    <td colspan="7" class="fw-lighter text-muted">No se encontraron registros</td>
-                                </tr>
                             </tbody>
+                            <ng-template #notResult>
+                                <tbody>
+                                    <tr>
+                                        <th colspan="7"><span class="text-muted">No se encontraron registros</span></th>
+                                    </tr>
+                                </tbody>
+                            </ng-template>
+
                         </table>
                     </div>
                 </div>
@@ -127,7 +133,9 @@
 
 <ng-template #add let-c="close " let-d="dismiss">
     <div class="modal-body shadow-lg">
-        <app-add-contact *ngIf="(reservations_id>0) || (clients_id>0) || (providers_id>0)" [clientsId]="clients_id" [reservationsId]="reservations_id" [hidePosition]="(reservations_id>0)"  [providersId]="providers_id" (success)="getContacts()" />
+        <app-add-contact *ngIf="(reservations_id>0) || (clients_id>0) || (providers_id>0)" [clientsId]="clients_id"
+            [reservationsId]="reservations_id" [hidePosition]="(reservations_id>0)" [providersId]="providers_id"
+            (success)="getContacts()" />
 
     </div>
     <div class="modal-footer">
@@ -140,8 +148,8 @@
 
 <ng-template #edit let-c="close " let-d="dismiss">
     <div class="modal-body shadow-lg">
-        <app-edit-contact [contactId]="idSelected" [clientsId]="clients_id" [hidePosition]="(reservations_id>0)" [providersId]="providers_id" [reservationsId]="reservations_id"
-            (success)="getContacts()" />
+        <app-edit-contact [contactId]="idSelected" [clientsId]="clients_id" [hidePosition]="(reservations_id>0)"
+            [providersId]="providers_id" [reservationsId]="reservations_id" (success)="getContacts()" />
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar

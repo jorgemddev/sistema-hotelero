@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Validators } from 'ngx-editor';
+import { ToolbarItem, Validators } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, debounceTime } from 'rxjs';
+import { Buttons, Toolbar } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
 import { Filters } from 'src/app/models/interfaces/filters';
 import { Paginate } from 'src/app/models/interfaces/paginate';
 import { ApiService } from 'src/app/services/api.service';
@@ -21,6 +22,7 @@ export class ListMovementsComponent implements OnInit {
     private api: ApiService,
     private modal: NgbModal,
     private toast: ToastrService,
+    private router:Router
 
   ) { }
   private keyUpSubject = new Subject<string>();
@@ -40,8 +42,17 @@ export class ListMovementsComponent implements OnInit {
   collectionSize = 0;
   totalPage = 0;
   filter = 0;
+  btn_toolbar: Toolbar = {
+    buttons: [
+      {
+        id: 1,
+        value: "NUEVO",
+        iconFaWSome: 'fa-solid fa-circle-plus',
+        strClass: 'btn-primary'
+      }]
+  }
   q: string = "";
-  filters: Filters[] = [{ id: 0, tag: 'TODAS' }, { id: 1, tag: 'ENTRADAS' }, { id: 0, tag: 'SALIDAS' }];
+  filters: Filters[] = [{ id: 0, tag: 'TODAS' }, { id: 1, tag: 'ENTRADAS' }, { id: 2, tag: 'SALIDAS' }, { id: 3, tag: 'TRASPASOS' },];
   form = new UntypedFormGroup({
     id: new UntypedFormControl(),
     barcode: new UntypedFormControl({ value: '', disabled: true }),
@@ -66,19 +77,21 @@ export class ListMovementsComponent implements OnInit {
         this.totalPage = data.total;
       },
       (e) => {
-        this.toast.warning(e.error.mistakes, e.error.msg);
+        this.items = [];
       }
     );
   }
-  openModal(md: any, item: any, size: string = 'md') {
-    this.form.patchValue(item);
-    console.log(item);
+  openModal(md: any, item: any = null, size: string = 'md') {
+    if (item != null) {
+      this.item=item;
+      this.form.patchValue(item);
+      console.log(item);
+    }
     this.modal.open(md, {
       size: size,
     });
   }
   search(q: any) {
-    console.log("SE RECIBIO", q);
     if (q.length > 2) {
       this.q = q;
       this.keyUpSubject.next(q)
@@ -91,6 +104,15 @@ export class ListMovementsComponent implements OnInit {
   filterMovements(filter: any) {
     this.filter = filter;
     this.getMovements();
+  }
+
+  actionButton(event: Buttons) {
+    console.log(event);
+    switch (event?.id) {
+      case 1:
+        this.router.navigate(['/inventario/productos/movimiento']);
+        break;
+    }
   }
   clean() { }
 }

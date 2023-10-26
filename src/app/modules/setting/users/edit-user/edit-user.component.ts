@@ -45,7 +45,6 @@ export class EditUserComponent implements OnInit, OnChanges {
     lastname: new UntypedFormControl(''),
     rutview: new UntypedFormControl({value:'',disabled:true}),
     rut: new UntypedFormControl(),
-    cities_id: new UntypedFormControl(0),
     location: new UntypedFormControl(''),
     email: new UntypedFormControl(''),
     phone: new UntypedFormControl(''),

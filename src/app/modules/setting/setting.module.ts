@@ -22,6 +22,13 @@ import { ImageDefaultConfig, ImageDefaultModule } from '../../directives/image-d
 import { WarningInputFormsComponent } from 'src/app/components/standalone/warning-input-forms/warning-input-forms.component';
 import { InputPasswordGenerateComponent } from 'src/app/components/standalone/input-password-generate/input-password-generate.component';
 import { InputTextCompleteComponent } from 'src/app/components/standalone/input-text-complete/input-text-complete.component';
+import { ConfigDocumentsComponent } from './config/config-documents/config-documents.component';
+import { UploadFileModule } from '../common/upload-file/upload-file.module';
+import { BackButtonComponent } from 'src/app/components/standalone/back-button/back-button.component';
+import { AddDocumentComponent } from './config/config-documents/add-document/add-document.component';
+import { EditDocumentComponent } from './config/config-documents/edit-document/edit-document.component';
+import { UploadTemplateModule } from '../common/upload-template/upload-template.module';
+import { EditorHtmlModule } from '../common/editor-html/editor-html.module';
 
 const imageConfig: ImageDefaultConfig = {
   defaultImages: {
@@ -43,7 +50,10 @@ const imageConfig: ImageDefaultConfig = {
     SocialMediaComponent,
     ConfigComponent,
     ConfigEmailComponent,
-    AddConfigEmailComponent
+    AddConfigEmailComponent,
+    ConfigDocumentsComponent,
+    AddDocumentComponent,
+    EditDocumentComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +65,14 @@ const imageConfig: ImageDefaultConfig = {
     WarningInputFormsComponent,
     InputPasswordGenerateComponent,
     InputTextCompleteComponent,
+    UploadFileModule,
+    UploadTemplateModule,
+    BackButtonComponent,
+    EditorHtmlModule,
     NgbModule, ImageDefaultModule.forRoot(imageConfig)
+  ],
+  exports:[
+    AddDocumentComponent
   ]
 })
 export class SettingModule { }

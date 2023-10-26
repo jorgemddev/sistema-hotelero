@@ -36,15 +36,12 @@ export class AddProductComponent implements OnInit, OnChanges {
   id: number;
 
   ngOnInit(): void {
-    if (this.id > 0) {
-      this.getProduct(this.id);
-    }
     this.getData();
   }
 
   items: any;
   familys: any;
-  providers:any;
+  providers: any;
 
   primaryForm = new UntypedFormGroup({
     id: new UntypedFormControl(),
@@ -79,7 +76,7 @@ export class AddProductComponent implements OnInit, OnChanges {
 
 
   save() {
-      this.create();
+    this.create();
   }
   create() {
     this.api.createProduct(this.primaryForm).subscribe(
@@ -99,18 +96,7 @@ export class AddProductComponent implements OnInit, OnChanges {
       size: size
     });
   }
-  getProduct(id: number) {
-    this.api.getProduct(id).subscribe(
-      (response) => {
-        this.toast.info('Producto encontrado');
-        this.primaryForm.patchValue(response.data);
-      },
-      (error) => {
-        this.toast.warning('', 'Producto no encontrado');
-        this.modal.dismissAll();
-      }
-    );
-  }
+
   getData() {
     this.api.getState().subscribe(
       (response) => {
@@ -129,22 +115,16 @@ export class AddProductComponent implements OnInit, OnChanges {
         this.selectBrand();
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.brands = [];
       }
     );
     this.api.listFamilys(1).subscribe(
       (response) => {
-        var data=response.data as Paginate;
+        var data = response.data as Paginate;
         this.familys = data.items;
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.familys = [];
       }
     );
     this.api.getProviders().subscribe(
@@ -152,10 +132,7 @@ export class AddProductComponent implements OnInit, OnChanges {
         this.providers = response.data
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.providers = [];
       }
     );
   }
@@ -167,24 +144,24 @@ export class AddProductComponent implements OnInit, OnChanges {
           this.models = response.data;
         },
         (e) => {
-          this.models=null;
+          this.models = [];
         }
       );
     } else {
       this.primaryForm.get('model_id').setValue(0);
     }
   }
-  calculePrice(){
-    var sale=0;
-    var neto=parseInt(this.primaryForm.get('neto').value)
-    var tax=parseInt(this.primaryForm.get('tax').value);
-    var gain =parseInt(this.primaryForm.get('gain').value);
-    var sl=((neto*gain)/100)+neto;
-    console.log("GANANCIA:"+sl);
-    var tx=((sl*tax)/100);
-    console.log("INPUESTO:"+tx);
-    sale=sl+tx;
-    this.primaryForm.get('sale').setValue(sale);    
+  calculePrice() {
+    var sale = 0;
+    var neto = parseInt(this.primaryForm.get('neto').value)
+    var tax = parseInt(this.primaryForm.get('tax').value);
+    var gain = parseInt(this.primaryForm.get('gain').value);
+    var sl = ((neto * gain) / 100) + neto;
+    console.log("GANANCIA:" + sl);
+    var tx = ((sl * tax) / 100);
+    console.log("INPUESTO:" + tx);
+    sale = sl + tx;
+    this.primaryForm.get('sale').setValue(sale);
 
   }
 }

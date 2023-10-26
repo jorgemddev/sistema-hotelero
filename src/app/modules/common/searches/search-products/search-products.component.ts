@@ -39,7 +39,7 @@ export class SearchProductsComponent implements OnInit {
 
   q: string;
   category: number = 0;
-  items: any;
+  items: Products[];
   page = 1;
   perpage: number = 0;
   collectionSize = 0;
@@ -53,7 +53,7 @@ export class SearchProductsComponent implements OnInit {
     this.apiSearch.searchProducts(this.q, this.category, this.page).subscribe(
       (response) => {
         var data = response.data as Paginate;
-        this.items = data.items;
+        this.items = data.items as Products[];
         this.page = data.current;
         this.perpage = data.per_page;
         this.collectionSize = data.count;
@@ -89,10 +89,7 @@ export class SearchProductsComponent implements OnInit {
     if (category > 0) {
       this.category = category;
     }
-
     this.getProducts();
-
-
   }
   search() {
     this.getProducts();
@@ -102,7 +99,7 @@ export class SearchProductsComponent implements OnInit {
     this.delete.emit(item);
     this.success.emit(true);
   }
-  selectedEdit(item: any) {
+  selectedEdit(item: Products) {
     this.edit.emit(item);
     this.success.emit(true);
   }

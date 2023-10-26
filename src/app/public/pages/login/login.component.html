@@ -1,123 +1,47 @@
-<div class="container register mt-5 mb-5">
-  <div class="row">
-    <div class="col-md-4 register-left">
-      <img
-        src="assets/images/logo-katarsys.png"
-        class="img-fluid"
-        alt="Logo bededadev.cl"
-      />
-      <p>
-        <i>Desarrollado</i> por Soluciones creativas e informáticas BEDA SpA
-        
-      </p>
-      <a
-        href="https://bedadev.cl"
-        target="_blank"
-        style="color: rgb(243, 232, 217); font-weight: bold"
-        >Visítanos</a
-      >
-    </div>
-    <div class="col-md-8 register-right">
-      <div class="tab-content" id="myTabContent">
-        <div class="row register-form">
-          <form novalidate [formGroup]="loginForm" (ngSubmit)="login()">
-            <h2 class="text-center">{{ domain }}</h2>
-            <p class="text-muted text-center">
-              Sistema de gestión de Hotelero
-            </p>
+<div class="login-wrap mt-5">
+  <div class="login-html">
+    <form novalidate [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="text-center">
+        <img src="assets/images/beda.png" class="img-fluid text-center" alt="Logo bededadev.cl"
+          style="max-width: 80px;" /><br>
+      </div>
+      <br>
+      <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">ACCEDER</label>
+      <input id="tab-2" type="radio" name="tab" class="for-pwd"><label for="tab-2" class="tab">CAMBIAR
+        CONTRASEÑA</label>
+      <div class="login-form">
+        <div class="sign-in-htm">
+          <div class="group">
+            <label for="user" class="label">Usuario</label>
+            <input formControlName="rut" (keyup)="onFormatRut($event)" autocomplete="off" id="user" type="text"
+              class="input">
+          </div>
+          <div class="group">
+            <label for="pass" class="label">Contraseña</label>
+            <input formControlName="pass" id="pass" type="password" class="input" data-type="password">
+          </div>
+          <div class="group">
+            <re-captcha #captcha (resolved)="resolved($event)"
+              siteKey="6LckoMsjAAAAAJQ_he_DupEF6DOMMkhcqPTxAdZZ"></re-captcha>
+          </div>
 
-            <label for="email" *ngIf="restore">Ingrese su correo</label>
-            <div class="input-group mb-3" *ngIf="restore">
-              <span class="input-group-text"
-                ><i class="fa-solid fa-envelope"></i
-              ></span>
-              <input
-                type="email"
-                formControlName="email"
-                class="form-control"
-                placeholder="Email de registro"
-              />
-            </div>
-            <div class="alert alert-info" *ngIf="send">
-              <strong>Correo enviado</strong> Hemos enviado un enlace para
-              modificar su contraseña a su cuenta correo, revíse su correo no
-              deseado (spam), antes de volver a intentar.
-              <button
-                [disabled]="time > 0"
-                (click)="restorePass()"
-                type="button"
-                class="btn btn-primary position-relative btn-sm"
-              >
-                Reenviar
-                <span
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >
-                  {{ time }}
-                  <span class="visually-hidden">Renvio de email</span>
-                </span>
-              </button>
-            </div>
-            <div class="input-group mb-3" *ngIf="!restore">
-              <span class="input-group-text"><i class="fa fa-user"></i></span>
-              <input
-                type="text"
-                formControlName="rut"
-                class="form-control"
-                (keyup)="onFormatRut($event)" autocomplete="off"
-                placeholder="Usuario"
-              />
-            </div>
-            <div class="input-group mb-4" *ngIf="!restore">
-              <span class="input-group-text"><i class="fa fa-lock"></i></span>
-              <input
-                type="password"
-                formControlName="pass"
-                class="form-control"
-                placeholder="Contraseña"
-              />
-            </div>
-
-            <div class="row">
-              <div class="mt-4 mb-2">
-                <re-captcha #captcha (resolved)="resolved($event)"
-                    siteKey="6Lebpw0nAAAAAJhBhXNsI8NQNInRPrJ4Gpe2y9at"></re-captcha>
-            </div>
-              <div class="col-md-12 col-lg-6">
-                <button
-                  *ngIf="!restore"
-                  type="submit"
-                  class="btn btn-primary px-4"
-                  [disabled]="disabledSubmit"
-                >
-                  ACCEDER
-                </button>
-                <button
-                  *ngIf="restore"
-                  type="button"
-                  class="btn btn-primary px-4"
-                  [disabled]="time>0"
-                  (click)="restorePass()"
-                >
-                  {{int>0?'REENVIAR':'SOLICITAR'}}
-                </button>
-              </div>
-              <!--<div class="col-md-12 col-lg-6 text-right" *ngIf="!restore">
-                <button
-                  type="button"
-                  class="btn btn-link px-0"
-                  (click)="restore = true"
-                >
-                  ¿Olvide mi contraseña?
-                </button>
-              </div>-->
-              <div class="col-md-12 col-lg-6 text-right" *ngIf="restore">
-                <button           type="button"
-                class="btn btn-link px-0" (click)="restore=false"> Iniciar Sesión </button>
-              </div>
-            </div>
-          </form>
+          <div class="group">
+            <input type="submit" class="button" value="Acceder">
+          </div>
+          <div class="hr"></div>
+        </div>
+        <div class="for-pwd-htm">
+          <div class="group">
+            <label for="user" class="label">Email</label>
+            <input id="user" type="text" class="input">
+          </div>
+          <div class="group">
+            <input type="button" class="button" value="Restablecer">
+          </div>
+          <div class="hr"></div>
         </div>
       </div>
-    </div>
+      <span class="text-muted small"> <i>Desarrollado</i> por Soluciones creativas e informáticas BEDA SpA</span>
+    </form>
   </div>
 </div>

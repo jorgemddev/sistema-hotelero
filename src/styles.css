@@ -2,11 +2,12 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
-    background: rgb(54, 105, 172);
-    background: linear-gradient(90deg, rgba(54, 105, 172, 1) 0%, rgba(95, 77, 238, 1) 48%, rgba(0, 212, 255, 1) 100%);
-}
+	margin:0;
+	background:#c8c8c8;
+	background:url(https://hdqwalls.com/download/material-design-4k-2048x1152.jpg) fixed;
+	background-size: cover;
 
-/**colors rooms status **/
+}
 
 .modal-backdrop {
     z-index: 99 !important;
@@ -115,3 +116,11 @@ body {
 }
 
   
+.custom-bread-crumb{
+    border-radius: 15px !important;
+    padding: 5px 5px 5px 15px !important;
+    color: white !important;
+}
+.custom-bread-crumb .ng-star-inserted{
+    color: white !important;
+}

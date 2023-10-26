@@ -1,0 +1,127 @@
+<div class="container-fluid px-4 mt-4 mb-5">
+    <hr class="mt-0 mb-4">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    Listado Clientes
+                    <div class="btn-group float-right" role="group">
+                        <button class="btn btn-sm btn-secondary" (click)="openModal(addFile,'sm')">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                            Importar</button>
+                        <button class="btn btn-primary" (click)="openModal(addClient)"><i
+                                class="fa-solid fa-circle-plus"></i> Nuevo</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
+                        (pageChange)="search()"></ngb-pagination>
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>NOMBRE</span></th>
+                                    <th><span>TELEFONO</span></th>
+                                    <th><span>EMAIL</span></th>
+                                    <th><span>FECHA CREACIÓN</span></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="items?.length>0;else notResult">
+                                <tr *ngFor="let item of items">
+                                    <td>
+                                        <span>{{item.name | uppercase}} {{item?.lastname | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.phone | uppercase}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{item.email | lowercase}}</span>
+                                    </td>
+                                    <td>
+                                        {{item.created_at}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn   text-warning"
+                                                (click)="goToUpdate(item.id)">
+
+                                                <i class="fa fa-pencil"></i>
+
+                                            </button>
+                                            <button type="button" class="btn  text-danger"
+                                                (click)="openDelete(item.id,remove)">
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <ng-template #notResult>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7"><span class="text-muted">No existen registros</span></td>
+                                    </tr>
+                                </tbody>
+                            </ng-template>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #remove let-c="close" let-d="dismiss">
+    <form (submit)="delete()" novalidate [formGroup]="form">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Eliminar registro</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>¿Esta seguro que desea eliminar este registro?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="d('Cross click')">No</button>
+            <button type="submit" ngbAutofocus class="btn btn-danger">Si</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #addClient let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-add-client (success)="getClients()"></app-add-client>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #editClient let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-edit-client [template]="null" (success)="getClients()"></app-edit-client>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>
+<ng-template #addFile let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-upload-file endPoint="2" [pathTemplate]="'assets/carga_clientes'" (onSuccess)="getData()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-template>

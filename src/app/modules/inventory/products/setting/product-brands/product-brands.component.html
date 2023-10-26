@@ -6,7 +6,7 @@
                 <div class="card-header">
                     Listado Marcas y modelos
                     <div class="btn-group float-right" role="group">
-                        <button type="button" class="btn btn-primary" (click)="openSaveBrand(abrand)">
+                        <button type="button" class="btn btn-primary" (click)="addBrand(abrand)">
                             <i class="fa-solid fa-circle-plus"></i> Nuevo</button>
                     </div>
 
@@ -25,7 +25,7 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="items?.length>0; else notResult">
                                 <tr *ngFor="let item of items">
                                     <td>
                                         <span>{{item.id}}</span>
@@ -62,7 +62,8 @@
                                         {{item.update_in??'--'}}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn  text-warning" (click)="openUpdateBrand(ebrand,item)">
+                                        <button type="button" class="btn  text-warning"
+                                            (click)="editBrand(ebrand,item)">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
@@ -78,6 +79,15 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <ng-template #notResult>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <span class="text-muted">No se encontraron resultados</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </ng-template>
                         </table>
                     </div>
 
@@ -116,31 +126,7 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-md-12">
-                <form (submit)="updateModel()" novalidate [formGroup]="tForm">
-                    <label for="tag">Editar modelo</label>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-success" type="submit"><i
-                                    class="fa-solid fa-floppy-disk"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <hr>
-            <div class="col-md-12">
-                <form (submit)="deleteModel()" novalidate [formGroup]="tForm">
-                    <label for="tag">Eliminar registro</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2">¿Esta seguro?</span>
-                        </div>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-danger" type="submit"><i
-                                    class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </form>
+                <app-edit-model [id]="modelSelected?.id" (success)="getBrands()" />
             </div>
         </div>
     </div>
@@ -156,18 +142,13 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-md-12">
-                <form (submit)="createModel()" novalidate [formGroup]="tForm">
-                    <label for="tag">Nombre del modelo</label>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
-                    </div>
-                    <button class="btn btn-success mt-3 float-end" type="submit">CREAR <i
-                        class="fa-solid fa-floppy-disk"></i></button>
-                </form>
+                <app-add-model [brandId]="brandSelected?.id" (success)="getBrands()" />
             </div>
         </div>
     </div>
 </ng-template>
+
+
 <ng-template #abrand let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Crear Marca</h4>
@@ -178,14 +159,7 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-md-12">
-                <form (submit)="create()" novalidate [formGroup]="form">
-                    <label for="tag">Nombre de la marca</label>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
-                    </div>
-                    <button class="btn btn-success mt-3 float-end" type="submit">CREAR <i
-                        class="fa-solid fa-floppy-disk"></i></button>
-                </form>
+                <app-add-brand (success)="getBrands()" />
             </div>
         </div>
     </div>
@@ -200,14 +174,7 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-md-12">
-                <form (submit)="update()" novalidate [formGroup]="form">
-                    <label for="tag">Nombre de la marca</label>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
-                    </div>
-                    <button class="btn btn-success mt-3 float-end" type="submit">MODIFICAR <i
-                        class="fa-solid fa-floppy-disk"></i></button>
-                </form>
+                <app-edit-brand (success)="getBrands()" [brandId]="brandSelected?.id" />
             </div>
         </div>
     </div>

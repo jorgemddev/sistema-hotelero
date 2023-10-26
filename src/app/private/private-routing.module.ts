@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InventoryComponent } from '../modules/inventory/inventory.component';
-import { SettingComponent } from '../modules/setting/setting.component';
 import { DashComponent } from './pages/dash/dash.component';
-import { HotelierComponent } from '../modules/hotelier/hotelier.component';
 import { AdminGuard } from '../models/guard/admin.guard';
-import { SalesComponent } from '../modules/sales/sales.component';
+import { CrmComponent } from '../modules/crm/crm.component';
+import { SettingComponent } from '../modules/setting/setting.component';
+
 
 
 const routes: Routes = [
@@ -82,51 +82,29 @@ const routes: Routes = [
       ],
     },
   },
-  //module hotelier
+  //module clients
   {
-    path: 'hotel',
-    component: HotelierComponent,
+    path: 'crm',
+    component: CrmComponent,
     children: [
       {
         path: '',
         loadChildren: () =>
-          import('../modules/hotelier/hotelier.module').then(
-            (m3) => m3.HotelierModule
+          import('../modules/crm/crm.module').then(
+            (m3) => m3.CrmModule
           ),
       },
     ],
     data: {
-      title: 'HOTEL',
+      title: 'CLIENTES',
       breadcrumb: [
         {
-          label: 'Hotel',
-          url: '/hotel',
+          label: 'Clientes',
+          url: '/clientes',
         },
       ],
     },
-  },
-  {
-    path: 'ventas',
-    component: SalesComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('../modules/sales/sales.module').then(
-            (m4) => m4.SalesModule
-          ),
-      },
-    ],
-    data: {
-      title: 'VENTAS',
-      breadcrumb: [
-        {
-          label: 'Ventas',
-          url: '/ventas',
-        },
-      ],
-    },
-  },
+  }
 ];
 
 @NgModule({

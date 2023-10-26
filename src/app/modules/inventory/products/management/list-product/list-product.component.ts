@@ -75,10 +75,6 @@ export class ListProductComponent implements OnInit {
     this.idSelected = id;
     this.openModal(mdl);
   }
-  goToCreate() {
-    console.log('crete');
-    this.router.navigate(['complementos/slider-principal']);
-  }
   getData() {
     this.api.getState().subscribe(
       (response) => {
@@ -102,7 +98,7 @@ export class ListProductComponent implements OnInit {
         this.totalPage = data.total;
       },
       (e) => {
-        this.toast.warning(e.error.mistakes, e.error.msg);
+        this.items=[];
       }
     );
   }

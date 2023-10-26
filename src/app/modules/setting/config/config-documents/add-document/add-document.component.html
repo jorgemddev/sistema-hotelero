@@ -1,0 +1,50 @@
+<form [formGroup]="primaryForm" (ngSubmit)="create()">
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-12">
+                    <label class="small mb-1" for="tag ">Descripción (50 max.)</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-file-signature"></i></span>
+                        <input type="text" class="form-control" formControlName="tag" titlecaseInput>
+                    </div>
+                </div>   
+                <div class="col-md-12">
+                    <div class="mb-1">
+                        <label for="type" class="small mb-1">Modulo asociado</label>
+                        <select id="type" class="form-control" formControlName="modules_document_id" (change)="getTemplates()">
+                            <option value="0">SELECCIONE</option>
+                            <option *ngFor="let item of modules" [value]="item?.id">{{item.tag | uppercase}}</option>
+                        </select>
+                    </div>
+                </div>     
+                <div class="col-md-12">
+                    <label class="small mb-1" for="tag ">Numero inicial documento</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" formControlName="number" *ngIf="primaryForm.get('fhater')?.value=='1'">
+                        <select id="type" class="form-control" formControlName="template_documents_id" *ngIf="primaryForm.get('fhater')?.value=='2'">
+                            <option value="0">SELECCIONE</option>
+                            <option *ngFor="let item of templates" [value]="item?.id">{{item.tag | uppercase}}</option>
+                        </select>
+                        <input type="radio" class="btn-check" name="fhater" id="fhater1" value="1" autocomplete="off" formControlName="fhater">
+                        <label class="btn btn-outline-primary" for="fhater1">Propio</label>
+                    
+                        <input type="radio" class="btn-check" name="fhater" id="fhater2" value="2" autocomplete="off" formControlName="fhater">
+                        <label class="btn btn-outline-primary" for="fhater2">Padre</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <app-upload-template (onSuccess)="setValueTemplate($event)" />
+                </div>
+                <div class="col-md-12">
+                    <div class="alert alert-warning mt-2"><strong>Importante:</strong> 
+                        Para obtener datos dinamicos, revise la documentación de cada modulo</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary float-end"  type="submit"><i
+                    class="fa-solid fa-floppy-disk"></i> GUARDAR</button>
+        </div>
+    </div>
+</form>

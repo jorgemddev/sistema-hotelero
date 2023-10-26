@@ -6,7 +6,7 @@
                 <div class="col-md-12">
                     <label class="small mb-1" for="name ">Descripción (50 max.)</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" formControlName="name">
+                        <input type="text" class="form-control" formControlName="name" titlecaseInput>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -35,10 +35,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6" *ngIf="primaryForm.get( 'amount').value==1">
+                <div class="col-md-12" *ngIf="primaryForm.get( 'amount').value==1">
                     <label class="small mb-1" for="serie">Serie</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" formControlName="serie">
+                        <span class="input-group-text"><i class="fa-solid fa-hashtag"></i></span>
+                        <input type="text" class="form-control" uppercaseInput formControlName="serie">
                     </div>
                 </div>
                 <div class="col-md-12" *ngIf="primaryForm.get( 'amount').value>1">
@@ -48,18 +49,6 @@
                         <input type="number" class="form-control" formControlName="stkmin">
                         <span class="input-group-text">Maxima</span>
                         <input type="number" class="form-control" formControlName="stkmax">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label class="small mb-1" for="sku">Sku</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" formControlName="sku">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-success" id="btnGroupAddon"
-                                (click)="openModal(gsku,'sm')">
-                                <i class="fa-solid fa-hashtag"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -72,6 +61,7 @@
                                 <option *ngFor="let item of brands" value="{{item.id}}">{{item.tag | uppercase}}
                                 </option>
                             </select>
+                            <button type="button" (click)="openModal(abrand,'sm')" class="btn btn-secondary"><i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -82,6 +72,7 @@
                                 <option *ngFor="let item of models" value="{{item.id}}">{{item.tag | uppercase}}
                                 </option>
                             </select>
+                            <button type="button" (click)="openModal(amodel,'sm')" class="btn btn-secondary"><i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
                 </div>
@@ -175,5 +166,37 @@
     <div class="modal-body">
         <app-generator-sku (success)="primaryForm.get('sku').setValue($event)" (closeMdl)="d('Cross click')">
         </app-generator-sku>
+    </div>
+</ng-template>
+<ng-template #abrand let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Crear Marca</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <app-add-brand [dismiss]="false" (onDataCreate)="primaryForm.get('brand_id')?.setValue($event?.id)" (success)="getData(); d('Cross click')"/>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #amodel let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Crear modelo</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+               <app-add-model [brandId]="primaryForm.get('brand_id')?.value" (success)="getData()" />
+            </div>
+        </div>
     </div>
 </ng-template>

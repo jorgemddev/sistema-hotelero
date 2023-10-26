@@ -113,7 +113,7 @@ export class ProductFamilyComponent implements OnInit {
         this.getFamilyFather();
       },
       (error) => {
-            this.toast.warning(error.error.msg);
+            this.items=[];
       }
     );
   }

@@ -14,16 +14,12 @@ import schema from './shema/iframe';
 })
 export class EditorHtmlComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
-    private api: ApiService,
-    private modal: NgbModal,
-    private toastr: ToastrService
   ) { }
 
   htmlDefault:string;
   ngOnChanges(changes: SimpleChanges): void {
     this.editor = new Editor();
     if (changes['form']) {
-       console.log("CAMBIO EL CONTENT", this.form?.get('content')?.value);
        this.html=this.form?.get('content')?.value;
     }
   }
@@ -32,6 +28,8 @@ export class EditorHtmlComponent implements OnInit, OnChanges, OnDestroy {
   form: UntypedFormGroup = new UntypedFormGroup({
     content: new UntypedFormControl(null, [Validators.required()]),
   });
+  
+  @Input() controlName: string = 'content';
 
   @Input()
   showUpload: boolean = false;

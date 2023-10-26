@@ -7,40 +7,45 @@
                 <div class="card-header">
                     Listado de productos
                     <div class="btn-group float-right" role="group">
-                        <button class="btn btn-info" (click)="openModal(searchp,'xl')"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
-                  
+                        <app-back-button [cssClass]="'btn btn-secondary'" />
+                        <button class="btn  btn-secondary" (click)="openModal(addFile,'sm')">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                            Importar</button>
+                        <button class="btn btn-info" (click)="openModal(searchp,'xl')"><i
+                                class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+
                         <button class="btn btn-primary" (click)="openModal(addProduct)"><i
                                 class="fa-solid fa-circle-plus"></i> Nuevo</button>
+                        <button class="btn  btn-warning" [routerLink]="'/inventario/productos/movimientos'">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            Movimiento</button>
                     </div>
                 </div>
                 <div class="card-body">
                     <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
                         (pageChange)="search()"></ngb-pagination>
-                    <div class="table-responsive" >
+                    <div class="table-responsive">
                         <table class="table user-list">
                             <thead>
                                 <tr>
                                     <th><span>ID</span></th>
-                                    <th><span>COD. BARRAS</span></th>
+                                    <th><span>COD</span></th>
                                     <th><span>DESCRIPCIÓN</span></th>
                                     <th><span>CATEGORIA</span></th>
-                                    <th><span>PROVEEDOR</span></th>
                                     <th><span>MARCA</span></th>
                                     <th><span>MODELO</span></th>
                                     <th><span>UBICACIÓN</span></th>
                                     <th><span>STOCK</span></th>
-                                    <th><span>FECHA CREACIÓN</span></th>
-
-                                    <th></th>
+                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="items?.length>0; else notResult">
                                 <tr *ngFor="let item of items">
                                     <td>
                                         <span>{{item.id}}</span>
                                     </td>
                                     <td>
-                                        <span>{{item.barcode}}</span>
+                                        <span>{{item.barcode || item.serie || "No mantiene"}}</span>
                                     </td>
                                     <td>
                                         <span>{{item.name | uppercase}}</span>
@@ -49,44 +54,47 @@
                                         <span>{{item.family | uppercase}}</span>
                                     </td>
                                     <td>
-                                        <span>{{item.provider | uppercase}}</span>
-                                    </td>
-                                    <td>
                                         <span>{{item.brand | uppercase}}</span>
                                     </td>
                                     <td>
                                         <span>{{item.model | uppercase}}</span>
                                     </td>
                                     <td>
-                                        <span class="badge" [ngClass]="{'bg-dark':item?.location,'bg-warning':!item?.location}">{{(item?.location | uppercase) || "NO DEFINIDA"}}</span>
+                                        <span class="badge"
+                                            [ngClass]="{'bg-dark':item?.location,'bg-warning':!item?.location}">{{(item?.location
+                                            | uppercase) || "NO DEFINIDA"}}</span>
                                     </td>
                                     <td>
                                         {{item.amount}}
                                     </td>
                                     <td>
-                                        {{item.created_at}}
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn   text-warning"
-                                            (click)="goToUpdate(item.id,editProduct)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="btn  text-danger"
-                                            (click)="openDelete(item.id,remove)">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </button>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn   btn-warning"
+                                                (click)="goToUpdate(item.id,editProduct)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn  btn-danger"
+                                                (click)="openDelete(item.id,remove)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+
                                     </td>
                                 </tr>
                             </tbody>
+                            <ng-template #notResult>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="11">
+                                            <span class="text-muted">No se encontraron resultados</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </ng-template>
+
                         </table>
                     </div>
-         
+
                 </div>
             </div>
         </div>
@@ -139,12 +147,23 @@
 </ng-template>
 <ng-template #searchp let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Buscar  producto</h4>
+        <h4 class="modal-title" id="modal-basic-title">Buscar producto</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <app-search-products (delete)="openDelete($event.id,remove)" (edit)="goToUpdate($event.id,editProduct)"></app-search-products>
+        <app-search-products (delete)="openDelete($event.id,remove)"
+            (edit)="goToUpdate($event.id,editProduct)"></app-search-products>
+    </div>
+</ng-template>
+<ng-template #addFile let-c="close " let-d="dismiss">
+    <div class="modal-body shadow-lg">
+        <app-upload-file [endPoint]="'1'" [pathTemplate]="'assets/carga_productos'" (onSuccess)="getData()" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 </ng-template>

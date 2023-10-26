@@ -25,7 +25,7 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="items?.length>0;else notResult">
                                 <tr *ngFor="let item of items">
                                     <td>
                                         <span>{{item.id}}</span>
@@ -74,6 +74,15 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <ng-template #notResult>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="11">
+                                            <span class="text-muted">No se encontraron resultados</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </ng-template>
                         </table>
                     </div>
 

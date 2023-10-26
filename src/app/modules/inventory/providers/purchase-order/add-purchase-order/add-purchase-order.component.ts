@@ -132,16 +132,7 @@ export class AddPurchaseOrderComponent implements OnInit {
         this.toast.warning(e.error.mistakes,e.error.msg);
       }
     );
-    this.api.getPayments().subscribe(
-      (response) => {
-        this.primaryForm.get('payments_id').setValue(1);
-        this.payments = response.data;
-      },
-      (e) => {
-       
-        this.toast.warning(e.error.mistakes,e.error.msg);
-      }
-    );
+
   }
   openModal(md: any, size: string = 'md') {
     this.modal.open(md, {

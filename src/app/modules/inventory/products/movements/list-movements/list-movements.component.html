@@ -12,14 +12,12 @@
                                 [placeholder]="'Buscar Producto'" />
                         </div>
                         <div class="col-md-6">
-                            <div class="btn-group float-right" role="group">
-                                <app-toolbar-search (onFilter)="filterMovements($event)" [hideSearch]="true"
-                                    [filters]="filters" />
+                            <div class="btn-group float-right" role="group">                                                           
+                                <app-toolbar-search (onClickButtonToolbar)="actionButton($event)" [toolbar]="btn_toolbar" [toBack]="true" (onFilter)="filterMovements($event)"
+                                    [hideSearch]="true"  [filters]="filters" />
                             </div>
                         </div>
                     </div>
-
-
                 </div>
                 <div class="card-body">
                     <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="perpage"
@@ -29,8 +27,7 @@
                             <thead>
                                 <tr>
                                     <th><span></span></th>
-                                    <th><span>COD. BARRAS</span></th>
-                                    <th><span>SKU</span></th>
+                                    <th><span>SKU/SERIE/COD</span></th>
                                     <th><span>DESCRIPCIÓN</span></th>
                                     <th><span>STOK INICIAL</span></th>
                                     <th><span>STOK FINAL</span></th>
@@ -45,24 +42,22 @@
                                                 class="fa-solid fa-arrow-up"></i> ENTRADA</span>
                                         <span *ngIf="item.type==2" class="badge badge-danger"><i
                                                 class="fa-solid fa-arrow-down"></i> SALIDA</span>
+                                                <span *ngIf="item.type==3" class="badge badge-warning"><i class="fa-solid fa-arrow-right-arrow-left"></i> TRASPASO</span>
                                     </td>
                                     <td>
-                                        <span>{{item.barcode || "--"}} </span>
+                                        <span>{{item?.serie|| item?.barcode || item?.sku || "--"}} </span>
                                     </td>
                                     <td>
-                                        <span>{{item.sku || "--"}} </span>
-                                    </td>
-                                    <td>
-                                        <span>{{item.name | uppercase}}</span>
+                                        <span>{{item?.name | uppercase}}</span>
                                     </td>
                                     <td class="text-center">
                                         <span *ngIf="item.instk<item.outstk"
                                             class="text-bg-danger text-bold text-circle"><span
-                                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
+                                                *ngIf="item.instk<10">&nbsp;</span>{{item?.instk}}<span
                                                 *ngIf="item.instk<10">&nbsp;</span></span>
                                         <span *ngIf="item.instk>item.outstk"
                                             class="text-bg-success text-bold text-circle"><span
-                                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
+                                                *ngIf="item.instk<10">&nbsp;</span>{{item?.instk}}<span
                                                 *ngIf="item.instk<10">&nbsp;</span></span>
                                     </td>
                                     <td class="text-center">
@@ -92,7 +87,7 @@
                             <ng-template #nofound>
                                 <tbody>
                                     <tr>
-                                        <th class="text-muted" colspan="7">No se encontraron registros</th>
+                                        <td class="text-muted" colspan="8">No se encontraron registros</td>
                                     </tr>
                                 </tbody>
                             </ng-template>
@@ -149,71 +144,17 @@
                 </div>
                 <input type="text" class="form-control" placeholder="Usuario" formControlName="user">
             </div>
+            <label *ngIf="item?.client" for="name">CLIENTE:</label>
+            <div *ngIf="item?.client"class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa-solid fa-people-arrows"></i></span>
+                </div>
+                <span class="form-control" *ngIf="item?.client">{{item?.client?.name}}</span>
+            </div>
         </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-danger" (click)="d('Cross click')">
             <i class="fa-solid fa-circle-xmark"></i> Cerrar</button>
-    </div>
-</ng-template>
-
-
-<ng-template #view let-c="close " let-d="dismiss ">
-    <div class="modal-header ">
-        <h4 class="modal-title" id="modal-basic-title">Registro de movimiento</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body ">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-1">
-                        <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">{{item.name}}</a></h5>
-                        <span *ngIf="item.type==1" class="badge badge-success"><i class="fa-solid fa-arrow-up"></i>
-                            ENTRADA</span>
-                        <span *ngIf="item.type==2" class="badge badge-danger"><i class="fa-solid fa-arrow-down"></i>
-                            SALIDA</span>
-                        <hr>
-                        <p *ngIf="item.barcode" class="text-muted mt-2"><b>Codigo barras</b> {{item.barcode}}</p>
-                        <p *ngIf="item.sku" class="text-muted mt-2"><b>SKU</b> {{item.sku}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <b>Stock Inicial:</b>
-                        <span *ngIf="item.instk<item.outstk" class="text-bg-danger text-bold text-circle"><span
-                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
-                                *ngIf="item.instk<10">&nbsp;</span></span>
-                        <span *ngIf="item.instk>item.outstk" class="text-bg-success text-bold text-circle"><span
-                                *ngIf="item.instk<10">&nbsp;</span>{{item.instk}}<span
-                                *ngIf="item.instk<10">&nbsp;</span></span>
-                    </div>
-                    <div class="col-sm-6">
-                        <b>Stock Final:</b>
-                        <span *ngIf="item.instk>item.outstk" class="text-bg-danger text-bold text-circle">
-                            <span *ngIf="item.outstk<10">&nbsp;</span>{{item.outstk}}<span
-                                *ngIf="item.outstk<10">&nbsp;</span></span>
-                        <span *ngIf="item.instk<item.outstk" class="text-bg-success text-bold text-circle"><span
-                                *ngIf="item.outstk<10">&nbsp;</span>{{item.outstk}}<span
-                                *ngIf="item.outstk<10">&nbsp;</span></span>
-                    </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col-6">
-                        <i class="fa-solid fa-user"></i> {{item.user}}
-                    </div>
-                    <div class="col-6">
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-danger btn-sm w-50" (click)="d('Cross click')"><i
-                        class="bx bx-message-square-dots me-1"></i> Cerrar</button>
-            </div>
-        </div>
     </div>
 </ng-template>

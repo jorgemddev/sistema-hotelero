@@ -5,12 +5,10 @@ import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AuthGuard } from 'src/app/models/guard/auth.guard';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ReservationService } from 'src/app/services/reservations.service';
 import { Reservations } from 'src/app/models/interfaces/reservations';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Paginate } from 'src/app/models/interfaces/paginate';
 import { Payments } from 'src/app/models/interfaces/payments';
 import { CashService } from 'src/app/services/cash.service';
 @Component({
@@ -41,9 +39,7 @@ export class MainNavComponent implements OnInit {
   sales: Payments[];
   reservationIdSelected: number;
   ngOnInit(): void {
-    this.loadReservations();
     this.getProfile();
-    this.getPayments();
     this.breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.Tablet])
       .subscribe((result) => {
@@ -58,10 +54,6 @@ export class MainNavComponent implements OnInit {
 
     this.notificationService.getUnreadNotificationsCount().subscribe((count) => {
       this.unreadNotificationsCount = count;
-    });
-
-    this.cashService.getNewPayment().subscribe((rs) => {
-      this.getPayments();
     });
   }
   profile: Profile = {
@@ -89,15 +81,6 @@ export class MainNavComponent implements OnInit {
     });
   }
 
-  loadReservations() {
-    this.reservationService.getReservationsPolling().subscribe(res => {
-      // Itera sobre las reservaciones y crea las notificaciones si es necesario
-      let reservation: Reservations[] = res.data as Reservations[];
-      reservation.forEach(rese => {
-        this.notificationService.createNotification(rese);
-      });
-    });
-  }
   getOrderedNotifications(): any[] {
     return this.notifications.sort((a, b) => {
       if (a.status === 'unread' && b.status === 'read') {
@@ -111,23 +94,6 @@ export class MainNavComponent implements OnInit {
   }
   openModal(mdl: any, size:string) {
     this.modal.open(mdl,{size:size});
-  }
-  getPayments() {
-    this.api.getAllPaymentCash().subscribe(
-      (response) => {
-        this.sales = response.data as Payments[];
-        this.calculatePayment();
-      }
-    );
-  }
-  calculatePayment() {
-    this.totalSales = 0;
-    this.sales.forEach((pay: Payments) => {
-      if (pay?.payment_id != 1) {
-        this.totalSales = Number(this.totalSales) + Number(pay.ammount);
-      }
-
-    });
   }
 }
 

@@ -35,10 +35,10 @@ export class EditProductComponent implements OnInit, OnChanges {
   id: number;
 
   ngOnInit(): void {
+    this.getData();
     if (this.id > 0) {
       this.getProduct(this.id);
     }
-    this.getData();
   }
 
   items: any;
@@ -103,6 +103,7 @@ export class EditProductComponent implements OnInit, OnChanges {
       (response) => {
         this.toast.info('Producto encontrado');
         this.primaryForm.patchValue(response.data);
+        this.selectBrand();
       },
       (error) => {
         this.toast.warning('', 'Producto no encontrado');
@@ -116,10 +117,7 @@ export class EditProductComponent implements OnInit, OnChanges {
         this.status = response.data;
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.status=[];
       }
     );
     this.api.getBrands().subscribe(
@@ -128,10 +126,7 @@ export class EditProductComponent implements OnInit, OnChanges {
         this.selectBrand();
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.brands=[];
       }
     );
     this.api.listFamilys(1).subscribe(
@@ -140,10 +135,7 @@ export class EditProductComponent implements OnInit, OnChanges {
         this.familys = data.items;
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.familys=[];
       }
     );
     this.api.getProviders().subscribe(
@@ -151,10 +143,7 @@ export class EditProductComponent implements OnInit, OnChanges {
         this.providers = response.data
       },
       (e) => {
-        this.toast.warning(
-          e.error.mistakes,
-          e.error.msg
-        );
+        this.providers=[];
       }
     );
   }
@@ -166,10 +155,6 @@ export class EditProductComponent implements OnInit, OnChanges {
           this.models = response.data;
         },
         (e) => {
-          this.toast.warning(
-            e.error.mistakes,
-            e.error.msg
-          );
         }
       );
     } else {

@@ -57,11 +57,6 @@
           </a>
         </li>
         <li>
-          <a class="dropdown-item" (click)="openModal(pos,'lg')" >
-            <i class="fa-solid fa-cash-register mr-2 text-gray-400"></i> Caja
-          </a>
-        </li>
-        <li>
           <a class="dropdown-item" href="#" (click)="logout()">
             <i class="fa-solid fa-lock fa-sm fa-fw mr-2 text-gray-400"></i> Salir
           </a>
@@ -71,24 +66,3 @@
   </ul>
 
 </nav>
-
-<ng-template #viewReservations let-c="close" let-d="dismiss">
-  <div class="modal-body shadow-lg">
-    <app-view-reservation [reservations_id]="reservationIdSelected" />
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
-<ng-template #pos let-c="close" let-d="dismiss">
-  <div class="modal-body shadow-lg">
-    <app-pos/>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-warning" aria-label="Close" (click)="d('Cross click')"> Cancelar
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>

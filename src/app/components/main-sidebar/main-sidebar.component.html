@@ -1,14 +1,14 @@
-<ul class="navbar-nav shadow text-white sidebar" [ngClass]="{ 'sidebar-hidden': sidebarVisible }">
+<ul class="navbar-nav shadow text-white bg-sidebar sidebar" [ngClass]="{ 'sidebar-hidden': sidebarVisible }">
 
     <a class="sidebar-brand" routerLink="/">
         <div class="sidebar-brand-icon">
-            <img [defaultImage]="'beda'" [src]="company?.logo" style="max-width: 50px; max-height: 50px;">
-            <div class="sidebar-brand-text">{{company?.domain || 'bedadev.cl'}}</div>
+            <img [defaultImage]="'beda'"  style="max-width: 50px; max-height: 50px;">
+            <div class="sidebar-brand-text">{{'bedadev.cl'}}</div>
         </div>
     </a>
 
     <hr class="sidebar-divider my-0">
-    <li class="nav-item shadow-lg">
+    <li class="nav-item">
         <a class="nav-link d-flex flex-column align-items-center" routerLink="/" routerLinkActive="item-active"
             [routerLinkActiveOptions]="{exact: true}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -16,7 +16,7 @@
     </li>
 
     <hr class="sidebar-divider">
-    <li class="nav-item shadow-lg" *ngIf="level>9">
+    <li class="nav-item" *ngIf="level>9">
         <a class="nav-link d-flex flex-column align-items-center" routerLink="/configuracion"
             routerLinkActive="item-active">
             <i class="fa-solid fa-pen-ruler"></i>
@@ -24,7 +24,7 @@
         </a>
     </li>
     <hr class="sidebar-divider">
-    <li class="nav-item shadow-lg" *ngIf="level>9">
+    <li class="nav-item" *ngIf="level>9">
         <a class="nav-link d-flex flex-column align-items-center" routerLink="/inventario"
             routerLinkActive="item-active">
             <i class="fa-solid fa-boxes-packing"></i>
@@ -32,11 +32,11 @@
         </a>
     </li>
     <hr class="sidebar-divider">
-    <li class="nav-item shadow-lg">
-        <a class="nav-link d-flex flex-column align-items-center" routerLink="/hotel" routerLinkActive="item-active">
-            <i class="fa-solid fa-square-h"></i>
-            <span>Gestión</span>
+    <li class="nav-item" *ngIf="level>9">
+        <a class="nav-link d-flex flex-column align-items-center" routerLink="/crm"
+            routerLinkActive="item-active">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>CRM</span>
         </a>
     </li>
-    <app-clock-digital />
 </ul>

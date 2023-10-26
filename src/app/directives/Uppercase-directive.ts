@@ -4,7 +4,7 @@ import { NgControl } from '@angular/forms';
 @Directive({
   selector: '[uppercaseInput]'
 })
-export class UppercaseDirective {
+export class UpperCaseDirective {
   constructor(private ngControl: NgControl) {}
 
   @HostListener('input', ['$event.target.value'])

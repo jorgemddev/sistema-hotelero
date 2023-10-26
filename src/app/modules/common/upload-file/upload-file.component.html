@@ -1,0 +1,11 @@
+<ngx-awesome-uploader  [fileExtensions]="['xlsx']" #uploader [captions]="captions" [adapter]="adapter" (uploadFail)="onUploadFail($event)" (validationError)="onValidationError($event)" (uploadSuccess)="onUploadSuccess($event)" (removeSuccess)="onRemoveSuccess($event)">
+</ngx-awesome-uploader>
+<hr>
+<div class="alert alert-warning"><strong>Importante:</strong> 
+  El formato de la plantilla y columnas no debe ser modificada</div>
+<button class="btn btn-secondary w-100" (click)="downloadTemplate()">
+    <i class="fa-solid fa-download"></i>
+    <i class="fa-regular fa-file-excel"></i>
+    Descargar Plantilla Excel
+  </button>
+  

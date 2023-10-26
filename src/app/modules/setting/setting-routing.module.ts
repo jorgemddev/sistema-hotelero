@@ -14,6 +14,7 @@ import { ListUserComponent } from './users/list-user/list-user.component';
 import { ProfileComponent } from './users/profile/profile.component';
 
 import { UsersComponent } from './users/users.component';
+import { ConfigDocumentsComponent } from './config/config-documents/config-documents.component';
 
 const routes: Routes = [
   {
@@ -241,6 +242,28 @@ const routes: Routes = [
             },
             {
               label: 'Servidores de correo',
+              url: '',
+            },
+          ],
+        },
+      },
+      {
+        path: 'documentos',
+        canActivate: [AdminGuard],
+        component: ConfigDocumentsComponent,
+        data: {
+          title: 'DOCUMENTOS',
+          breadcrumb: [
+            {
+              label: 'General',
+              url: 'configuracion',
+            },
+            {
+              label: 'Ajustes',
+              url: 'configuracion/ajustes',
+            },
+            {
+              label: 'Plantillas de impresión',
               url: '',
             },
           ],

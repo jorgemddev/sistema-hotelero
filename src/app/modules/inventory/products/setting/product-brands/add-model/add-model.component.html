@@ -1,0 +1,11 @@
+<div *ngIf="brandId<=0 else existsBrand" class="alert alert-warning"><small>Antes seleccione una marca.</small></div>
+<ng-template #existsBrand>
+    <form (submit)="createModel()" novalidate [formGroup]="form">
+        <label for="tag">Nombre del modelo</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
+        </div>
+        <button class="btn btn-success mt-3 float-end" type="submit">CREAR <i
+            class="fa-solid fa-floppy-disk"></i></button>
+    </form>
+</ng-template>

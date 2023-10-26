@@ -1,7 +1,7 @@
 <form [formGroup]="form">
     <div class="editor">
         <ngx-editor-menu  [editor]="editor" [toolbar]="toolbar"  [customMenuRef]="customMenu"> </ngx-editor-menu>
-        <ngx-editor  formControlName="content" [editor]="editor"  [ngModel]="html" [disabled]="false" [placeholder]="''">
+        <ngx-editor  formControlName="{{ controlName }}" [editor]="editor"  [ngModel]="html" [disabled]="false" [placeholder]="''">
         </ngx-editor>
     </div>
 </form>

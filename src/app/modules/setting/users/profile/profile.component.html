@@ -5,15 +5,26 @@
 
             <div class="card mb-4 mb-xl-0">
                 <div class="card-header">Imagen de perfil</div>
-                <div class="card-body text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img [defaultImage]="'avatar'" (click)="openRepository('prfile',repo)"
+                                style="cursor: pointer; width: 180px;" class="img-account-profile rounded-circle mb-2"
+                                [src]="userForm.get('image')?.value" alt="logo">
+                            <div class="small font-italic text-muted mb-4">JPG o PNG tamaño maximo 5 MB</div>
 
-                    <img [defaultImage]="'avatar'" (click)="openRepository('prfile',repo)"
-                        style="cursor: pointer; width: 180px;" class="img-account-profile rounded-circle mb-2"
-                        [src]="userForm.get('image')?.value" alt="logo">
-                    <div class="small font-italic text-muted mb-4">JPG o PNG tamaño maximo 5 MB</div>
-
-                    <button class="btn btn-primary" type="button" (click)="saveImageProfile()"
-                        *ngIf="image!=userForm.get('image')?.value">Guardar</button>
+                            <button class="btn btn-primary" type="button" (click)="saveImageProfile()"
+                                *ngIf="image!=userForm.get('image')?.value">Guardar</button>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="small mb-1" for="content">Firma</label>
+                            <div class="input-group">
+                                <div style="border: #d5d5d5 solid 1px;  width:100%;">
+                                    <app-editor-html [form]="userForm" [controlName]="'signature'" [myToolbar]="toolbar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -92,10 +103,8 @@
                     <div class="col-md-8">
                         <div class="mb-2">
                             <label for="npass" class="form-label">Nueva contraseña</label>
-                            <app-input-password-generate
-                            (selectedValue)="passForm.get('npass')?.setValue($event)"
-                            [class]="'form-control'"
-                          />
+                            <app-input-password-generate (selectedValue)="passForm.get('npass')?.setValue($event)"
+                                [class]="'form-control'" />
                         </div>
                     </div>
                     <div class="col-md-4">

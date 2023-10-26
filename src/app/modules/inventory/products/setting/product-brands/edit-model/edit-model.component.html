@@ -1,0 +1,16 @@
+<div *ngIf="id<=0 else existsModel" class="alert alert-warning"><small>No se recibio el modelo.</small></div>
+<ng-template #existsModel>
+    <form (submit)="updateModel()" novalidate [formGroup]="form">
+        <label for="tag">Editar modelo</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Nombre" formControlName="tag">
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-danger" (click)="delete()" type="button"><i
+                        class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>
+    </form>
+</ng-template>

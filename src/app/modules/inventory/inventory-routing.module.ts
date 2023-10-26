@@ -12,6 +12,7 @@ import { ListProviderComponent } from './providers/provider/list-provider/list-p
 import { ProvidersComponent } from './providers/providers.component';
 import { EditPurchaseOrderComponent } from './providers/purchase-order/edit-purchase-order/edit-purchase-order.component';
 import { ListPurchaseOrderComponent } from './providers/purchase-order/list-purchase-order/list-purchase-order.component';
+import { AddMovementsComponent } from './products/movements/add-movements/add-movements.component';
 
 
 const routes: Routes = [
@@ -72,6 +73,32 @@ const routes: Routes = [
             },
             {
               label: 'Movimientos',
+              url: '',
+            },
+          ],
+        },
+      },
+      {
+        path: 'movimiento',
+        canActivate: [AdminGuard],
+        component: AddMovementsComponent,
+        data: {
+          title: 'GENERAR MOVIMIENTO',
+          breadcrumb: [
+            {
+              label: 'Inventario',
+              url: '/inventario',
+            },
+            {
+              label: 'Productos',
+              url: 'inventario/productos',
+            },
+            {
+              label: 'Movimientos',
+              url: 'inventario/productos/movimientos',
+            },
+            {
+              label: 'Traspaso',
               url: '',
             },
           ],

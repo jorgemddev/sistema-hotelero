@@ -28,6 +28,20 @@ import { SharedsModule } from '../common/shareds/shareds.module';
 import { ToolbarSearchComponent } from 'src/app/components/standalone/toolbar-search/toolbar-search.component';
 import { ProductBrandsComponent } from './products/setting/product-brands/product-brands.component';
 import { ImageDefaultConfig, ImageDefaultModule } from '../../directives/image-default/image-default.module';
+import { UploadFileModule } from '../common/upload-file/upload-file.module';
+import { AddMovementsComponent } from './products/movements/add-movements/add-movements.component';
+import { UpperCaseDirective } from 'src/app/directives/Uppercase-directive';
+import { TitleCaseDirective } from 'src/app/directives/Titlecase-directive';
+import { BackButtonComponent } from 'src/app/components/standalone/back-button/back-button.component';
+import { UploadTemplateComponent } from '../common/upload-template/upload-template.component';
+import { UploadTemplateModule } from '../common/upload-template/upload-template.module';
+import { CrmModule } from '../crm/crm.module';
+import { SettingModule } from '../setting/setting.module';
+import { AddBrandComponent } from './products/setting/product-brands/add-brand/add-brand.component';
+import { EditBrandComponent } from './products/setting/product-brands/edit-brand/edit-brand.component';
+import { EditModelComponent } from './products/setting/product-brands/edit-model/edit-model.component';
+import { AddModelComponent } from './products/setting/product-brands/add-model/add-model.component';
+import { ScannerBarcodeModule } from '../common/scanner-barcode/scanner-barcode.module';
 const imageConfig: ImageDefaultConfig = {
   defaultImages: {
     default: 'assets/images/default.jpg',
@@ -43,6 +57,7 @@ const imageConfig: ImageDefaultConfig = {
     ListMovementsComponent,
     ProductBrandsComponent,
     ProductFamilyComponent,
+    AddBrandComponent,
     FormatsComponent,
     ProvidersComponent,
     ListProviderComponent,
@@ -51,8 +66,13 @@ const imageConfig: ImageDefaultConfig = {
     AddPurchaseOrderComponent,
     EditPurchaseOrderComponent,
     ListPurchaseOrderComponent,
-    GeneratorSkuComponent
-
+    GeneratorSkuComponent,
+    AddMovementsComponent,
+    UpperCaseDirective,
+    TitleCaseDirective,
+    EditBrandComponent,
+    EditModelComponent,
+    AddModelComponent,
   ],
   imports: [
     CommonModule,
@@ -68,7 +88,11 @@ const imageConfig: ImageDefaultConfig = {
     EditorHtmlModule,
     SearchesModule,
     SharedsModule,
+    UploadFileModule,
+    SettingModule,
+    CrmModule,
     ToolbarSearchComponent,
+    BackButtonComponent,
     ImageDefaultModule.forRoot(imageConfig)
 
   ],

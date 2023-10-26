@@ -26,7 +26,7 @@ export class ImagePickerService extends FilePickerAdapter {
     const form = new FormData();
     form.append('file', fileItem.file);
     const api =
-      environment?.domain + 'company/images/upload/'
+      environment?.baseApiUrl + 'company/images/upload/'
     const req = new HttpRequest('POST', api, form, { reportProgress: true });
     return this.http.request(req).pipe(
       map((res: HttpEvent<any>) => {

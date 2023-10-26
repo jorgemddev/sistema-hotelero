@@ -20,6 +20,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
+import { TitleCaseDirective } from 'src/app/directives/Titlecase-directive';
 import { Filters } from 'src/app/models/interfaces/filters';
 
 @Component({
@@ -29,7 +30,7 @@ import { Filters } from 'src/app/models/interfaces/filters';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgbPaginationModule,
+    NgbPaginationModule
   ],
   selector: 'app-toolbar-search',
   templateUrl: './toolbar-search.component.html',
@@ -198,4 +199,5 @@ export interface Buttons {
   id: number;
   iconFaWSome?: string;
   value: string;
+  strClass?:string;
 }

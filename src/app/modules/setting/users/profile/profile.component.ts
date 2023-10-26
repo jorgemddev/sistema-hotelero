@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Toolbar } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
     phone: new UntypedFormControl(''),
     position: new UntypedFormControl(''),
     image: new UntypedFormControl(''),
+    signature:new UntypedFormControl(''),
     privilege: new UntypedFormControl({ value: '', disabled: true }),
     id: new UntypedFormControl(''),
   });
@@ -99,6 +101,12 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+  toolbar: Toolbar = [
+    // default value
+    ['bold', 'italic'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ['underline', 'strike', 'text_color'],
+  ];
   updatePass() {
     if (
       this.passForm.get('npass')?.value == this.passForm.get('rpass')?.value

@@ -15,13 +15,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-import { HotelierModule } from '../modules/hotelier/hotelier.module';
 import { StickyMobileDirective } from '../directives/sticky-mobile.directive';
 import { StickyDesktopDirective } from '../directives/sticky-desktop.directive';
 import { ImageDefaultConfig, ImageDefaultModule } from '../directives/image-default/image-default.module';
-import { ClockDigitalComponent } from '../components/standalone/clock-digital/clock-digital.component';
 import { SharedsModule } from '../modules/common/shareds/shareds.module';
-import { SalesModule } from '../modules/sales/sales.module';
 const imageConfig: ImageDefaultConfig = {
   defaultImages: {
     avatar: 'assets/images/avatar.png',
@@ -50,11 +47,8 @@ const imageConfig: ImageDefaultConfig = {
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    HotelierModule,
-    ToastrModule.forRoot(),
-    ClockDigitalComponent,
     SharedsModule,
-    SalesModule,
+    ToastrModule.forRoot(),
     ImageDefaultModule.forRoot(imageConfig)
   ],
   exports: [PrivateComponent, FormsModule,

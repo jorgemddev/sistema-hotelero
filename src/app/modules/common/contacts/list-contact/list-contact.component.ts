@@ -131,11 +131,7 @@ export class ListContactComponent implements OnInit, OnChanges {
         this.totalPage = data.total;
       },
       (error) => {
-        this.items = null;
-        this.page = 1;
-        this.collectionSize = 0;
-        this.totalPage = 0;
-        this.toast;
+        this.items = [];
       }
     );
   }

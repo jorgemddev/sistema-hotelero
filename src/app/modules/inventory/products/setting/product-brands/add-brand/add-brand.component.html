@@ -1,0 +1,8 @@
+<form (submit)="create()" novalidate [formGroup]="form">
+    <label for="tag">Nombre de la marca</label>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Escríba aquí" formControlName="tag">
+    </div>
+    <button class="btn btn-success mt-3 float-end" type="submit">CREAR <i
+        class="fa-solid fa-floppy-disk"></i></button>
+</form>

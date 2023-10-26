@@ -84,11 +84,7 @@ export class ApiService {
       this.domain + 'company/info/typePayment/'
     );
   }
-  getRoom(id:number): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'hotel/rooms/'+id
-    );
-  }
+
   getBrands(): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'products/brands/'
@@ -99,54 +95,9 @@ export class ApiService {
       this.domain + 'products/brands/list/' + page
     );
   }
-  listRooms(page: number): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'hotel/rooms/list/' + page
-    );
-  }
-  getAllRooms(): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'hotel/rooms'
-    );
-  }
-  getRoomsAvailable(form: UntypedFormGroup): Observable<Responses> {
-    const params = new HttpParams()
-    .set('reservations_id',form.get('reservations_id')?.value)
-      .set('start', form.get('start')?.value)
-      .set('end', form.get('end')?.value);
 
-    return this.http.get<Responses>(
-      this.domain + 'hotel/rooms/available', { params }
-    );
-  }
-  filterAllReservations(form: UntypedFormGroup): Observable<Responses> {
-    const params = new HttpParams()
-      .set('start', form.get('start')?.value)
-      .set('end', form.get('end')?.value);
 
-    return this.http.get<Responses>(
-      this.domain + 'hotel/reservations/filter', { params }
-    );
-  }
-  allRangeReservations(form: UntypedFormGroup): Observable<Responses> {
-    const params = new HttpParams()
-      .set('start', form.get('start')?.value)
-      .set('end', form.get('end')?.value);
 
-    return this.http.get<Responses>(
-      this.domain + 'hotel/reservations/allRange', { params }
-    );
-  }
-  detailReservations(form: UntypedFormGroup): Observable<Responses> {
-    const params = new HttpParams()
-      .set('id', form.get('id')?.value)
-      .set('start', form.get('start')?.value)
-      .set('end', form.get('end')?.value);
-
-    return this.http.get<Responses>(
-      this.domain + 'hotel/reservations/detail', { params }
-    );
-  }
   getBrand(id: number): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'products/brands/' + id
@@ -182,17 +133,7 @@ export class ApiService {
       this.domain + 'products/models/filter/' + brand_id
     );
   }
-  getReservation(reservation_id: number): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'hotel/reservations/' + reservation_id
-    );
-  }
 
-  getReservationByRut(rut: string): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'hotel/reservations/byRut/' + rut
-    );
-  }
   getModel(id: number): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'products/models/' + id
@@ -208,9 +149,9 @@ export class ApiService {
       this.domain + 'extensions/index/list/' + page
     );
   }
-  getNav(id: number): Observable<Responses> {
+  getTemplateDocument(id: number): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'params/navs/' + id
+      this.domain + 'company/template/' + id
     );
   }
   getNavs(): Observable<Responses> {
@@ -221,6 +162,11 @@ export class ApiService {
   getAllNavs(): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'params/navs/all/'
+    );
+  }
+  getAllModulesDocument(): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'company/template/modules/'
     );
   }
   getPaths(): Observable<Responses> {
@@ -253,42 +199,20 @@ export class ApiService {
       this.domain + 'clients/index/' + id
     );
   }
-  getCarsParking(reservations_id: number,page:number): Observable<Responses> {
-    const params = new HttpParams()
-      .set('reservations_id', reservations_id)
+  getAllClients(): Observable<Responses> {
     return this.http.get<Responses>(
-      this.domain + 'hotel/cars/paginate/'+    page +
-      '/30/' , { params }
+      this.domain + 'clients/index/' 
     );
   }
-  getListPayments(reservations_id: number,page:number): Observable<Responses> {
-    const params = new HttpParams()
-      .set('reservations_id', reservations_id)
-    return this.http.get<Responses>(
-      this.domain + 'hotel/payments/paginate/'+    page +
-      '/30/' , { params }
-    );
-  }
+
+
   getAllPaymentCash(): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'hotel/payments/cash/'
     );
   }
-  getListCharges(reservations_id: number,page:number): Observable<Responses> {
-    const params = new HttpParams()
-      .set('reservations_id', reservations_id)
-    return this.http.get<Responses>(
-      this.domain + 'hotel/charges/paginate/'+    page +
-      '/30/' , { params }
-    );
-  }
-  getAllCharges(reservations_id: number): Observable<Responses> {
-    const params = new HttpParams()
-      .set('reservations_id', reservations_id)
-    return this.http.get<Responses>(
-      this.domain + 'hotel/charges/', { params }
-    );
-  }
+
+
   searchClientByRut(rut: string): Observable<Responses> {
     const params = new HttpParams()
       .set('rut', rut)
@@ -336,11 +260,7 @@ export class ApiService {
       this.domain + 'providers/index/'
     );
   }
-  getPayments(): Observable<Responses> {
-    return this.http.get<Responses>(
-      this.domain + 'params/payments/'
-    );
-  }
+
 
   getCitiesPaginateFilter(filter: string, page: number): Observable<Responses> {
     return this.http.get<Responses>(
@@ -452,6 +372,16 @@ export class ApiService {
   getAllCities(): Observable<Responses> {
     return this.http.get<Responses>(
       this.domain + 'params/cities/all/'
+    );
+  }
+  getAllTemplateDocuments(page:number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'company/template/list/'+page
+    );
+  }
+  getAllModuleDocument(module_id:number): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'company/template/all/'+module_id
     );
   }
   getAllCitiesFull(): Observable<Responses> {
@@ -617,19 +547,7 @@ export class ApiService {
       }
     );
   }
-  createReservations(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/reservations/create/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
+
   createModel(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -735,6 +653,19 @@ export class ApiService {
       }
     );
   }
+  createTemplateDocument(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'company/template/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
   createProviders(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -761,19 +692,7 @@ export class ApiService {
       }
     );
   }
-  createRooms(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/create/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
+
   createAmenities(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -804,6 +723,19 @@ export class ApiService {
     const body = new HttpParams().appendAll(form.value).append('products', JSON.stringify(products));
     return this.http.post<Responses>(
       this.domain + 'providers/purchase/create/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
+  createMovement(form: UntypedFormGroup, products: any): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value).append('products', JSON.stringify(products));
+    return this.http.post<Responses>(
+      this.domain + 'products/movements/create/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -969,6 +901,19 @@ export class ApiService {
       }
     );
   }
+  updateTemplateDocument(form: UntypedFormGroup): Observable<Responses> {
+    const body = new HttpParams().appendAll(form.value);
+    return this.http.post<Responses>(
+      this.domain + 'company/template/update/',
+      body,
+      {
+        headers: new HttpHeaders().set(
+          'Content-Type',
+          'application/x-www-form-urlencoded'
+        ),
+      }
+    );
+  }
   updateProviders(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -1047,19 +992,8 @@ export class ApiService {
       }
     );
   }
-  setStatusRoom(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/status/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
+
+  
   updateCategory(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -1142,32 +1076,9 @@ export class ApiService {
       }
     );
   }
-  updateReservations(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/reservations/update/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
-  updateRooms(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/update/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
+ 
+
+  
   updateCompany(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().appendAll(form.value);
     return this.http.post<Responses>(
@@ -1233,32 +1144,7 @@ export class ApiService {
       }
     );
   }
-  checkIn(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/reservations/checkin/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
-  checkOut(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().appendAll(form.value);
-    return this.http.post<Responses>(
-      this.domain + 'hotel/reservations/checkout/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
+
   deletePages(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
     return this.http.post<Responses>(
@@ -1410,11 +1296,13 @@ export class ApiService {
       }
     );
   }
-  deleteRooms(form: UntypedFormGroup): Observable<Responses> {
+ 
+  
+  deleteTemplateDocument(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
 
     return this.http.post<Responses>(
-      this.domain + 'hotel/rooms/delete/',
+      this.domain + 'company/template/delete/',
       body,
       {
         headers: new HttpHeaders().set(
@@ -1424,20 +1312,7 @@ export class ApiService {
       }
     );
   }
-  deleteReservation(form: UntypedFormGroup): Observable<Responses> {
-    const body = new HttpParams().set('id', form.get('id')?.value);
-
-    return this.http.post<Responses>(
-      this.domain + 'hotel/reservations/delete/',
-      body,
-      {
-        headers: new HttpHeaders().set(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        ),
-      }
-    );
-  }
+ 
   deleteMovements(form: UntypedFormGroup): Observable<Responses> {
     const body = new HttpParams().set('id', form.get('id')?.value);
 

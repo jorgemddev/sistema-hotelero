@@ -1,0 +1,299 @@
+<form [formGroup]="primaryForm" (ngSubmit)="create()">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title float-start">Traspaso de productos</h5>
+            <div class="float-end">
+                <app-back-button [cssClass]="'btn btn-secondary'" />
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row gx-3 mb-3">
+                <h5>Empresa</h5>
+                <div class="col-md-5">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="business">Razon social</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-regular fa-building"></i></span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="business" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2" *ngIf="primaryForm.get('rut').value">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="rut">RUT</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" formControlName="rut" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_location">Dirección</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="invoice_location" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_city">Ciudad</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-city"></i></span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="invoice_city" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_contact">Contacto</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-id-badge"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Contacto"
+                                formControlName="invoice_contact" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_email">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                            </div>
+                            <input type="email" class="form-control" formControlName="invoice_email" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="invoice_phone">Fono</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                            </div>
+                            <input type="tel" class="form-control" formControlName="invoice_phone" />
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h5>Antecedentes del movimiento</h5>
+                <div class="col-md-4">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="providers_id">Cliente/destino</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+                            </div>
+                            <select id="clients_id" class="form-control" formControlName="clients_id">
+                                <option value="0">SELECCIONE</option>
+                                <option *ngFor="let item of clients" value="{{item.id}}">{{item.name | uppercase}}
+                                    {{item.lastname | uppercase}}
+                                </option>
+                            </select>
+                            <button type="button" (click)="openModal(addClient)" class="btn btn-secondary"><i
+                                    class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="location">Ubicación</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control" formControlName="delivery_location" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="ref">Plantilla (documento)</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-file-word"></i></span>
+                            </div>
+                            <select id="template_documents_id" class="form-control"
+                                formControlName="template_documents_id">
+                                <option value="0">SELECCIONE</option>
+                                <option *ngFor="let item of templates_document" value="{{item.id}}">{{item.tag |
+                                    uppercase}}
+                                </option>
+                            </select>
+                            <button type="button" (click)="openModal(addTemplate)" class="btn btn-secondary"><i
+                                    class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label class="small mb-1" for="delivery_date">Fecha de entrega</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                            </div>
+                            <input type="date" class="form-control" formControlName="delivery_date" />
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-md-12">
+                    <label class="small mb-1" for="content">Observación</label>
+                    <div class="input-group">
+                        <div style="border: #d5d5d5 solid 1px;  width:100%;">
+                            <app-editor-html [form]="primaryForm" [myToolbar]="toolbar" />
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <form [formGroup]="formSecond" class="mt-5">
+                <div class="row gx-3 mb-3">
+                    <h5>Productos</h5>
+                    <div class="col-md-1">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Buscar</label>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" (click)="openModal(searchp,'lg')"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Codigo</label>
+                            <input #code formControlName="addCode" type="text" class="form-control"
+                                placeholder="sku,cod,serie" />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Descripción</label>
+                            <input formControlName="addName" type="text" class="form-control"
+                                placeholder="Detalle producto" />
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="amount">Cant</label>
+                            <input formControlName="addAmount" type="number" value="1" class="form-control"
+                                placeholder="1" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="addObs">Observación</label>
+                            <input formControlName="addObs" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-1" *ngIf="formSecond.get('id')?.value">
+                        <div class="mb-1">
+                            <label class="small mb-1" for="providers_id">Agregar</label>
+                            <div class="input-group-append">
+                                <button  type="button" class="btn btn-success" id="model_id"
+                                    (click)="addProductOrder(code)">
+                                    <i class="fa-solid fa-check"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table user-list">
+                    <thead>
+                        <tr>
+                            <th><span>SKU/COD/SERIE</span></th>
+                            <th><span>DESCRIPCIÓN</span></th>
+                            <th><span>CANT.</span></th>
+                            <th><span>OBSERVACIÓN</span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of products; let i = index">
+                            <td>
+                                <span>{{item.sku | uppercase}} {{item.serie | uppercase}} {{item.barcode |
+                                    uppercase}}</span>
+                            </td>
+                            <td>
+                                <span>{{item.name | uppercase}}</span>
+                            </td>
+                            <td>
+                                <span>{{item.amount}}</span>
+                            </td>
+                            <td>
+                                <span>{{item.obs}}</span>
+                            </td>
+                            <td>
+                                <button [disabled]="records?.id>0" type="button" class="btn  text-danger" (click)="products.splice(i,1)">
+                                    <span class="fa-stack">
+                                        <i class="fa fa-square fa-stack-2x"></i>
+                                        <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="products?.length==0">
+                            <td colspan="6" class="text-muted">No se han agregados productos o servicios</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary w-25 float-end" *ngIf="products?.length>0 && !records"
+                type="submit">Guardar</button>
+                <a *ngIf="records" target="_blank" [href]="domain+'company/download/document/'+records.id"
+                    type="button" class="btn btn-primary" data-toggle="button" download="">
+                    <i class="fas fa-file-word"></i> <i class="fa-regular fa-circle-down ms-1"></i> Descargar
+                </a>
+                <button class="btn btn-warning w-25 float-end" *ngIf="records"
+                    type="button" (click)="reset()">Nueva entrega</button>
+        </div>
+    </div>
+</form>
+<ng-template #searchp let-c="close" let-d="dismiss">
+    <div class="modal-header shadow-lg">
+        <h4 class="modal-title" id="modal-basic-title">Buscar producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-search-products [viewDelete]="false" [viewEdit]="false" [viewSelected]="true"
+            (selected)="selectedSearch($event)" (success)="d('Cross click')"></app-search-products>
+    </div>
+</ng-template>
+<ng-template #addTemplate let-c="close" let-d="dismiss">
+    <div class="modal-header shadow-lg">
+        <h4 class="modal-title" id="modal-basic-title">Crear Plantilla</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-add-document (success)="getModuleTemplate($event)" [id]="module_id" />
+    </div>
+</ng-template>
+<ng-template #addClient let-c="close" let-d="dismiss">
+    <div class="modal-header shadow-lg">
+        <h4 class="modal-title" id="modal-basic-title">Crear Cliente</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-add-client (success)="getAllClients($event)" [id]="module_id" />
+    </div>
+</ng-template>

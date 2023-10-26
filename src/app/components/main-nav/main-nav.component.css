@@ -1,7 +1,7 @@
 .bg-navbar {
     background-color: #38393d !important;
     background: rgb(44, 41, 42) !important;
-    background: linear-gradient(90deg, rgb(39, 42, 72) 0%, rgb(41, 55, 97) 100%) !important;
+    background: linear-gradient(90deg, #000000 0%, rgb(0, 9, 33) 100%) !important;
     box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
     -webkit-box-shadow: 1px 4px 15px -1px rgba(0, 0, 0, 0.75) !important;
     -moz-box-shadow: 1px 4px 15px -1px rgba(52, 52, 52, 0.75) !important;

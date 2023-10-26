@@ -10,6 +10,7 @@ export interface Rooms{
     price?:number;
     availability?:Availability;
     availability_id?:number;
+    available?:boolean;
     created_at?:string;
     update_in?:string;
 }
