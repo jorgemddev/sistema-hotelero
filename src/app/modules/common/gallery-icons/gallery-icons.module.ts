@@ -6,6 +6,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 
 
+
 @NgModule({
   declarations: [
     GalleryIconsComponent

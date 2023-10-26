@@ -9,7 +9,7 @@ import { MainNavComponent } from '../components/main-nav/main-nav.component';
 import { DashComponent } from './pages/dash/dash.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
+//import { NgDynamicBreadcrumbModule } from 'ng-dynamic-breadcrumb';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -42,7 +42,7 @@ const imageConfig: ImageDefaultConfig = {
     ReactiveFormsModule,
     PrivateRoutingModule,
     HttpClientModule,
-    NgDynamicBreadcrumbModule,
+    //NgDynamicBreadcrumbModule,
     MatButtonToggleModule,
     MatDatepickerModule,
     MatInputModule,
