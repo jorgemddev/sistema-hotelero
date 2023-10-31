@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScannerBarcodeComponent } from './scanner-barcode.component';
-import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -11,7 +10,10 @@ import { BrowserModule } from '@angular/platform-browser';
     ScannerBarcodeComponent
   ],
   imports: [
-    CommonModule,
+    CommonModule
+  ],
+  exports:[
+    ScannerBarcodeComponent
   ]
 })
 export class ScannerBarcodeModule { }

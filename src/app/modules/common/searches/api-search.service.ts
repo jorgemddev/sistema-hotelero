@@ -19,5 +19,10 @@ export class ApiSearchService {
       this.domain + 'products/index/search/' +q+'/'+category+'/'+page+'/'
     );
   }
+  searchProductsCode(q:string): Observable<Responses> {
+    return this.http.get<Responses>(
+      this.domain + 'products/index/code/' +q
+    );
+  }
 
 }

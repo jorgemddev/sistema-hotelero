@@ -170,10 +170,14 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <div class="mb-1">
-                            <label class="small mb-1" for="providers_id">Codigo</label>
-                            <input #code formControlName="addCode" type="text" class="form-control"
-                                placeholder="sku,cod,serie" />
+                        <div class="mb-1">              <label class="small mb-1" for="providers_id">Codigo</label>
+                            <div class="input-group">
+                  
+                                <input (keyup)="onKeySearch()" #code formControlName="addCode" type="text"
+                                    class="form-control" placeholder="sku,cod,serie" />
+                                <button (click)="openModal(viewBarcode)" class="btn btn-success btn-sm"><i class="fa-solid fa-barcode"></i></button>
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -200,7 +204,7 @@
                         <div class="mb-1">
                             <label class="small mb-1" for="providers_id">Agregar</label>
                             <div class="input-group-append">
-                                <button  type="button" class="btn btn-success" id="model_id"
+                                <button type="button" class="btn btn-success" id="model_id"
                                     (click)="addProductOrder(code)">
                                     <i class="fa-solid fa-check"></i></button>
                             </div>
@@ -236,7 +240,8 @@
                                 <span>{{item.obs}}</span>
                             </td>
                             <td>
-                                <button [disabled]="records?.id>0" type="button" class="btn  text-danger" (click)="products.splice(i,1)">
+                                <button [disabled]="records?.id>0" type="button" class="btn  text-danger"
+                                    (click)="products.splice(i,1)">
                                     <span class="fa-stack">
                                         <i class="fa fa-square fa-stack-2x"></i>
                                         <i class="fa-solid fa-trash fa-stack-1x fa-inverse"></i>
@@ -254,12 +259,12 @@
         <div class="card-footer">
             <button class="btn btn-primary w-25 float-end" *ngIf="products?.length>0 && !records"
                 type="submit">Guardar</button>
-                <a *ngIf="records" target="_blank" [href]="domain+'company/download/document/'+records.id"
-                    type="button" class="btn btn-primary" data-toggle="button" download="">
-                    <i class="fas fa-file-word"></i> <i class="fa-regular fa-circle-down ms-1"></i> Descargar
-                </a>
-                <button class="btn btn-warning w-25 float-end" *ngIf="records"
-                    type="button" (click)="reset()">Nueva entrega</button>
+            <a *ngIf="records" target="_blank" [href]="domain+'company/download/document/'+records.id" type="button"
+                class="btn btn-primary" data-toggle="button" download="">
+                <i class="fas fa-file-word"></i> <i class="fa-regular fa-circle-down ms-1"></i> Descargar
+            </a>
+            <button class="btn btn-warning w-25 float-end" *ngIf="records" type="button" (click)="reset()">Nueva
+                entrega</button>
         </div>
     </div>
 </form>
@@ -271,7 +276,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-search-products [viewDelete]="false" [viewEdit]="false" [viewSelected]="true"
+        <app-search-products [hideFilter]="true" [viewDelete]="false" [viewEdit]="false" [viewSelected]="true"
             (selected)="selectedSearch($event)" (success)="d('Cross click')"></app-search-products>
     </div>
 </ng-template>
@@ -295,5 +300,17 @@
     </div>
     <div class="modal-body">
         <app-add-client (success)="getAllClients($event)" [id]="module_id" />
+    </div>
+</ng-template>
+
+<ng-template #viewBarcode let-c="close" let-d="dismiss">
+    <div class="modal-header shadow-lg">
+        <h4 class="modal-title" id="modal-basic-title">Leer Código de barras</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+<app-scanner-barcode/>
     </div>
 </ng-template>

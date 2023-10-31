@@ -1,21 +1,15 @@
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 card-margin">
-            <div class="card search-form">
-                <div class="card-body p-0">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row no-gutters">
-                                <div class="col-lg-3 col-md-3 col-sm-12 p-4">
-                                    <app-toolbar-search (onFilter)="onSearch(null,$event)" [hideSearch]="true" [filters]="categorys" />
-                                </div>
-                                <div class="col-lg-9 col-md-9 col-sm-12 p-4">
-                                    <app-toolbar-search (onSearch)="onSearch($event)" id="search" [hideFilter]="true" [placeholder]="'Escriba el nombre del producto'" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3 p-4">
+                    <app-toolbar-search *ngIf="!hideFilter" (onFilter)="onSearch(null,$event)" [hideSearch]="true" [filters]="categorys" />
+                    <span>Buscador de Productos</span>
                 </div>
+                <div class="col-9 p-4" *ngIf="!hideSearch">
+                    <app-toolbar-search (onSearch)="onSearch($event)" id="search" [hideFilter]="true" [placeholder]="'Escriba el nombre del producto'" />
+                </div>
+
             </div>
         </div>
     </div>
@@ -46,10 +40,6 @@
                                                                         }}
                                                         </p>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <span class="text-muted time"><i class="fa-regular fa-calendar"></i>
-                                                        Creado {{item.created_at}}</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-muted time"><b>Marca</b> {{item.brand}}

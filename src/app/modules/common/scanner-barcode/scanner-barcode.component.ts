@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+
 
 
 @Component({
@@ -6,6 +7,14 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
   templateUrl: './scanner-barcode.component.html',
   styleUrls: ['./scanner-barcode.component.css']
 })
-export class ScannerBarcodeComponent  {
-
+export class ScannerBarcodeComponent implements OnInit {
+  ngOnInit(): void {
+    console.log("Se inicia lector de nbarcode");
+  }
+  value: string;
+  isError = false;
+  onError(error: any) {
+    console.error(error);
+    this.isError = true;
+  }
 }

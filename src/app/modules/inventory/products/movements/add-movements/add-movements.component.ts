@@ -10,6 +10,9 @@ import { Products } from 'src/app/models/interfaces/products';
 import { Records } from 'src/app/models/interfaces/records';
 import { TemplateDocuments } from 'src/app/models/interfaces/template-documents';
 import { ApiService } from 'src/app/services/api.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { debounceTime } from 'rxjs';
+import { ApiSearchService } from 'src/app/modules/common/searches/api-search.service';
 
 @Component({
   selector: 'app-add-movements',
@@ -22,7 +25,8 @@ export class AddMovementsComponent implements OnInit {
     private toast: ToastrService,
     private modal: NgbModal,
     private routeActive: ActivatedRoute,
-    private router:Router
+    private router: Router,
+    private apiSearch:ApiSearchService
   ) { }
 
   //declaro el modulo de plantilla de documento
@@ -31,6 +35,8 @@ export class AddMovementsComponent implements OnInit {
   templates_document: any;
   @Output()
   success = new EventEmitter<boolean>();
+
+  private keyUpSubject = new Subject<string>();
 
   @Input()
   client_id: number = 0;
@@ -43,8 +49,18 @@ export class AddMovementsComponent implements OnInit {
     });
     this.getData();
     this.getCompany();
+
+
+    //Efecto remote
+    this.keyUpSubject
+      .pipe(debounceTime(600)) // Establece un tiempo de espera de 500 ms (ajústalo según tus necesidades)
+      .subscribe((searchTerm) => {
+        // Realiza la llamada a la API con el término de búsqueda
+        console.log("RECIBIDO", searchTerm);
+        this.getProductsCode(searchTerm);
+      });
   }
-  domain=this.api.domain;
+  domain = this.api.domain;
   records: Records;
   product: Products;
   products: Products[] = [];
@@ -73,9 +89,9 @@ export class AddMovementsComponent implements OnInit {
   formSecond = new UntypedFormGroup({
     id: new UntypedFormControl(0),
     addCode: new UntypedFormControl(''),
-    addName: new UntypedFormControl(''),
-    addAmount: new UntypedFormControl(0),
-    addObs: new UntypedFormControl(''),
+    addName: new UntypedFormControl({ value: '', disabled: true }),
+    addAmount: new UntypedFormControl({ value: 1, disabled: true }),
+    addObs: new UntypedFormControl({ value: '', disabled: true }),
 
   });
   btn_toolbar: NyToolbar = {
@@ -182,13 +198,31 @@ export class AddMovementsComponent implements OnInit {
     this.formSecond.get('addCode').setValue('');
     this.formSecond.get('addObs').setValue('');
     code.focus();
+    this.formSecond.get('addName').disable();
+    this.formSecond.get('addAmount').disable();
+    this.formSecond.get('addObs').disable();
   }
   selectedSearch(item: Products) {
-    console.log(item);
-    this.formSecond.get('id').setValue(item?.id);
-    this.formSecond.get('addCode').setValue((item?.serie)?"SERIE: "+item?.serie:"ID: "+item?.id);
-    this.formSecond.get('addName').setValue(item?.name.toUpperCase()  + " " + item?.brand + " " + item?.model);
-    this.formSecond.get('addAmount').setValue(1);
+    if (item.amount > 0) {
+      console.log(item);
+      this.formSecond.get('id').setValue(item?.id);
+      if(item?.serie.length>0){
+        this.formSecond.get('addCode').setValue( item?.serie);  
+      }else if(item?.sku.length>0){
+        this.formSecond.get('addCode').setValue(item?.sku);  
+      }else if(item?.barcode.length>0){
+        this.formSecond.get('addCode').setValue( item?.barcode);  
+      }else{
+        this.formSecond.get('addCode').setValue( "ID: " + item?.id);  
+      }
+      this.formSecond.get('addCode').setValue((item?.serie) ? "SERIE: " + item?.serie : "ID: " + item?.id);
+      this.formSecond.get('addName').setValue(item?.name.toUpperCase() + " " + item?.brand + " " + item?.model);
+      this.formSecond.get('addAmount').setValue(1);
+      this.formSecond.enable();
+    } else {
+      this.toast.warning("Producto sin Stock");
+    }
+
   }
   actionButton(event: Buttons) {
     console.log(event);
@@ -198,9 +232,29 @@ export class AddMovementsComponent implements OnInit {
         break;
     }
   }
-  reset(){
-    this.products=[];
+  reset() {
+    this.products = [];
     this.formSecond.reset();
-    this.records=null;
+    this.records = null;
   }
+  onKeySearch() {
+    var q = this.formSecond.get('addCode')?.value;
+    if (q.length > 2) {
+      console.log("Escribiendo"+q);
+      this.keyUpSubject.next(q)
+    }
+
+  }
+  getProductsCode(q) {
+    this.apiSearch.searchProductsCode(q).subscribe(
+      (response) => {
+        var data = response.data as Products;
+        this.selectedSearch(data);
+      },
+      (error) => {
+      this.toast.warning("Código no encontrado");
+      }
+    );
+  }
+
 }

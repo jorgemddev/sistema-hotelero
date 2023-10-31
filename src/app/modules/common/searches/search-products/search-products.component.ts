@@ -25,15 +25,22 @@ export class SearchProductsComponent implements OnInit {
 
   @Output()
   selected = new EventEmitter<Products>();
+
   @Input() viewSelected: boolean = false;
 
   @Output()
   edit = new EventEmitter<Products>();
+
   @Input() viewEdit: boolean = true;
 
   @Output()
   delete = new EventEmitter<Products>();
+
   @Input() viewDelete: boolean = true;
+
+  @Input() hideSearch: boolean = false;
+
+  @Input() hideFilter: boolean = false;
 
   categorys: any;
 

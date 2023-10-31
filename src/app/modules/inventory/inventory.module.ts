@@ -41,6 +41,7 @@ import { AddBrandComponent } from './products/setting/product-brands/add-brand/a
 import { EditBrandComponent } from './products/setting/product-brands/edit-brand/edit-brand.component';
 import { EditModelComponent } from './products/setting/product-brands/edit-model/edit-model.component';
 import { AddModelComponent } from './products/setting/product-brands/add-model/add-model.component';
+import { ScannerBarcodeModule } from '../common/scanner-barcode/scanner-barcode.module';
 const imageConfig: ImageDefaultConfig = {
   defaultImages: {
     default: 'assets/images/default.jpg',
@@ -92,6 +93,7 @@ const imageConfig: ImageDefaultConfig = {
     CrmModule,
     ToolbarSearchComponent,
     BackButtonComponent,
+    ScannerBarcodeModule,
     ImageDefaultModule.forRoot(imageConfig)
 
   ],
