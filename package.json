@@ -41,7 +41,8 @@
     "ngx-color-picker": "^15.0.0",
     "ngx-dropzone": "^3.1.0",
     "ngx-editor": "^16.0.1",
-    "ngx-toastr": "^17.0.2"
+    "ngx-toastr": "^17.0.2",
+    "quagga": "^0.12.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.8",

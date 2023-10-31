@@ -1,20 +1,36 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-
-
-
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import Quagga from 'quagga';
 @Component({
   selector: 'app-scanner-barcode',
   templateUrl: './scanner-barcode.component.html',
   styleUrls: ['./scanner-barcode.component.css']
 })
 export class ScannerBarcodeComponent implements OnInit {
+
   ngOnInit(): void {
-    console.log("Se inicia lector de nbarcode");
+    Quagga.init({
+      inputStream: {
+        name: "Live",
+        type: "LiveStream",
+        target: document.querySelector('#interactive') // Selector del div en el HTML
+      },
+      decoder: {
+        readers: ["ean_reader"] // Tipos de códigos de barras que quieres leer
+      }
+    }, function (err) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      Quagga.start();
+    });
+
+    Quagga.onDetected((result) => {
+      if (result?.codeResult?.code > 3 ) {
+        this.onResult.emit(result?.codeResult?.code);
+      }
+    });
   }
-  value: string;
-  isError = false;
-  onError(error: any) {
-    console.error(error);
-    this.isError = true;
-  }
+  @Output()
+  onResult = new EventEmitter<number>();
 }
